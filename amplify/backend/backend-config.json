@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "teamprojectjarvis2026df9eac8": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
