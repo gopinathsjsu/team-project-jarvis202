@@ -9,7 +9,8 @@ import MoneyIcon from '@material-ui/icons/Money';
 import PaymentIcon from '@material-ui/icons/Payment';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
-export const mainListItems = (
+const ListItems = () => {
+  return (
   <div>
     <Link to="/" style={{ textDecoration: 'none', display: 'block', color: "inherit" }} >
       <ListItem button>
@@ -44,4 +45,7 @@ export const mainListItems = (
       <ListItemText primary="Admin Dashboard" />
     </ListItem>
   </div>
-);
+  )
+}
+
+export default ListItems;
