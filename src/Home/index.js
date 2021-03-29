@@ -15,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import ListItems from './ListItems';
+import { mainListItems } from './listItems';
 import Transactions from './Transactions';
 
 const drawerWidth = 240;
@@ -145,7 +145,7 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List><ListItems /></List>
+        <List>{mainListItems}</List>
         <Divider />
       </Drawer>
       <main className={classes.content}>
