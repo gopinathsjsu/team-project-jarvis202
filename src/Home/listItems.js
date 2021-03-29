@@ -11,40 +11,40 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 const ListItems = () => {
   return (
-  <div>
-    <Link to="/" style={{ textDecoration: 'none', display: 'block', color: "inherit" }} >
+    <div>
+      <Link to="/" style={{ textDecoration: 'none', display: 'block', color: "inherit" }} >
+        <ListItem button>
+          <ListItemIcon>
+            <ReceiptIcon />
+          </ListItemIcon>
+          <ListItemText primary="My Transactions" />
+        </ListItem>
+      </Link>
       <ListItem button>
         <ListItemIcon>
-          <ReceiptIcon />
+          <AccountBalanceIcon />
         </ListItemIcon>
-        <ListItemText primary="My Transactions" />
+        <ListItemText primary="Manage Account" />
       </ListItem>
-    </Link>
-    <ListItem button>
-      <ListItemIcon>
-        <AccountBalanceIcon />
-      </ListItemIcon>
-      <ListItemText primary="Manage Account" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <MoneyIcon />
-      </ListItemIcon>
-      <ListItemText primary="Transfer Money" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <PaymentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Pay Bills" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <SupervisorAccountIcon />
-      </ListItemIcon>
-      <ListItemText primary="Admin Dashboard" />
-    </ListItem>
-  </div>
+      <ListItem button>
+        <ListItemIcon>
+          <MoneyIcon />
+        </ListItemIcon>
+        <ListItemText primary="Transfer Money" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <PaymentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Pay Bills" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <SupervisorAccountIcon />
+        </ListItemIcon>
+        <ListItemText primary="Admin Dashboard" />
+      </ListItem>
+    </div>
   )
 }
 
