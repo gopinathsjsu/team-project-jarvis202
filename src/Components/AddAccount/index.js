@@ -169,4 +169,4 @@ const AddAccount = (props) => {
   )
 }
 
-export default AddAccount
+export default AddAccount;
