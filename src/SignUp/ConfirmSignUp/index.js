@@ -80,7 +80,7 @@ const ConfirmSignUp = (props) => {
             const username = location.state.uname;
             await Auth.confirmSignUp(username, code);
             console.log('User confirmed !')
-            history.push('/signIn');
+            history.push('/');
         } catch (error) {
             setErrorMessage(error.message);
             console.log(errorMessage);

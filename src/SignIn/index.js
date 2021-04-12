@@ -44,10 +44,8 @@ const SignIn = (props) => {
             console.log(user);
             console.log('user signedIn');
             //const path = '/';
-            history.push('/signIn');
+            history.push('/home');
             props.onIsLoggedIn(true);
-
-
 
         } catch (error) {
             setErrorMessage(error.message);
@@ -123,8 +121,8 @@ const SignIn = (props) => {
               </Grid> */}
                             <Grid container justify='flex-end'>
                                 <Grid item>
-                                    <Link href='/signUp' variant='body2'>
-                                        {"Don't have an account? Sign Up"}
+                                    <Link href='/register' variant='body2'>
+                                        {"Don't have an account? Register"}
                                     </Link>
                                 </Grid>
                             </Grid>

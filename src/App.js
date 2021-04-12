@@ -1,4 +1,5 @@
 import Home from './Home';
+// import Register from './Register';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import React from 'react';
@@ -11,6 +12,9 @@ import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import SignUp from './SignUp';
 import ConfirmSignUp from './SignUp/ConfirmSignUp';
 import './App.css';
+import { UserForm } from './Register/UserForm';
+
+
 
 Amplify.configure(awsconfig);
 
@@ -22,7 +26,8 @@ const theme = createMuiTheme({
       main: '#b12a30',
     },
     secondary: {
-      main: '#e9e9e9',
+      main: '#ff4400',
+      contrastText: '#ffcc00',
     },
   },
 });
@@ -36,13 +41,15 @@ function App() {
   return (
     <Router >
       <div className="BankingApp">
+        {/* <Header isLoggedIn={isLoggedIn} onIsLoggedIn={onIsLoggedIn} /> */}
         <Container maxWidth={false}>
           <ThemeProvider theme={theme}>
             <Switch>
-              <Route path='/signIn' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} />} />
+              <Route path='/' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} />} />
               <Route path='/signUp' exact component={SignUp} />
               <Route path='/confirmSignUp/:email' exact component={ConfirmSignUp} />
-              <Home />
+              <Route path='/register' exact component={UserForm} />
+              <Route path='/home' exact component={Home} />
             </Switch>
           </ThemeProvider>
         </Container>

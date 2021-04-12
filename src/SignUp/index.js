@@ -28,17 +28,18 @@ const SignUp = () => {
     const [email, setEmail] = React.useState('');
     const [firstname, setFirstName] = React.useState('');
     const [lastname, setLastName] = React.useState('');
-    const [phone_number, setPhonenumber] = React.useState('');
+    const [username, setUserName] = React.useState('');
+    // const [phone_number, setPhonenumber] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [open, setOpen] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
     // const [pathQuery, setPathQuery] = React.useState('');
-    const [username, setUserName] = React.useState('');
+
     const history = useHistory();
 
     const handleClick = async (e) => {
         e.preventDefault();
-        if (password === '' || firstname === '' || username === '') {
+        if (password === '' || firstname === '' || username === '' || email === '') {
             setErrorMessage('Please fill in all the details')
             setOpen(true)
         }
@@ -52,20 +53,14 @@ const SignUp = () => {
                     Name: 'preferred_username',
                     Value: username
                 };
-                const dataPhoneNumber = {
-                    Name: 'phone_number',
-                    Value: phone_number
-                }
-                const attributes = [new CognitoUserAttribute(dataEmail), new CognitoUserAttribute(dataName), new CognitoUserAttribute(dataPhoneNumber)];
+
+                const attributes = [new CognitoUserAttribute(dataEmail), new CognitoUserAttribute(dataName)];
 
                 const { user } = await Auth.signUp({
                     username,
                     password,
                     attributes: {
-                        email,
-                        phone_number,
-
-
+                        email
                     },
                 });
                 console.log(user);
@@ -171,7 +166,7 @@ const SignUp = () => {
                                     onChange={(e, password) => setPassword(e.target.value)}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <TextField
                                     variant='outlined'
                                     required
@@ -183,7 +178,7 @@ const SignUp = () => {
                                     autoComplete='current-password'
                                     onChange={(e, password) => setPassword(e.target.value)}
                                 />
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                         <Button
                             type='submit'
@@ -197,7 +192,7 @@ const SignUp = () => {
                         </Button>
                         <Grid container justify='flex-end'>
                             <Grid item>
-                                <Link href='/signIn' variant='body2'>
+                                <Link href='/' variant='body2'>
                                     {"Already have an account? Sign in!"}
                                 </Link>
                             </Grid>
