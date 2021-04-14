@@ -15,8 +15,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import { mainListItems } from './listItems';
+import ListItems from './ListItems';
 import Transactions from './Transactions';
+import AddAccount from '../Components/AddAccount';
+import CloseAccount from '../Components/CloseAccount';
 
 const drawerWidth = 240;
 
@@ -124,7 +126,7 @@ export default function Dashboard() {
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               Banking App
-          </Typography>
+            </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -145,11 +147,13 @@ export default function Dashboard() {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List><ListItems /></List>
           <Divider />
         </Drawer>
         <main className={classes.content}>
           <Route exact path="/home" component={() => <Transactions />} />
+          <Route exact path="/addAccount" component={() => <AddAccount />} />
+          <Route exact path="/closeAccount" component={() => <CloseAccount />} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>
