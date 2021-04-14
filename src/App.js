@@ -1,6 +1,8 @@
 import Home from './Home';
+
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+<<<<<<< HEAD
 import React from 'react';
 // import SignIn from './Components/SignIn';
 import SignIn from './SignIn';
@@ -16,7 +18,11 @@ import AddAccount from './Components/AddAccount';
 
 
 Amplify.configure(awsconfig);
+=======
+>>>>>>> 060334ac5f2b817e1d71205b07249d5c19c50ae6
 
+import './App.css';
+import AddAccount from './Components/AddAccount';
 
 const theme = createMuiTheme({
   palette: {
@@ -31,6 +37,7 @@ const theme = createMuiTheme({
 });
 
 function App() {
+<<<<<<< HEAD
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const onIsLoggedIn = (isLoggedIn) => {
     setIsLoggedIn(isLoggedIn);
@@ -53,6 +60,15 @@ function App() {
         </Container>
       </div>
     </Router >
+=======
+  return (
+    <div className="BankingApp">
+      <ThemeProvider theme={theme}>
+        <Home />
+      </ThemeProvider>
+
+    </div>
+>>>>>>> 060334ac5f2b817e1d71205b07249d5c19c50ae6
   );
 }
 

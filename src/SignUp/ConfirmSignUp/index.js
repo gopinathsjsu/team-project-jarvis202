@@ -132,7 +132,7 @@ const ConfirmSignUp = (props) => {
                             type='confirm'
                             fullWidth
                             variant='contained'
-                            // color='secondary'
+                            color='secondary'
                             className={classes.submit}
                             onClick={handleClick}
                         >
