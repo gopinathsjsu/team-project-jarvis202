@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,6 +19,9 @@ import ListItems from './ListItems';
 import Transactions from './Transactions';
 import AddAccount from '../Components/AddAccount';
 import CloseAccount from '../Components/CloseAccount';
+import Button from '@material-ui/core/Button';
+import { Auth } from 'aws-amplify';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const drawerWidth = 240;
 
@@ -99,8 +102,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant='filled' {...props} />;
+}
+
 export default function Dashboard() {
   const classes = useStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -108,7 +116,19 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const handleSave = async (e) => {
+    e.preventDefault();
+    try {
+      Auth.signOut();
+      // sessionStorage.clear();
+      // to-do  : props.onIsLoggedIn(false); GIVING ERROR PROPS.ONISLOGGEDIN IS NOT A FUNCTION
+      // navigate to the sign in page
+      history.push('/');
+    }
+    catch (error) {
+      console.log(error.message);
+    }
+  }
   return (
     <Router>
       <div className={classes.root}>
@@ -132,6 +152,9 @@ export default function Dashboard() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <Button type='submit' color='inherit' onClick={handleSave}>
+              Sign Out
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -157,6 +180,6 @@ export default function Dashboard() {
           <div className={classes.appBarSpacer} />
         </main>
       </div>
-    </Router>
+    </Router >
   );
 }

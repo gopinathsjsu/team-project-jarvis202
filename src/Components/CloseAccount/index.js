@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Container from '@material-ui/core/Container'
@@ -30,11 +30,12 @@ const CloseAccount = () => {
   const [citizenship, setCitizenship] = React.useState('');
   const [residence, setResidence] = React.useState('');
   const [dob, setDOB] = React.useState(new Date());
+  const sigCanvas = useRef()
 
   const [isValidAcc, setIsValidAcc] = React.useState(false);
 
   const handleSave = (event) => {
-    //TODO:Update the Customer info
+    //TODO:Update the Customer and account info 
   }
   const handleSubmit = (event) => {
     //TODO:Update the Customer info and send mail to the customer
@@ -45,12 +46,20 @@ const CloseAccount = () => {
   const handleChange = (event) => {
     //TODO: update the validations 
   }
+  const handleClear = () => {
+    sigCanvas.current.clear();
+  }
+  const handleSigSave = () => {
+    // To-do : save the signature in the database
+    console.log(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"))
+  }
   const validateAccNum = (event) => {
     setConfirmAcc(event.target.value)
     if (accNum !== confirmAcc) {
       console.log('Invalid account number')
     }
   }
+
   return (
     <Container>
       <Box pt={6}>
@@ -88,13 +97,18 @@ const CloseAccount = () => {
           <Grid item xs={12} align='left'>
             <Box border={1} borderColor="text.primary">
               <SignatureCanvas
+                ref={sigCanvas}
                 penColor='green'
                 canvasProps={{ width: 500, height: 200, className: 'sigCanvas' }} />
+              <Button type='submit' variant='contained' onClick={handleClear}>Clear</Button>
+              <Button type='submit' variant='contained' onClick={handleSigSave}>Save</Button>
             </Box>
-            <Button type='submit'>Clear</Button>
+
+          </Grid>
+          <Grid item xs={12} align='left'>
+            <Button type='submit' variant='contained' color='primary' onClick={handleSave}>Submit</Button>
           </Grid>
         </Grid>
-
       </Box>
     </Container >
   )

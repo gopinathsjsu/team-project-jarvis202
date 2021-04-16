@@ -31,7 +31,7 @@ export class FormPersonalDetails extends Component {
                     alignItems="flex-start"
                 >
                     <AppBar >
-                        Enter Confedential  Details
+                        Enter Confidential  Details
                     </AppBar>
 
                     <br />
@@ -53,7 +53,7 @@ export class FormPersonalDetails extends Component {
                     style={styles.button}
                     onClick={this.previous} >
                     Back
-                    </Button>
+                </Button>
 
 
                 <Button
@@ -62,7 +62,7 @@ export class FormPersonalDetails extends Component {
                     style={styles.button}
                     onClick={this.continue} >
                     Continue
-                    </Button>
+                </Button>
 
             </React.Fragment>
 

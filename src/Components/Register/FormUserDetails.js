@@ -28,8 +28,8 @@ export class FormUserDetails extends Component {
                     alignItems="flex-start"
                 >
 
-                    <AppBar title="Enter User Personal Details" >
-                        Enter User Personal Detailssd
+                    <AppBar title="Enter Personal Details" >
+                        Enter Personal Details
                     </AppBar>
 
                     <br />
@@ -107,7 +107,7 @@ export class FormUserDetails extends Component {
                     style={styles.button}
                     onClick={this.continue} >
                     Continue
-                    </Button>
+                </Button>
 
             </React.Fragment >
 
