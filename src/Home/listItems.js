@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -12,7 +12,6 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import StarBorder from '@material-ui/icons/StarBorder';
 import Collapse from '@material-ui/core/Collapse';
-import { Auth } from 'aws-amplify';
 
 const useStyles = makeStyles((theme) => ({
   nested: {
@@ -20,21 +19,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListItems = (props) => {
+const ListItems = () => {
   const classes = useStyles();
   const [openMA, setOpenMA] = React.useState(false);
-  const history = useHistory();
 
   const handleClick = () => {
     setOpenMA(!openMA);
   };
 
-  const handleSignOut = async () => {
-    await Auth.signOut();
-    // props.onIsLoggedIn(false);
-    sessionStorage.clear();
-    history.push('/signIn');
-  }
   return (
     <div>
       <Link to="/" style={{ textDecoration: 'none', display: 'block', color: "inherit" }} >
