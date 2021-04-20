@@ -22,6 +22,9 @@ import CloseAccount from '../Components/CloseAccount';
 import Button from '@material-ui/core/Button';
 import { Auth } from 'aws-amplify';
 import MuiAlert from '@material-ui/lab/Alert';
+import MakeTransfer from '../Components/MakeTransfer';
+import TransferActivity from '../Components/TransferActivity';
+import ManageRecepients from '../Components/ManageRecepients';
 
 const drawerWidth = 240;
 
@@ -133,22 +136,22 @@ export default function Dashboard() {
     <Router>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <AppBar position='absolute' className={clsx(classes.appBar, open && classes.appBarShift)}>
           <Toolbar className={classes.toolbar}>
             <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
+              edge='start'
+              color='inherit'
+              aria-label='open drawer'
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
             >
               <MenuIcon />
             </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            <Typography component='h1' variant='h6' color='inherit' noWrap className={classes.title}>
               Banking App
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton color='inherit'>
+              <Badge badgeContent={4} color='secondary'>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -158,7 +161,7 @@ export default function Dashboard() {
           </Toolbar>
         </AppBar>
         <Drawer
-          variant="permanent"
+          variant='permanent'
           classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
@@ -174,9 +177,12 @@ export default function Dashboard() {
           <Divider />
         </Drawer>
         <main className={classes.content}>
-          <Route exact path="/home" component={() => <Transactions />} />
-          <Route exact path="/addAccount" component={() => <AddAccount />} />
-          <Route exact path="/closeAccount" component={() => <CloseAccount />} />
+          <Route exact path='/home' component={() => <Transactions />} />
+          <Route exact path='/addAccount' component={() => <AddAccount />} />
+          <Route exact path='/closeAccount' component={() => <CloseAccount />} />
+          <Route exact path='/makeTransfer' component={() => <MakeTransfer />} />
+          <Route exact path='/transferActivity' component={() => <TransferActivity />} />
+          <Route exact path='/manageRecepients' component={() => <ManageRecepients />} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>
