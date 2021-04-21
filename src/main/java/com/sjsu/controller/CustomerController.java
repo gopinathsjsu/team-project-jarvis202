@@ -1,5 +1,7 @@
 package com.sjsu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sjsu.dto.CustomerDTO;
+import com.sjsu.dto.CustomerResponseDTO;
 import com.sjsu.entity.Customer;
 import com.sjsu.services.CustomerService;
 
@@ -21,12 +25,22 @@ public class CustomerController {
 	    return customer;
 	}
 	
-	@GetMapping("getCustomer/{id}")
+	@GetMapping("/getCustomer/{id}")
 	public Customer getCustomerById(@PathVariable int id) {
-		Customer customer = customerService.getCustomerById(id);
-		return customer;
-		
+		Customer customerRes = customerService.getCustomerById(id);
+		System.out.println("customer details is " + customerRes);
+		return customerRes;
 	}
 	
+	@GetMapping("/getAllCustomers")
+	public List<Customer> getAllCustomers(){
+		return customerService.getAllCustomers();
+	}
+
+	
+	@GetMapping("/getJoinData")
+	public List<CustomerResponseDTO> getJoinData(){
+		return customerService.getJoinData();
+	}
 
 }
