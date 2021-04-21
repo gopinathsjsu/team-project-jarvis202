@@ -11,10 +11,10 @@ import com.sjsu.repository.CustomerRepository;
 
 @Service
 public class CustomerService {
-	
+
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	public Customer addCustomerDetails(Customer customer) {
 		customer = customerRepository.save(customer);
 		return customer;
@@ -35,4 +35,8 @@ public class CustomerService {
 		return customerRepository.getJoinInformation();
 	}
 
+	public List<CustomerResponseDTO> getJoinData(String userName) {
+		// TODO Auto-generated method stub
+		return customerRepository.getJoinInformation(userName);
+	}
 }

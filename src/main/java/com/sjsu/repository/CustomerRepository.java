@@ -10,9 +10,12 @@ import com.sjsu.dto.CustomerResponseDTO;
 import com.sjsu.entity.Customer;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Integer >{
-	
-	 @Query("SELECT new com.sjsu.dto.CustomerResponseDTO(c.userName, c.firstName , a.accNumber, a.accountType) FROM Customer c JOIN c.account a")
-	    public List<CustomerResponseDTO> getJoinInformation();
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+
+	@Query("SELECT new com.sjsu.dto.CustomerResponseDTO(c.userName, c.firstName , a.accNumber, a.accountType) FROM Customer c JOIN c.account a")
+	public List<CustomerResponseDTO> getJoinInformation();
+
+	@Query("SELECT new com.sjsu.dto.CustomerResponseDTO(c.userName, c.firstName , a.accNumber, a.accountType) FROM Customer c JOIN c.account a where c.userName=?1")
+	public List<CustomerResponseDTO> getJoinInformation(String userName);
 
 }

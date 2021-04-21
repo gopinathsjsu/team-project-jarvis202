@@ -18,29 +18,33 @@ import com.sjsu.services.CustomerService;
 public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@PostMapping(path = "add/customer")
 	public Customer addMember(@RequestBody Customer customer) {
-		customer = customerService.addCustomerDetails(customer); 
-	    return customer;
+		customer = customerService.addCustomerDetails(customer);
+		return customer;
 	}
-	
+
 	@GetMapping("/getCustomer/{id}")
 	public Customer getCustomerById(@PathVariable int id) {
 		Customer customerRes = customerService.getCustomerById(id);
 		System.out.println("customer details is " + customerRes);
 		return customerRes;
 	}
-	
+
 	@GetMapping("/getAllCustomers")
-	public List<Customer> getAllCustomers(){
+	public List<Customer> getAllCustomers() {
 		return customerService.getAllCustomers();
 	}
 
-	
 	@GetMapping("/getJoinData")
-	public List<CustomerResponseDTO> getJoinData(){
+	public List<CustomerResponseDTO> getJoinData() {
 		return customerService.getJoinData();
+	}
+
+	@GetMapping("/getJoinData/{userName}")
+	public List<CustomerResponseDTO> getJoinData(@PathVariable String userName) {
+		return customerService.getJoinData(userName);
 	}
 
 }
