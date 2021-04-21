@@ -1,6 +1,7 @@
 package com.sjsu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,15 +12,16 @@ import com.sjsu.entity.Recepient;
 import com.sjsu.services.RecepientService;
 
 @RestController
+@CrossOrigin("*")
 public class RecepientController {
 
   @Autowired
   private RecepientService recepientService;
 
   @PostMapping(path = "addRecepient")
-  public Recepient addRecepient(@RequestBody Recepient recepient) {
-    recepient = recepientService.addRecepient(recepient);
-    return recepient;
+  public String addRecepient(@RequestBody Recepient recepient) {
+    String res = recepientService.addRecepient(recepient);
+    return res;
   }
 
   @GetMapping("getRecepient/{id}")

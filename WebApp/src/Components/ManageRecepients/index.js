@@ -21,7 +21,7 @@ import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import ServiceAPI from './../ServiceAPI';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -40,11 +40,19 @@ const ManageRecepients = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [recepientName, setRecepientName] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [recepientName, setRecepientName] = React.useState('');
   const [selectedValue, setSelectedValue] = React.useState('sameBank');
   const [disableRN, setDisableRN] = React.useState(true);
   const [routeNum, setRouteNum] = React.useState(0);
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setlastName] = React.useState('');
+  const [zipCode, setZipCode] = React.useState(0);
+  const [recAcc, setRecAcc] = React.useState(0);
+  const [confirmRecAcc, setConfirmRecAcc] = React.useState(0);
+  const [nickName, setNickName] = React.useState('');
+  const [custAccountNum, setcustAccountNum] = React.useState(0);
+  const [isSameBank, setIsSameBank] = React.useState(true);
 
   const columns = [
     { id: 'recepientID', label: 'Recepient ID', minWidth: 120 },
@@ -87,8 +95,25 @@ const ManageRecepients = () => {
     setOpen(true);
   }
 
-  const handleAdd = async () => {
+  const handleAdd = async (e) => {
     console.log('add recepient')
+    e.preventDefault();
+    const resp = {
+      // update the custAccountId with the db value
+      custAccountID: 1,
+      firstName: firstName,
+      lastName: lastName,
+      zipCode: zipCode,
+      accountNum: recAcc,
+      nickName: nickName,
+      routingNumber: routeNum,
+      isSameBank: isSameBank
+    }
+    try {
+      await ServiceAPI.addRecepient(resp).then(response => console.log(response));
+    } catch (error) {
+      console.log(error);
+    }
   }
   const handleClose = () => {
     setOpen(false);
@@ -96,14 +121,28 @@ const ManageRecepients = () => {
   const handleRadioChange = (e) => {
     if (e.target.value === 'isSameBank') {
       setDisableRN(true);
+      setIsSameBank(true);
       // Update with the route number of the current bank
       setRouteNum(0);
     }
     else {
       setDisableRN(false);
+      setIsSameBank(false);
     }
   };
 
+  const handleAccountNum = (e) => {
+    if (e.target.id === 'accNum') {
+      setRecAcc(e.target.value);
+    }
+    else if (e.target.id === 'confirmAccNum') {
+      setConfirmRecAcc(e.target.value);
+    }
+    else if (recAcc !== '' && confirmRecAcc !== '' && recAcc !== confirmRecAcc) {
+      // throw error
+      console.log('account number does not match')
+    }
+  }
   return (
     <Container className={classes.marginspacing}>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
@@ -119,6 +158,7 @@ const ManageRecepients = () => {
                 margin='dense'
                 id='fname'
                 label='First Name'
+                onChange={(event) => setFirstName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -128,6 +168,7 @@ const ManageRecepients = () => {
                 id='lname'
                 required
                 label='Last Name'
+                onChange={(event) => setlastName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -137,6 +178,7 @@ const ManageRecepients = () => {
                 id='zCode'
                 required
                 label='ZipCode'
+                onChange={(event) => setZipCode(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -147,6 +189,7 @@ const ManageRecepients = () => {
                 required
                 label='Account Number'
                 type='password'
+                onChange={handleAccountNum}
               />
             </Grid>
             <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -156,6 +199,7 @@ const ManageRecepients = () => {
                 required
                 id='confirmAccNum'
                 label='Confirm Account Number'
+                onChange={handleAccountNum}
               />
             </Grid>
             <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -164,6 +208,7 @@ const ManageRecepients = () => {
                 margin='dense'
                 id='nName'
                 label='Nick Name'
+                onChange={(event) => setNickName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} align='left' className={classes.marginspacing}>

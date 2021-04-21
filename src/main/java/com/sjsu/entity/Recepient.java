@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "Recepient")
+@Table(name = "Recepient", uniqueConstraints = @UniqueConstraint(columnNames = { "AccountNum", "CustAccountID" }))
 public class Recepient {
 
   @Id
@@ -27,7 +28,7 @@ public class Recepient {
   @Column(name = "ZipCode", nullable = false)
   private Integer zipCode;
 
-  @Column(name = "AccountNum", nullable = false)
+  @Column(name = "AccountNum", nullable = false, unique = true)
   private Integer accountNum;
 
   @Column(name = "NickName")
