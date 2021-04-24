@@ -42,9 +42,21 @@ public class CustomerController {
 		return customerService.getJoinData();
 	}
 
+	/*
+	 * Input - User name
+	 * Output - All account details of input user name
+	 */
 	@GetMapping("/getJoinData/{userName}")
 	public List<CustomerResponseDTO> getJoinData(@PathVariable String userName) {
 		return customerService.getJoinData(userName);
 	}
 
+	/*
+	 * Input - Customer user name 
+	 * Output - userName , accNumber, accountType, balance
+	 */
+	@GetMapping("/showCustomerDetails/{userName}")
+	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
+		return customerService.showCustomerDetailsOnLogin(userName);
+	}
 }

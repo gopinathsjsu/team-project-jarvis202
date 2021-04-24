@@ -1,4 +1,4 @@
-package com.sjsu.entity;
+	package com.sjsu.entity;
 
 import java.util.Date;
 import java.util.Set;

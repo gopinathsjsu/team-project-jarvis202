@@ -39,4 +39,9 @@ public class CustomerService {
 		// TODO Auto-generated method stub
 		return customerRepository.getJoinInformation(userName);
 	}
+
+	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(String userName) {
+		// TODO Auto-generated method stub
+		return  customerRepository.showCustomerDetailsOnLogin(userName);
+	}
 }

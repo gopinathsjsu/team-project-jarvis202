@@ -12,10 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CustomerDTO {
-	
-	
-	private Customer customer;
 
-	
+	private Customer customer;
 
 }

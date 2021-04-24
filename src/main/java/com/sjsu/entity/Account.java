@@ -33,9 +33,13 @@ public class Account {
 	@Column(name = "routingNo", nullable = false)
 	private int routingNumber;
 	
+	@Column(name="accountStatus")
 	@Enumerated(EnumType.STRING)
 	private AccountStatus accountStatus;
 	//account.setAccountStatus(AccountStatus.ACTIVE);
+	
+	private double balance;
+	
 	
 	
 	
