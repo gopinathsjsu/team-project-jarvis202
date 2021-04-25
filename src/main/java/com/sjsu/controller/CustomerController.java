@@ -69,5 +69,12 @@ public class CustomerController {
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
 		return customerService.showCustomerDetailsOnLogin(userName);
 	}
+	
+	//Adding an account to existing customer
+	public List<Customer> addAccounts(@RequestBody Customer customer)
+	{
+		return null;
+		
+	}
 
 }
