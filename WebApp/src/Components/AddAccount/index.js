@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Checkbox from '@material-ui/core/Checkbox';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Button } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import ServiceAPI from '../ServiceAPI'
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert';
+import { useHistory } from 'react-router-dom'
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles((theme) => ({
 
   marginspacing: {
@@ -27,8 +32,6 @@ const AddAccount = (props) => {
   const [lastName, setLastName] = React.useState('');
   const [ph, setPh] = React.useState(0);
   const [email, setEmail] = React.useState('');
-  const [citizenship, setCitizenship] = React.useState('');
-  const [residence, setResidence] = React.useState('');
   const [dob, setDOB] = React.useState(new Date());
   const [occupation, setOccupation] = React.useState('');
   const [incomeSource, setIncomeSource] = React.useState('');
@@ -37,61 +40,99 @@ const AddAccount = (props) => {
   const [city, setCity] = React.useState('');
   const [addressState, setAddressState] = React.useState('');
   const [country, setCountry] = React.useState('');
-  const [citizenshipStatus, setCitizenshipStatus] = React.useState('');
   const [zipCode, setZipCode] = React.useState();
   const [coApplicant, setCoApplicant] = React.useState('');
-
+  const [accountType, setAccountType] = React.useState('')
   const [checked, setChecked] = React.useState(false);
   const [relation, setRelation] = React.useState('');
+  const [custDetails, setCustDetails] = React.useState({});
+  const accountTypes = ['Savings', 'Checkings'];
   const relations = ['Father', 'Mother', 'Son', 'Daughter', 'Brother', 'Sister'];
+  const [hasError, setHasError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('')
+  const history = useHistory();
 
   // TODO:update with the props later
-  const fullName = 'Mamatha Guntu';
-  const handleSave = (event) => {
-    //TODO:Update the Customer info
-  }
   const handleSubmit = (event) => {
-    //TODO:Update the Customer info and send mail to the customer
+    // TODO:Update the Customer info and send mail to the customer
+    if (custDetails !== null && custDetails.account.length === 2) {
+      setErrorMessage('You are not eligible to add account in this bank , as you already have 2 accounts of type : Savings and Checkings ')
+      setHasError(true);
+    }
+    else if (coApplicant !== '' && relation === '') {
+      setErrorMessage('If you have specified Co-Applicant name, Please Fill in the Co-Applicant relation !');
+      setHasError(true);
+    }
+
   }
   const handleCancel = (event) => {
-    //TODO:return to customer home page
+    history.push('/home');
   }
-  const handleChange = (event) => {
-    //TODO: update the validations 
+
+  const handlecloseSnack = () => {
+    setHasError(false);
   }
+
+  useEffect(() => {
+    var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
+
+    ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
+      if (response.data[0].account.length === 2) {
+        setCustDetails(response.data[0]);
+        setErrorMessage('You are not eligible to add account in this bank , as you already have 2 accounts of type : Savings and Checkings ')
+        setHasError(true);
+      }
+      else {
+        console.log(response.data[0]);
+        setCustDetails(response.data[0]);
+        setFirstName(response.data[0].firstName);
+        setLastName(response.data[0].lastName);
+        setPh(response.data[0].phoneNumber);
+        setEmail(response.data[0].emailId);
+        setMiddleName(response.data[0].middleName);
+        setDOB(response.data[0].dateOfBirth);
+        setOccupation(response.data[0].occupation);
+        setIncomeSource(response.data[0].sourceOfIncome);
+        setAddress1(response.data[0].fullAddress);
+        setCity(response.data[0].city);
+        setAddressState(response.data[0].state);
+        setCountry(response.data[0].country);
+        setZipCode(response.data[0].zipcode);
+      }
+    })
+      .catch(function (error) {
+        console.log('Unable to fetch customer details', error);
+        setCustDetails({});
+      });
+  }, []);
+
   return (
     <Container >
+      <Snackbar open={hasError} autoHideDuration={6000} onClose={handlecloseSnack}>
+        <Alert onClose={handlecloseSnack} severity='error'>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
       <Typography align='left' variant='h5'>
         Review Information
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <TextField required id='firstName' label='First Name' onChange={handleChange} />
-          <TextField id='middleName' label='Middle Name' />
-          <TextField required id='lastName' label='Last Name' />
+          <TextField disabled id='firstName' label='First Name' value={firstName || ''} />
+          <TextField disabled id='middleName' label='Middle Name' value={middleName || ''} />
+          <TextField disabled id='lastName' label='Last Name' value={lastName || ''} />
         </Grid>
 
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <TextField required id='ph' label='Phone' value={ph} onChange={(event) => setPh(event.target.value)} />
-          <TextField required id='email' label='Email ID' value={email} onChange={(event) => setEmail(event.target.value)} />
+          <TextField disabled id='ph' label='Phone' value={ph || ''} />
+          <TextField disabled id='email' label='Email ID' value={email || ''} />
         </Grid>
         <Grid item xs={12} align='left'>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disablePast='false'
-              disableToolbar
-              variant='inline'
-              format='MM/dd/yyyy'
-              margin='normal'
-              label='Date of Birth'
-              value={dob}
-              onChange={(e, date) => setDOB(date)}
-            />
-          </MuiPickersUtilsProvider>
+          <TextField disabled id='dob' label='Date of Birth' value={dob || ''} />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <TextField required id='occupation' label='Occupation' onChange={(event) => setOccupation(event.target.value)} />
-          <TextField id='incomeSource' label='Source of Income' onChange={(event) => setIncomeSource(event.target.value)} />
+          <TextField disabled id='occupation' label='Occupation' value={occupation || ''} />
+          <TextField disabled id='incomeSource' label='Source of Income' value={incomeSource || ''} />
         </Grid>
         <Grid item xs={12} align='left'>
           <Typography align='left'>
@@ -99,29 +140,46 @@ const AddAccount = (props) => {
           </Typography>
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <TextField required id='address1' label='Address 1' value={address1} onChange={(event) => setAddress1(event.target.value)} />
-          <TextField id='address2' label='Address 2' value={address2} onChange={(event) => setAddress2(event.target.value)} />
+          <TextField disabled id='address1' label='Address 1' value={address1 || ''} />
+          <TextField disabled id='address2' label='Address 2' value={address2 || ''} />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <TextField required id='city' label='City' value={city} onChange={(event) => setCity(event.target.value)} />
-          <TextField required id='state' label='State' value={addressState} onChange={(event) => setAddressState(event.target.value)} />
+          <TextField disabled id='city' label='City' value={city || ''} />
+          <TextField disabled id='state' label='State' value={addressState || ''} />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <TextField required id='country' label='Country' value={country} onChange={(event) => setCountry(event.target.value)} />
-          <TextField required id='zipCode' label='Zip Code' value={zipCode} onChange={(event) => setZipCode(event.target.value)} />
+          <TextField disabled id='country' label='Country' value={country || ''} />
+          <TextField disabled id='zipCode' label='Zip Code' value={zipCode || ''} />
         </Grid>
         <Grid item xs={12} align='left'>
-          <Typography align='left'>
+          <Typography align='left' color='primary'>
+            Select Account Type
+          </Typography>
+        </Grid>
+        <Grid item xs={12} align='left'>
+          <div className={classes.marginspacing}>
+            <Autocomplete
+              options={accountTypes}
+              id='accType'
+              relations='true'
+              style={{ width: 250 }}
+              renderInput={(params) => <TextField {...params} label='Account Type' onChange={(event) => setAccountType(event.target.value)} />}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} align='left'>
+          <Typography align='left' color='primary'>
             Add a Co-Applicant? (Optional)
           </Typography>
         </Grid>
         <Grid item xs={12} align='left'>
           <div className={classes.marginspacing}>
-            <TextField id='coApplicant' label='Co-Applicant Name' value={coApplicant} onChange={(event) => setCoApplicant(event.target.value)} />
+            <TextField id='coApplicant' label='Co-Applicant Name' onChange={(event) => setCoApplicant(event.target.value)} />
             <Autocomplete
+              disabled={coApplicant === ''}
               options={relations}
               id='relations'
-              relations
+              relations='true'
               style={{ width: 250 }}
               renderInput={(params) => <TextField {...params} label='Relationship' onChange={(event) => setRelation(event.target.value)} />}
             />
@@ -153,17 +211,15 @@ const AddAccount = (props) => {
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <FormControlLabel
-            control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.value)} name='checked' />}
-            label={fullName}
+            control={<Checkbox color='primary' checked={checked} onChange={(event) => setChecked(event.target.checked)} name='checked' />}
+            label={`${firstName} ${lastName}`}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <Button type='submit' variant='contained' color='error' onClick={handleSubmit}>Open Account</Button>
-          <Button type='submit' variant='contained' color='error' onClick={handleCancel}>Cancel</Button>
+          <Button type='submit' disabled={!checked} variant='contained' color='primary' onClick={handleSubmit}>Open Account</Button>
+          <Button type='submit' variant='contained' color='primary' onClick={handleCancel}>Cancel</Button>
         </Grid>
       </Grid>
-
-
     </Container>
   )
 }

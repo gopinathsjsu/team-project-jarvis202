@@ -78,13 +78,13 @@ const TransferActivity = () => {
   const handleDisplayOptChange = (e) => {
     // to-do
     console.log(e.target.value)
-    console.log("Display data based on the option selected")
+    console.log('Display data based on the option selected')
   }
 
   const handleFilterChange = (e) => {
     // to-do
     console.log(e.target.value)
-    console.log("Display data based on the type of the transaction selected")
+    console.log('Display data based on the type of the transaction selected')
   }
 
   return (

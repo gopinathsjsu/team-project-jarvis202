@@ -25,6 +25,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import MakeTransfer from '../Components/MakeTransfer';
 import TransferActivity from '../Components/TransferActivity';
 import ManageRecepients from '../Components/ManageRecepients';
+import AddRecepient from '../Components/AddRecepient';
+import ValidateOTP from '../Components/ValidateOTP';
 
 const drawerWidth = 240;
 
@@ -183,6 +185,8 @@ export default function Dashboard() {
           <Route exact path='/makeTransfer' component={() => <MakeTransfer />} />
           <Route exact path='/transferActivity' component={() => <TransferActivity />} />
           <Route exact path='/manageRecepients' component={() => <ManageRecepients />} />
+          <Route exact path='/addRecepient' component={() => <AddRecepient />} />
+          <Route exact path='/validateOTP/:recepientDetails' component={() => <ValidateOTP />} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>
