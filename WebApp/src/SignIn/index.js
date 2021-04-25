@@ -38,7 +38,7 @@ const SignIn = (props) => {
         e.preventDefault();
         try {
             const user = await Auth.signIn(username, password);
-            sessionStorage.setItem('custDetails', JSON.stringify({ uname: username }, user.attributes.email))
+            sessionStorage.setItem('custDetails', JSON.stringify({ uname: username }))
             console.log(user);
             console.log('user signedIn');
             //const path = '/';

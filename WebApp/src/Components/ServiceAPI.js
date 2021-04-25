@@ -15,8 +15,17 @@ class ServiceAPI {
     return axios.get(apiUrl + 'sendSMSMessage/' + phoneNum);
   }
 
-  getCustomerDetailsByUserName(username) {
-    return axios.get(apiUrl + 'getCustomerByUserName/' + username);
+  getCustomerDetailsByUserName(userName) {
+    return axios.get(apiUrl + 'getCustomerByUserName/' + userName);
+  }
+
+  getCustContactDetails(userName) {
+    return axios.get(apiUrl + 'getCustContactDetails/' + userName);
+  }
+
+  // TO:DO- implement the api in springboot
+  addAccount(accDetails) {
+    return axios.get(apiUrl + 'addAccount/', accDetails);
   }
 }
 

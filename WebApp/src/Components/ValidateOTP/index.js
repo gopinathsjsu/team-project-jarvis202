@@ -35,14 +35,17 @@ const ValidateOTP = (props) => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const history = useHistory();
   const location = useLocation();
-
-  const [otpNum, setOtpNum] = React.useState(0);
+  const [otpNum, setOtpNum] = React.useState(location.state.otpCode);
+  const [operationType, setOperationType] = React.useState(location.state.type);
 
   const handleResend = async () => {
-
     console.log('resend the same otp again');
-    setOtpNum(await Math.floor(1000 + Math.random() * 9000));
-    console.log(otpNum)
+    await ServiceAPI.sendOTP(location.state.phoneNumber).then(function (response) {
+      setOtpNum(response.data)
+      console.log(response)
+    }).catch(function (error) {
+      console.log('Unable to send otp', error);
+    })
   }
 
   const handlecloseSnack = () => {
@@ -51,26 +54,54 @@ const ValidateOTP = (props) => {
 
   const handleConfirm = async (e) => {
     e.preventDefault();
-    ServiceAPI.sendOTP()
-    if (otp !== otpNum) {
-      setErrorMessage('Invalid OTP ! Please try again');
-      setHasError(true);
+    console.log('vardetails')
+    console.log(location.state.varDetails)
+    if (operationType === 'addAccount') {
+      const accountDetails = {
+        custAccountID: location.state.customerId,
+        accountType: location.state.accountType,
+        coApplicant: location.state.coApplicant,
+        accountStatus: location.state.accountStatus,
+        relationshipStatus: location.state.relationshipStatus
+      }
+      if (otpNum == otp) {
+        // waiting for api to be implemented 
+        // await ServiceAPI.addAccount(accountDetails).then(function (response){
+        // console.log(response)
+        // }).catch(function (error) {
+        //   console.log('Unable to send otp', error);
+        // });
+      }
+      else {
+        setErrorMessage('Invalid OTP, Please Try again');
+        setHasError(true);
+      }
     }
-    else {
-      console.log('add recepient')
-
-      const recDetails = await location.state.recepientDetails;
-      console.log(recDetails)
-      try {
-        await ServiceAPI.addRecepient(recDetails).then(response => console.log(response));
-        console.log('Added recepient')
-        history.push('/manageRecepients')
-      } catch (error) {
-        console.log(error);
+    else if (operationType === 'addRecepient') {
+      const recepientDetails = {
+        custAccountID: location.state.customerId,
+        firstName: location.state.firstName,
+        lastName: location.state.lastName,
+        zipCode: location.state.zipCode,
+        accountNum: location.state.accountNum,
+        nickName: location.state.nickName,
+        routingNumber: location.state.routingNumber,
+        isSameBank: location.state.isSameBank
+      }
+      if (otpNum == otp) {
+        await ServiceAPI.addRecepient(recepientDetails).then(function (response) {
+          console.log(response)
+          history.push('/manageRecepients')
+        }).catch(function (error) {
+          console.log('Unable to add account', error);
+        });
+      }
+      else {
+        setErrorMessage('Invalid OTP, Please Try again');
+        setHasError(true);
       }
     }
   }
-
 
   const handleCancelOTP = () => {
     console.log('test');

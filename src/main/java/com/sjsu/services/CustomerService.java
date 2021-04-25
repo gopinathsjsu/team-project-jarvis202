@@ -50,4 +50,7 @@ public class CustomerService {
 		return customerRepository.findByUserName(userName);
 	}
 
+	public List<CustomerResponseDTO> getCustContactDetails(String userName) {
+		return customerRepository.getCustomerContactDetails(userName);
+	}
 }

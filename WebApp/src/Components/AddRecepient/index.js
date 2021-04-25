@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -51,13 +51,24 @@ const AddRecepient = () => {
   const [recAcc, setRecAcc] = React.useState(0);
   const [confirmRecAcc, setConfirmRecAcc] = React.useState(0);
   const [nickName, setNickName] = React.useState('');
-  const [custAccountNum, setcustAccountNum] = React.useState(0);
+  const [custDetails, setcustDetails] = React.useState({});
   const [isSameBank, setIsSameBank] = React.useState(true);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [hasError, setHasError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('')
   const history = useHistory();
 
+  useEffect(() => {
+    var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
+
+    ServiceAPI.getCustContactDetails(sessionDetails.uname).then(function (response) {
+      console.log(response.data[0])
+      setcustDetails(response.data[0]);
+    })
+      .catch(function (error) {
+        console.log('Unable to fetch customer contact details', error);
+      });
+  }, []);
   const handleAccountNum = (e) => {
     if (e.target.id === 'accNum') {
       setRecAcc(e.target.value);
@@ -106,34 +117,32 @@ const AddRecepient = () => {
       setHasError(true);
     }
     else {
-      const recepientDetails = {
-        custAccountID: 1,
-        firstName: firstName,
-        lastName: lastName,
-        zipCode: zipCode,
-        accountNum: recAcc,
-        nickName: nickName,
-        routingNumber: routeNum,
-        isSameBank: isSameBank
-        // phoneNum: phoneNum
-      }
-      const path = '/validateOTP/:' + recepientDetails;
-
-      history.push({
-        pathname: path,
-        state: {
-          recepientDetails: recepientDetails
+      ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
+        console.log(response);
+        const varDetails = {
+          custAccountID: custDetails.customerId,
+          firstName: firstName,
+          lastName: lastName,
+          zipCode: zipCode,
+          accountNum: 12356,
+          nickName: nickName,
+          routingNumber: 1245,
+          isSameBank: isSameBank,
+          type: 'addRecepient',
+          phoneNumber: custDetails.phoneNumber,
+          email: custDetails.emailId,
+          otpCode: response.data
         }
+        const path = '/validateOTP/:' + varDetails;
+
+        history.push({
+          pathname: path,
+          state: {
+            varDetails: varDetails
+          }
+        })
       })
     }
-    // if (validateData()) {
-    //   setOpenDialog(true);
-    //   setErrorMessage('')
-    // }
-    // else {
-    //   setOpenDialog(false);
-    //   setErrorMessage('Please fill in the details correctly')
-    // }
   }
   const handlecloseSnack = () => {
     setHasError(false);

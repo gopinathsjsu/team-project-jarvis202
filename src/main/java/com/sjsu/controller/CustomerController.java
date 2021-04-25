@@ -77,4 +77,9 @@ public class CustomerController {
 		return customerService.showCustomerDetailsOnLogin(userName);
 	}
 
+	@GetMapping("/getCustContactDetails/{userName}")
+	public List<CustomerResponseDTO> getCustContactDetailsByUname(@PathVariable String userName) {
+		return customerService.getCustContactDetails(userName);
+	}
+
 }

@@ -50,6 +50,7 @@ const AddAccount = (props) => {
   const relations = ['Father', 'Mother', 'Son', 'Daughter', 'Brother', 'Sister'];
   const [hasError, setHasError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('')
+  const [contactDetails, setContactDetails] = React.useState({})
   const history = useHistory();
 
   // TODO:update with the props later
@@ -63,8 +64,34 @@ const AddAccount = (props) => {
       setErrorMessage('If you have specified Co-Applicant name, Please Fill in the Co-Applicant relation !');
       setHasError(true);
     }
+    else {
+      ServiceAPI.sendOTP(ph).then(function (response) {
+        console.log(response);
+        const varDetails = {
+          customerId: custDetails.customerId,
+          accountType: accountType,
+          coApplicant: coApplicant,
+          accountStatus: 'ACTIVE',
+          relationshipStatus: relation,
+          phoneNumber: ph,
+          emailid: email,
+          otpCode: response.data,
+          type: 'addAccount'
+        }
+        const path = '/validateOTP/:' + varDetails;
 
+        history.push({
+          pathname: path,
+          state: {
+            varDetails: varDetails
+          }
+        })
+      }).catch(function (error) {
+        console.log('Unable to send otp', error);
+      });
+    }
   }
+
   const handleCancel = (event) => {
     history.push('/home');
   }
@@ -181,7 +208,8 @@ const AddAccount = (props) => {
               id='relations'
               relations='true'
               style={{ width: 250 }}
-              renderInput={(params) => <TextField {...params} label='Relationship' onChange={(event) => setRelation(event.target.value)} />}
+              onChange={(e, v) => setRelation(v)}
+              renderInput={(params) => <TextField {...params} label='Relationship' onChange={(event) => console.log(event.target.value)} />}
             />
           </div>
         </Grid>

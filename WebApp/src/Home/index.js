@@ -186,7 +186,7 @@ export default function Dashboard() {
           <Route exact path='/transferActivity' component={() => <TransferActivity />} />
           <Route exact path='/manageRecepients' component={() => <ManageRecepients />} />
           <Route exact path='/addRecepient' component={() => <AddRecepient />} />
-          <Route exact path='/validateOTP/:recepientDetails' component={() => <ValidateOTP />} />
+          <Route exact path='/validateOTP/:varDetails' component={() => <ValidateOTP />} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>
