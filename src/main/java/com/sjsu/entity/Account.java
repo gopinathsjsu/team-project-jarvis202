@@ -7,6 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sjsu.enums.AccountStatus;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "Account")
+
 public class Account {
 	
 	@Id

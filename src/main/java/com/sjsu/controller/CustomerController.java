@@ -1,6 +1,7 @@
 package com.sjsu.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,22 +17,31 @@ import com.sjsu.services.CustomerService;
 
 @RestController
 public class CustomerController {
+
 	@Autowired
 	private CustomerService customerService;
 
+	/*
+	 * Post API - To Add a new Customer
+	 */
 	@PostMapping(path = "add/customer")
 	public Customer addMember(@RequestBody Customer customer) {
 		customer = customerService.addCustomerDetails(customer);
 		return customer;
 	}
 
-	@GetMapping("/getCustomer/{id}")
-	public Customer getCustomerById(@PathVariable int id) {
-		Customer customerRes = customerService.getCustomerById(id);
-		System.out.println("customer details is " + customerRes);
-		return customerRes;
+	/*
+	 * Get Customer Details by its Id
+	 */
+	@GetMapping("/getCustomerDetails/{id}")
+	public Optional<Customer> getCustomerById(@PathVariable int id) {
+		Optional<Customer> customer = customerService.getCustomerDetailsById(id);
+		return customer;
 	}
 
+	/*
+	 * Get list of all Customers
+	 */
 	@GetMapping("/getAllCustomers")
 	public List<Customer> getAllCustomers() {
 		return customerService.getAllCustomers();
@@ -59,4 +69,5 @@ public class CustomerController {
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
 		return customerService.showCustomerDetailsOnLogin(userName);
 	}
+
 }

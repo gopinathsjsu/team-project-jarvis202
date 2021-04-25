@@ -21,4 +21,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	@Query("SELECT new com.sjsu.dto.CustomerResponseDTO(c.userName, a.accNumber, a.accountType,a.balance) FROM Customer c JOIN c.account a where c.userName=?1")
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(String userName);
 
+	@Query("SELECT c.userName,  c.emailId FROM Customer c where c.userName=?1")
+	public List<Customer> getCustomerContactDetails(String userName);
 }

@@ -1,5 +1,6 @@
-	package com.sjsu.entity;
+package com.sjsu.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,14 +14,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 
 @Data
 @NoArgsConstructor
@@ -30,14 +32,16 @@ import lombok.ToString;
 @Table(name = "customer")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class Customer {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "customerId")
+public class Customer implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
 	@Column(name = "customerId")
 	private Integer customerId;
 
-	@Column(name = "userName" , unique = true)
+	@Column(name = "userName", unique = true)
 	private String userName;
 
 	@Column(name = "firstName", nullable = false)
@@ -92,7 +96,5 @@ public class Customer {
 	@OneToMany(targetEntity = Account.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "customerID_FK", referencedColumnName = "customerId")
 	private Set<Account> account;
-
-	
 
 }

@@ -1,6 +1,7 @@
 package com.sjsu.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,9 @@ public class CustomerService {
 		return customer;
 	}
 
-	public Customer getCustomerById(int id) {
+	public Optional<Customer> getCustomerDetailsById(int id) {
 		// TODO Auto-generated method stub
-		return customerRepository.getOne(id);
+		return customerRepository.findById(id);
 	}
 
 	public List<Customer> getAllCustomers() {
@@ -44,4 +45,5 @@ public class CustomerService {
 		// TODO Auto-generated method stub
 		return  customerRepository.showCustomerDetailsOnLogin(userName);
 	}
+
 }
