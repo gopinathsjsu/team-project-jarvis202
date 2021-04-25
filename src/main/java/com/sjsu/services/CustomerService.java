@@ -43,7 +43,11 @@ public class CustomerService {
 
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(String userName) {
 		// TODO Auto-generated method stub
-		return  customerRepository.showCustomerDetailsOnLogin(userName);
+		return customerRepository.showCustomerDetailsOnLogin(userName);
+	}
+
+	public List<Customer> findByCustomerUserName(String userName) {
+		return customerRepository.findByUserName(userName);
 	}
 
 }

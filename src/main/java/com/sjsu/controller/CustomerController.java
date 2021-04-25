@@ -39,6 +39,12 @@ public class CustomerController {
 		return customer;
 	}
 
+	@GetMapping("/getCustomerByUserName/{uname}")
+	public List<Customer> getCustomerByUserName(@PathVariable String uname) {
+		List<Customer> customer = customerService.findByCustomerUserName(uname);
+		return customer;
+	}
+
 	/*
 	 * Get list of all Customers
 	 */
@@ -53,8 +59,7 @@ public class CustomerController {
 	}
 
 	/*
-	 * Input - User name
-	 * Output - All account details of input user name
+	 * Input - User name Output - All account details of input user name
 	 */
 	@GetMapping("/getJoinData/{userName}")
 	public List<CustomerResponseDTO> getJoinData(@PathVariable String userName) {
@@ -62,8 +67,8 @@ public class CustomerController {
 	}
 
 	/*
-	 * Input - Customer user name 
-	 * Output - userName , accNumber, accountType, balance
+	 * Input - Customer user name Output - userName , accNumber, accountType,
+	 * balance
 	 */
 	@GetMapping("/showCustomerDetails/{userName}")
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
