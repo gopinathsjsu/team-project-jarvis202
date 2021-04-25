@@ -12,6 +12,8 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import StarBorder from '@material-ui/icons/StarBorder';
 import Collapse from '@material-ui/core/Collapse';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 
 const useStyles = makeStyles((theme) => ({
   nested: {
@@ -52,11 +54,13 @@ const ListItems = () => {
       <Collapse in={openMA} timeout='auto' unmountOnExit>
         <Link to='addAccount' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
           <ListItem button className={classes.nested}>
+            <ListItemIcon><AddBoxIcon /></ListItemIcon>
             <ListItemText primary='Add Account' />
           </ListItem>
         </Link>
         <Link to='closeAccount' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
           <ListItem button className={classes.nested}>
+            <ListItemIcon><CancelPresentationIcon /></ListItemIcon>
             <ListItemText primary='Close Account' />
           </ListItem>
         </Link>
@@ -69,7 +73,7 @@ const ListItems = () => {
         {/* {openMA ? <ExpandMore /> : <ExpandLess />} */}
       </ListItem>
       <Collapse in={openTF} timeout='auto' unmountOnExit>
-        <Link to='manageRecepients' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+        <Link to='manageRecepients' key='TF1' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
               <StarBorder />
@@ -77,7 +81,7 @@ const ListItems = () => {
             <ListItemText primary='Manage Receipents' />
           </ListItem>
         </Link>
-        <Link to='makeTransfer' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+        <Link to='makeTransfer' kye='TF2' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
               <StarBorder />
@@ -85,7 +89,7 @@ const ListItems = () => {
             <ListItemText primary='Transfer Funds' />
           </ListItem>
         </Link>
-        <Link to='transferActivity' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+        <Link to='transferActivity' key='TF3' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
               <StarBorder />

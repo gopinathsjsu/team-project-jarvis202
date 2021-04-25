@@ -64,7 +64,7 @@ const CloseAccount = () => {
     <Container>
       <Box pt={6}>
         <Grid container spacing={3} pt={6}>
-          <Typography align='left' variant='h8'>
+          <Typography align='left' variant='h6'>
             Name in Account
           </Typography>
           <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -91,7 +91,7 @@ const CloseAccount = () => {
               />
             </MuiPickersUtilsProvider>
           </Grid>
-          <Typography align='left' variant='h8'>
+          <Typography align='left' variant='h6'>
             Sign
           </Typography>
           <Grid item xs={12} align='left'>
