@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
@@ -35,12 +35,20 @@ const ValidateOTP = (props) => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const history = useHistory();
   const location = useLocation();
-  const [otpNum, setOtpNum] = React.useState(location.state.otpCode);
-  const [operationType, setOperationType] = React.useState(location.state.type);
+  const [varDetails, setVarDetails] = React.useState(location.state.varDetails);
+  const [otpNum, setOtpNum] = React.useState(location.state.varDetails.otpCode);
+  const [operationType, setOperationType] = React.useState(location.state.varDetails.type);
+  const [showPhone, setshowPhone] = React.useState(location.state.varDetails.phoneNumber);
+
+  useEffect(() => {
+    var pn = showPhone;
+    pn = pn.substr(0, 2) + '*******' + pn.substr(8);
+    setshowPhone(pn);
+  }, []);
 
   const handleResend = async () => {
     console.log('resend the same otp again');
-    await ServiceAPI.sendOTP(location.state.phoneNumber).then(function (response) {
+    await ServiceAPI.sendOTP(varDetails.phoneNumber).then(function (response) {
       setOtpNum(response.data)
       console.log(response)
     }).catch(function (error) {
@@ -52,17 +60,19 @@ const ValidateOTP = (props) => {
     setHasError(false);
   }
 
-  const handleConfirm = async (e) => {
+  const handleConfirm = (e) => {
     e.preventDefault();
     console.log('vardetails')
     console.log(location.state.varDetails)
+    console.log("Operation type")
+    console.log(operationType)
     if (operationType === 'addAccount') {
       const accountDetails = {
-        custAccountID: location.state.customerId,
-        accountType: location.state.accountType,
-        coApplicant: location.state.coApplicant,
-        accountStatus: location.state.accountStatus,
-        relationshipStatus: location.state.relationshipStatus
+        custAccountID: varDetails.customerId,
+        accountType: varDetails.accountType,
+        coApplicant: varDetails.coApplicant,
+        accountStatus: varDetails.accountStatus,
+        relationshipStatus: varDetails.relationshipStatus
       }
       if (otpNum == otp) {
         // waiting for api to be implemented 
@@ -79,17 +89,17 @@ const ValidateOTP = (props) => {
     }
     else if (operationType === 'addRecepient') {
       const recepientDetails = {
-        custAccountID: location.state.customerId,
-        firstName: location.state.firstName,
-        lastName: location.state.lastName,
-        zipCode: location.state.zipCode,
-        accountNum: location.state.accountNum,
-        nickName: location.state.nickName,
-        routingNumber: location.state.routingNumber,
-        isSameBank: location.state.isSameBank
+        custAccountID: varDetails.custAccountID,
+        firstName: varDetails.firstName,
+        lastName: varDetails.lastName,
+        zipCode: varDetails.zipCode,
+        accountNum: varDetails.accountNum,
+        nickName: varDetails.nickName,
+        routingNumber: varDetails.routingNumber,
+        isSameBank: varDetails.isSameBank
       }
       if (otpNum == otp) {
-        await ServiceAPI.addRecepient(recepientDetails).then(function (response) {
+        ServiceAPI.addRecepient(recepientDetails).then(function (response) {
           console.log(response)
           history.push('/manageRecepients')
         }).catch(function (error) {
@@ -114,7 +124,7 @@ const ValidateOTP = (props) => {
         Confirm OTP
       </Typography>
       <Typography align='left' variant='h6'>
-        A verification code has been sent to your mobile xxxx055 and your email xxxxguntu.@gmail.com. Please confirm it!
+        A verification code has been sent to your mobile {showPhone}. Please confirm it!
       </Typography>
       <Grid container className={classes.marginspacing}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>

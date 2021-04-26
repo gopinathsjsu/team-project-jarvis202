@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import { useHistory } from 'react-router-dom';
+import ServiceAPI from '.././ServiceAPI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,29 +33,29 @@ const ManageRecepients = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = React.useState([])
   const history = useHistory();
 
   const columns = [
-    { id: 'recepientID', label: 'Recepient ID', minWidth: 120 },
-    { id: 'fullName', label: 'Name', minWidth: 120, },
+    // { id: 'recepientID', label: 'Recepient ID', minWidth: 120 },
+    { id: 'firstName', label: 'First Name', minWidth: 120, },
+    { id: 'lastName', label: 'Last Name', minWidth: 120, },
     { id: 'nickName', label: 'Nick Name', minWidth: 120 },
     { id: 'accountNum', label: 'Account Number', minWidth: 120 },
     { id: 'zipCode', label: 'ZipCode', minWidth: 120, },
   ];
 
+  useEffect(() => {
+    var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
 
-  function createData(recepientID, firstName, lastName, nickName, accountNum, zipCode) {
-    const fullName = `${firstName} ${lastName}`
-    return { recepientID, fullName, nickName, accountNum, zipCode };
-  }
-
-  // To-Do : update with the real data from the database
-  const rows = [
-    createData('12325649', 'srujana', 'k', 'sruj', 123564, 95134),
-    createData('12325640', 'umashankar', 'k', 'uma', 1236564, 95134),
-    createData('12325684', 'mamatha', 'g', 'mamat', 1235064, 95134),
-    createData('12325645', 'prajakta', 'j', 'pj', 1263564, 95134),
-  ]
+    ServiceAPI.getRecepientsByCustId(sessionDetails.uname).then(function (response) {
+      console.log(response)
+      setRows(response.data);
+    })
+      .catch(function (error) {
+        console.log('Unable to fetch customer contact details', error);
+      });
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

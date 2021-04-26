@@ -69,19 +69,6 @@ const AddRecepient = () => {
         console.log('Unable to fetch customer contact details', error);
       });
   }, []);
-  const handleAccountNum = (e) => {
-    if (e.target.id === 'accNum') {
-      setRecAcc(e.target.value);
-    }
-    else if (e.target.id === 'confirmAccNum') {
-      setConfirmRecAcc(e.target.value);
-    }
-    else if (recAcc !== '' && confirmRecAcc !== '' && recAcc !== confirmRecAcc) {
-      // throw error
-      setErrorMessage('Account number does not match !');
-      setHasError(true);
-    }
-  }
 
   const handleRadioChange = (e) => {
     if (e.target.value === 'isSameBank') {
@@ -124,9 +111,9 @@ const AddRecepient = () => {
           firstName: firstName,
           lastName: lastName,
           zipCode: zipCode,
-          accountNum: 12356,
+          accountNum: recAcc,
           nickName: nickName,
-          routingNumber: 1245,
+          routingNumber: routeNum,
           isSameBank: isSameBank,
           type: 'addRecepient',
           phoneNumber: custDetails.phoneNumber,
@@ -213,7 +200,7 @@ const AddRecepient = () => {
             required
             label='Account Number'
             type='password'
-            onChange={handleAccountNum}
+            onChange={(event) => setRecAcc(event.target.value)}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -223,7 +210,7 @@ const AddRecepient = () => {
             required
             id='confirmAccNum'
             label='Confirm Account Number'
-            onChange={handleAccountNum}
+            onChange={(event) => setConfirmRecAcc(event.target.value)}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>

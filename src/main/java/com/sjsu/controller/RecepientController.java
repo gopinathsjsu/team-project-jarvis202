@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sjsu.dto.RecepientDTO;
 import com.sjsu.entity.Recepient;
 import com.sjsu.services.RecepientService;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -28,5 +30,11 @@ public class RecepientController {
   public Recepient getRecepientById(@PathVariable int id) {
     Recepient recepient = recepientService.getRecepientById(id);
     return recepient;
+  }
+
+  @GetMapping("getRecepientsByCustId/{userName}")
+  public List<RecepientDTO> getRecepientsByCustId(@PathVariable String userName) {
+    List<RecepientDTO> rec = recepientService.getRecepientsByCustId(userName);
+    return rec;
   }
 }

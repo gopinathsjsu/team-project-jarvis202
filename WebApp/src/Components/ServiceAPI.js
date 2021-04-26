@@ -25,7 +25,11 @@ class ServiceAPI {
 
   // TO:DO- implement the api in springboot
   addAccount(accDetails) {
-    return axios.get(apiUrl + 'addAccount/', accDetails);
+    return axios.post(apiUrl + 'addAccount/', accDetails);
+  }
+
+  getRecepientsByCustId(customerId) {
+    return axios.get(apiUrl + 'getRecepientsByCustId/' + customerId);
   }
 }
 
