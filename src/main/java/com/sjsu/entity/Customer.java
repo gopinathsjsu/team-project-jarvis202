@@ -97,4 +97,7 @@ public class Customer implements Serializable {
 	@JoinColumn(name = "customerID_FK", referencedColumnName = "customerId")
 	private Set<Account> account;
 
+	@OneToMany(targetEntity = Transactions.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "customerID_FK", referencedColumnName = "customerId")
+	private Set<Transactions> transactions;
 }
