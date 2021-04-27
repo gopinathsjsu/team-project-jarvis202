@@ -31,6 +31,10 @@ class ServiceAPI {
   getRecepientsByCustId(customerId) {
     return axios.get(apiUrl + 'getRecepientsByCustId/' + customerId);
   }
+
+  getAllCustomers() {
+    return axios.get(apiUrl + 'getAllCustomers');
+  }
 }
 
 export default new ServiceAPI();

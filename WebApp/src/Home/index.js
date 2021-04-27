@@ -27,7 +27,10 @@ import TransferActivity from '../Components/TransferActivity';
 import ManageRecepients from '../Components/ManageRecepients';
 import AddRecepient from '../Components/AddRecepient';
 import ValidateOTP from '../Components/ValidateOTP';
-
+import AllCustomers from '../Components/AllCustomers';
+import MakeTransaction from '../Components/MakeTransaction';
+import CustomerTransactions from '../Components/CustomerTransactions';
+import CustomerAccounts from '../Components/CustomerAccounts';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -187,6 +190,10 @@ export default function Dashboard() {
           <Route exact path='/manageRecepients' component={() => <ManageRecepients />} />
           <Route exact path='/addRecepient' component={() => <AddRecepient />} />
           <Route exact path='/validateOTP/:varDetails' component={() => <ValidateOTP />} />
+          <Route exact path='/allCustomers' component={() => <AllCustomers />} />
+          <Route exact path='/makeTransaction' component={() => <MakeTransaction />} />
+          <Route exact path='/customerAccounts' component={() => CustomerAccounts} />
+          <Route exact path='/customerTransactions' component={() => CustomerTransactions} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>

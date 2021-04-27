@@ -1,17 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField'
+import { DataGrid, GridToolbar } from '@material-ui/data-grid';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,18 +22,18 @@ const useStyles = makeStyles((theme) => ({
 
 const TransferActivity = () => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 
   const columns = [
-    { id: 'transactionID', label: 'Transaction ID', minWidth: 120 },
-    { id: 'status', label: 'Status', minWidth: 120 },
-    { id: 'transactionDate', label: 'Date', minWidth: 120, format: (value) => value.toLocaleString('en-US'), },
-    { id: 'fromCust', label: 'From', minWidth: 120, format: (value) => value.toLocaleString('en-US'), },
-    { id: 'toCust', label: 'To', minWidth: 120, },
-    { id: 'remarks', label: 'Remarks', minWidth: 120, },
-    { id: 'transactionAmount', label: 'Amount ($)', minWidth: 120, },
+    { field: 'id', headerName: 'Transaction ID', width: 180 },
+    { field: 'status', headerName: 'Status', width: 180 },
+    { field: 'transactionDate', headerName: 'Date', width: 180, format: (value) => value.toLocaleString('en-US'), },
+    { field: 'fromCust', headerName: 'From', width: 180, format: (value) => value.toLocaleString('en-US'), },
+    { field: 'toCust', headerName: 'To', width: 180, },
+    { field: 'remarks', headerName: 'Remarks', width: 180, },
+    { field: 'transactionAmount', headerName: 'Amount ($)', width: 180, },
   ];
 
 
@@ -50,46 +43,46 @@ const TransferActivity = () => {
 
   // To-Do : update with the real data from the database
   const rows = [
-    createData('12323564', 'completed', '12/10/2018', 'mamatha', 'uma', 'starbucks', 20),
-    createData('12323565', 'completed', '12/11/2018', 'uma', 'srujana', 'party', 50),
-    createData('12323566', 'completed', '1/9/2019', 'srujana', 'prajakta', 'funds transfer', 100),
-    createData('12323567', 'pending', '2/10/2019', 'prajakta', 'srujana', 'funds transfer', 100),
+    { id: '12323564', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+    { id: '12323565', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+    { id: '12323566', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+    { id: '12323567', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
   ]
 
-  const displayOptions = [
-    'Last 1 month',
-    'Last 3 months',
-    'Last 6 months',
-    'Last 1 year',
-    'Custom From and To date'
-  ]
+  // const displayOptions = [
+  //   'Last 1 month',
+  //   'Last 3 months',
+  //   'Last 6 months',
+  //   'Last 1 year',
+  //   'Custom From and To date'
+  // ]
 
-  const filterOptions = ['Credit', 'Debit']
+  // const filterOptions = ['Credit', 'Debit']
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
-  const handleDisplayOptChange = (e) => {
-    // to-do
-    console.log(e.target.value)
-    console.log('Display data based on the option selected')
-  }
+  // const handleDisplayOptChange = (e) => {
+  //   // to-do
+  //   console.log(e.target.value)
+  //   console.log('Display data based on the option selected')
+  // }
 
-  const handleFilterChange = (e) => {
-    // to-do
-    console.log(e.target.value)
-    console.log('Display data based on the type of the transaction selected')
-  }
+  // const handleFilterChange = (e) => {
+  //   // to-do
+  //   console.log(e.target.value)
+  //   console.log('Display data based on the type of the transaction selected')
+  // }
 
   return (
     <Container className={classes.marginspacing}>
-      <Grid container spacing={3}>
+      {/* <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Autocomplete
             id='displayOpt'
@@ -106,51 +99,10 @@ const TransferActivity = () => {
             renderInput={(params) => <TextField {...params} label='Filter' variant='outlined' />}
           />
         </Grid>
-      </Grid>
-      <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label='sticky table'>
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }, { fontWeight: 600 }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                return (
-                  <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number' ? column.format(value) : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15, 20]}
-          component='div'
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
+      </Grid> */}
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid id={Math.random()} rows={rows} columns={columns} checkboxSelection={false} components={{ Toolbar: GridToolbar }} />
+      </div>
     </Container>
   )
 }
