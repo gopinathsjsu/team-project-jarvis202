@@ -24,20 +24,12 @@ const columns = [
   },
 ];
 
-const rows = [
-  { id: 1, transactionDate: '03/11/2021', remark: 'Test Payment', type: 'CR', amount:'$3,000' },
-  { id: 2, transactionDate: '03/11/2021', remark: 'Salary', type: 'DR', amount:'$3,000' },
-  { id: 3, transactionDate: '03/11/2021', remark: 'Treat', type: 'Bill', amount:'$3,000' },
-  { id: 4, transactionDate: '03/11/2021', remark: 'Business Funds', type: 'CR', amount:'$3,000' },
-  { id: 5, transactionDate: '03/11/2021', remark: 'Market Funds', type: 'DR', amount:'$3,000' },
-];
-
-const AllTransactions = () => {
+const AllTransactions = (props) => {
   return (
     <div className="AllTransactions">
       <h3>View All Transactions</h3>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} checkboxSelection={false} components={{Toolbar: GridToolbar}}/>
+        <DataGrid rows={props.transactionDetails} columns={columns} checkboxSelection={false} components={{Toolbar: GridToolbar}}/>
       </div>
     </div>
   );
