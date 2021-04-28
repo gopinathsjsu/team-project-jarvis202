@@ -3,10 +3,14 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { List, ListItemText } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
 
-export class FormPersonalDetails extends Component {
+export class Confirm extends Component {
 
     continue = e => {
         e.preventDefault();
@@ -23,15 +27,17 @@ export class FormPersonalDetails extends Component {
 
         return (
             <React.Fragment>
-                <Grid container
+                <AppBar position='static'>
+                    <Typography variant='h6' align='center'>
+                        Review Application Details
+                         </Typography>
+                </AppBar>
+
+                <Container
                     direction='column'
                     justify='center'
-                    alignItems='flex-start'>
-
-                    <AppBar title="Enter User Details" >
-                        Confirm User Details
-                    </AppBar>
-                    <br />
+                    alignItems='flex-start'
+                    align='center'>
 
                     <Grid>
                         <List>
@@ -52,24 +58,35 @@ export class FormPersonalDetails extends Component {
 
                         </List>
                     </Grid>
-                </Grid>
-                <Button
-                    type='submit'
-                    variant='contained'
-                    style={styles.button}
-                    onClick={this.previous} >
-                    Back
+                    <div>
+
+                        <Typography align='center' variant='subtitle1' color='primary' gutterBottom>
+                            By clicking 'Confirm & Continue' you agree that all the information provided is correct
+                            to the best of your knowledge.
+                        </Typography>
+                    </div>
+
+
+                    <div>
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            style={styles.button}
+                            onClick={this.previous} >
+                            Back
                     </Button>
 
 
-                <Button
-                    type='submit'
-                    variant='contained'
-                    style={styles.button}
-                    onClick={this.continue} >
-                    Confirm & Continue
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            style={styles.button}
+                            onClick={this.continue} >
+                            Confirm & Continue
                     </Button>
 
+                    </div>
+                </Container>
 
             </React.Fragment >
 
@@ -83,4 +100,4 @@ const styles = {
     }
 }
 
-export default FormPersonalDetails;
+export default Confirm;

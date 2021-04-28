@@ -1,25 +1,28 @@
 import React, { Component } from 'react'
 import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 
+export default function Success() {
 
-export class FormPersonalDetails extends Component {
-
-
-    render() {
-
-        return (
-            <React.Fragment>
-                <AppBar >
+    return (
+        <React.Fragment>
+            <AppBar position='static'>
+                <Typography variant='h6' align='center'>
                     Success
-                    </AppBar>
+                         </Typography>
+            </AppBar>
+            <Container>
                 <h1>Thank you for your Submission</h1>
                 <p>You will recive an Email with further Confirmation</p>
-            </React.Fragment>
-        )
-    }
+            </Container>
+        </React.Fragment>
+    );
 }
 
 
 
-export default FormPersonalDetails;
+
+
+
