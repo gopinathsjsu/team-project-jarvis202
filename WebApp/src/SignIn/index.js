@@ -15,6 +15,7 @@ import Amplify, { Auth } from 'aws-amplify';
 import { useHistory, useLocation } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import ServiceAPI from '../Components/ServiceAPI';
 
 
 
@@ -33,12 +34,11 @@ const SignIn = (props) => {
     const [errorMessage, setErrorMessage] = React.useState('');
     const location = useLocation();
 
-
-
     const login = async (e) => {
         e.preventDefault();
         try {
             const user = await Auth.signIn(username, password);
+            sessionStorage.setItem('custDetails', JSON.stringify({ uname: username }))
             console.log(user);
             console.log('user signedIn');
             //const path = '/';
@@ -47,7 +47,6 @@ const SignIn = (props) => {
 
         } catch (error) {
             setErrorMessage(error.message);
-
             console.log(errorMessage);
             setOpen(true);
         }

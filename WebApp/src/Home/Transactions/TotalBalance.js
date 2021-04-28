@@ -5,22 +5,23 @@ import Grid from '@material-ui/core/Grid';
 
 import Title from './Title';
 
-export const TotalBalance = () => {
+export const TotalBalance = (props) => {
+  const date = new Date();
   return (
     <React.Fragment>
       <Title>Total Balance (Savings + Deposits)</Title>
       <Typography component="p" variant="h4">
-        $30,024.00
+        ${props.savings + props.checkings}
       </Typography>
       <Typography color="textSecondary">
-        on 11 March, 2021
+        on {date.getDate()} {date.toLocaleString('default', { month: 'long' })}, {date.getFullYear()}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs>
           <Paper>
           <div className="balanceTab">
             <span>Savings</span>
-            <div>$10,024.00</div>
+            <div>${props.savings}</div>
           </div>
           </Paper>
         </Grid>
@@ -28,15 +29,7 @@ export const TotalBalance = () => {
           <Paper>
             <div className="balanceTab">
               <span>Deposits</span>
-              <div>$10,000.00</div>
-            </div>
-          </Paper>
-        </Grid>
-        <Grid item xs>
-          <Paper>
-            <div className="balanceTab">
-              <span>Cheques in Clearing</span>
-              <div>$10,000.00</div>
+              <div>${props.checkings}</div>
             </div>
           </Paper>
         </Grid>

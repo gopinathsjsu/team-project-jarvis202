@@ -1,8 +1,10 @@
 package com.sjsu.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,23 +17,39 @@ import com.sjsu.entity.Customer;
 import com.sjsu.services.CustomerService;
 
 @RestController
+@CrossOrigin("*")
 public class CustomerController {
+
 	@Autowired
 	private CustomerService customerService;
 
+	/*
+	 * Post API - To Add a new Customer
+	 */
 	@PostMapping(path = "add/customer")
 	public Customer addMember(@RequestBody Customer customer) {
 		customer = customerService.addCustomerDetails(customer);
 		return customer;
 	}
 
-	@GetMapping("/getCustomer/{id}")
-	public Customer getCustomerById(@PathVariable int id) {
-		Customer customerRes = customerService.getCustomerById(id);
-		System.out.println("customer details is " + customerRes);
-		return customerRes;
+	/*
+	 * Get Customer Details by its Id
+	 */
+	@GetMapping("/getCustomerDetails/{id}")
+	public Optional<Customer> getCustomerById(@PathVariable int id) {
+		Optional<Customer> customer = customerService.getCustomerDetailsById(id);
+		return customer;
 	}
 
+	@GetMapping("/getCustomerByUserName/{uname}")
+	public List<Customer> getCustomerByUserName(@PathVariable String uname) {
+		List<Customer> customer = customerService.findByCustomerUserName(uname);
+		return customer;
+	}
+
+	/*
+	 * Get list of all Customers
+	 */
 	@GetMapping("/getAllCustomers")
 	public List<Customer> getAllCustomers() {
 		return customerService.getAllCustomers();
@@ -42,9 +60,33 @@ public class CustomerController {
 		return customerService.getJoinData();
 	}
 
+	/*
+	 * Input - User name Output - All account details of input user name
+	 */
 	@GetMapping("/getJoinData/{userName}")
 	public List<CustomerResponseDTO> getJoinData(@PathVariable String userName) {
 		return customerService.getJoinData(userName);
+	}
+
+	/*
+	 * Input - Customer user name Output - userName , accNumber, accountType,
+	 * balance
+	 */
+	@GetMapping("/showCustomerDetails/{userName}")
+	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
+		return customerService.showCustomerDetailsOnLogin(userName);
+	}
+	
+	//Adding an account to existing customer
+	public List<Customer> addAccounts(@RequestBody Customer customer)
+	{
+		return null;
+		
+	}
+
+	@GetMapping("/getCustContactDetails/{userName}")
+	public List<CustomerResponseDTO> getCustContactDetailsByUname(@PathVariable String userName) {
+		return customerService.getCustContactDetails(userName);
 	}
 
 }
