@@ -11,10 +11,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ServiceAPI from '../ServiceAPI'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { useHistory } from 'react-router-dom'
 
 function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} variant='filled' {...props} />;
 }
 const useStyles = makeStyles((theme) => ({
 
@@ -22,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1),
     },
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
   }
 }));
 
@@ -46,11 +54,12 @@ const AddAccount = (props) => {
   const [checked, setChecked] = React.useState(false);
   const [relation, setRelation] = React.useState('');
   const [custDetails, setCustDetails] = React.useState({});
-  const accountTypes = ['Savings', 'Checkings'];
-  const relations = ['Father', 'Mother', 'Son', 'Daughter', 'Brother', 'Sister'];
   const [hasError, setHasError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('')
   const [contactDetails, setContactDetails] = React.useState({})
+  const [openRelation, setOpenRelation] = React.useState(false);
+  const [openAccountType, setOpenAccountType] = React.useState(false);
+  const [accounts, setAccounts] = React.useState([])
   const history = useHistory();
 
   // TODO:update with the props later
@@ -65,13 +74,15 @@ const AddAccount = (props) => {
       setHasError(true);
     }
     else {
+
       ServiceAPI.sendOTP(ph).then(function (response) {
         console.log(response);
         const varDetails = {
-          customerId: custDetails.customerId,
+          // customerId: custDetails.customerId,
           accountType: accountType,
           coApplicant: coApplicant,
           accountStatus: 'ACTIVE',
+          balance: 0,
           relationshipStatus: relation,
           phoneNumber: ph,
           emailid: email,
@@ -101,14 +112,26 @@ const AddAccount = (props) => {
   }
 
   useEffect(() => {
-    var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
+    var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
 
     ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
-      if (response.data[0].account.length === 2) {
-        setCustDetails(response.data[0]);
-        setErrorMessage('You are not eligible to add account in this bank , as you already have 2 accounts of type : Savings and Checkings ')
-        setHasError(true);
+      setCustDetails(response.data[0]);
+      const accDetails = response.data[0].account;
+      if (accDetails.length > 0) {
+        const accn = []
+
+        accDetails.forEach(function (acc) {
+          if (acc.accountStatus !== 'CLOSED') {
+            accn.push(acc.accNumber)
+          }
+        });
+        setAccounts(accn);
+        if (accounts.length === 2) {
+          setErrorMessage('You are not eligible to add account in this bank , as you already have 2 accounts of type : Savings and Checkings ')
+          setHasError(true);
+        }
       }
+
       else {
         console.log(response.data[0]);
         setCustDetails(response.data[0]);
@@ -132,6 +155,20 @@ const AddAccount = (props) => {
         setCustDetails({});
       });
   }, []);
+
+  const handleRelation = (e) => {
+    setCoApplicant(e.target.value)
+  }
+  const accountTypeChange = (e) => {
+    console.log('account type', e.target.value)
+    setAccountType(e.target.value)
+  }
+
+  // disableRelation = () => {
+  //   if (coApplicant === '') {
+
+  //   }
+  // }
 
   return (
     <Container >
@@ -185,13 +222,19 @@ const AddAccount = (props) => {
         </Grid>
         <Grid item xs={12} align='left'>
           <div className={classes.marginspacing}>
-            <Autocomplete
-              options={accountTypes}
-              id='accType'
-              relations='true'
-              style={{ width: 250 }}
-              renderInput={(params) => <TextField {...params} label='Account Type' onChange={(event) => setAccountType(event.target.value)} />}
-            />
+            <FormControl className={classes.formControl}>
+              <InputLabel>Account Type</InputLabel>
+              <Select
+                id='accounttype'
+                value={accountType}
+                // onOpen={setOpenRelation(true)}
+                // onClose={setOpenRelation(false)}
+                onChange={accountTypeChange}
+              >
+                <MenuItem value='Checkings'>Checkings</MenuItem>
+                <MenuItem value='Savings'>Savings</MenuItem>
+              </Select>
+            </FormControl>
           </div>
         </Grid>
         <Grid item xs={12} align='left'>
@@ -202,15 +245,26 @@ const AddAccount = (props) => {
         <Grid item xs={12} align='left'>
           <div className={classes.marginspacing}>
             <TextField id='coApplicant' label='Co-Applicant Name' onChange={(event) => setCoApplicant(event.target.value)} />
-            <Autocomplete
-              disabled={coApplicant === ''}
-              options={relations}
-              id='relations'
-              relations='true'
-              style={{ width: 250 }}
-              onChange={(e, v) => setRelation(v)}
-              renderInput={(params) => <TextField {...params} label='Relationship' onChange={(event) => console.log(event.target.value)} />}
-            />
+            <FormControl className={classes.formControl}>
+              <InputLabel>Relation</InputLabel>
+              <Select
+                disabled={coApplicant === ''}
+                id='rel'
+                value={relation}
+                // onOpen={setOpenRelation(true)}
+                // onClose={setOpenRelation(false)}
+                onChange={handleRelation}
+              >
+                <MenuItem value='Mother'>Mother</MenuItem>
+                <MenuItem value='Father'>Father</MenuItem>
+                <MenuItem value='Sister'>Sister</MenuItem>
+                <MenuItem value='Brother'>Brother</MenuItem>
+                <MenuItem value='Wife'>Wife</MenuItem>
+                <MenuItem value='Husband'>Husband</MenuItem>
+                <MenuItem value='Son'>Son</MenuItem>
+                <MenuItem value='Daughter'>Daughter</MenuItem>
+              </Select>
+            </FormControl>
           </div>
         </Grid>
         <Grid item xs={12} align='left'>

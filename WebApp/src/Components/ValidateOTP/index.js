@@ -39,8 +39,26 @@ const ValidateOTP = (props) => {
   const [otpNum, setOtpNum] = React.useState(location.state.varDetails.otpCode);
   const [operationType, setOperationType] = React.useState(location.state.varDetails.type);
   const [showPhone, setshowPhone] = React.useState(location.state.varDetails.phoneNumber);
+  const [custDetails, setcustDetails] = React.useState({})
+  const [success, setSuccess] = React.useState(false);
+  const [successMessage, setsuccessMessage] = React.useState('')
+  const [accounts, setAccounts] = React.useState([])
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant='filled' {...props} />;
+  }
 
   useEffect(() => {
+    var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
+
+    ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
+      setcustDetails(response.data[0])
+    })
+      .catch(function (error) {
+        console.log('Unable to fetch customer details', error);
+        setcustDetails({});
+      });
+
     var pn = showPhone;
     pn = pn.substr(0, 2) + '*******' + pn.substr(8);
     setshowPhone(pn);
@@ -68,19 +86,24 @@ const ValidateOTP = (props) => {
     console.log(operationType)
     if (operationType === 'addAccount') {
       const accountDetails = {
+        accNumber: 1245, //This field is added to take accNumber field into consideration , and it is auto-generated in db
         custAccountID: varDetails.customerId,
         accountType: varDetails.accountType,
         coApplicant: varDetails.coApplicant,
         accountStatus: varDetails.accountStatus,
-        relationshipStatus: varDetails.relationshipStatus
+        relationshipStatus: varDetails.relationshipStatus,
+        balance: varDetails.balance
       }
-      if (otpNum == otp) {
-        // waiting for api to be implemented 
-        // await ServiceAPI.addAccount(accountDetails).then(function (response){
-        // console.log(response)
-        // }).catch(function (error) {
-        //   console.log('Unable to send otp', error);
-        // });
+
+      if (otpNum == otp && custDetails != null) {
+        setcustDetails(custDetails.account.push(accountDetails));
+        ServiceAPI.addCustomer(custDetails).then(function (response) {
+          console.log(response)
+          setsuccessMessage('Account created successfully !')
+          setSuccess(true)
+        }).catch(function (error) {
+          console.log('Unable to add account', error);
+        });
       }
       else {
         setErrorMessage('Invalid OTP, Please Try again');
@@ -101,7 +124,23 @@ const ValidateOTP = (props) => {
       if (otpNum == otp) {
         ServiceAPI.addRecepient(recepientDetails).then(function (response) {
           console.log(response)
-          history.push('/manageRecepients')
+          setsuccessMessage('Recepient added successfully, U can initiate funds transfer')
+          setSuccess(true);
+        }).catch(function (error) {
+          console.log('Unable to add account', error);
+        });
+      }
+      else {
+        setErrorMessage('Invalid OTP, Please Try again');
+        setHasError(true);
+      }
+    }
+    else if (operationType === 'closeAccount') {
+      if (otpNum == otp) {
+        ServiceAPI.addCustomer(varDetails).then(function (response) {
+          console.log(response)
+          setsuccessMessage('Account closed successfully');
+          setSuccess(true);
         }).catch(function (error) {
           console.log('Unable to add account', error);
         });
@@ -118,8 +157,31 @@ const ValidateOTP = (props) => {
     history.push('/manageRecepients')
   }
 
+  const handleSuccessCloseSnack = () => {
+    setSuccess(false);
+    if (operationType === 'addRecepient') {
+      history.push('/manageRecepients')
+    }
+    else if (operationType === 'addAccount' || operationType === 'closeAccount') {
+      history.push('/home')
+    }
+    else if (operationType = 'transferActivity') {
+      history.push('/transferActivity')
+    }
+  }
+
   return (
     <Container>
+      <Snackbar open={hasError} autoHideDuration={6000} onClose={handlecloseSnack}>
+        <Alert onClose={handlecloseSnack} severity='error'>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={success} autoHideDuration={6000} onClose={handleSuccessCloseSnack}>
+        <Alert onClose={handleSuccessCloseSnack} severity='success'>
+          {successMessage}
+        </Alert>
+      </Snackbar>
       <Typography align='left' variant='h4'>
         Confirm OTP
       </Typography>

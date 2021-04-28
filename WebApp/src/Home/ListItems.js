@@ -69,7 +69,7 @@ const ListItems = () => {
     else {
       return (
         <div>
-          <Link to='/' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+          <Link to='/home' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
             <ListItem button>
               <ListItemIcon>
                 <ReceiptIcon />
