@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:8080/';
+const apiUrl = 'https://dev.d18g6sc0f8stno.amplifyapp.com/';
 
 class ServiceAPI {
   addCustomer(customer) {

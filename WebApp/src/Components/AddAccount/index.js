@@ -74,7 +74,6 @@ const AddAccount = (props) => {
       setHasError(true);
     }
     else {
-
       ServiceAPI.sendOTP(ph).then(function (response) {
         console.log(response);
         const varDetails = {
