@@ -38,6 +38,7 @@ export const Transactions = () => {
     var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
     // let sessionDetails = {};
     // sessionDetails.uname = "TestUser4";
+    if (sessionDetails && sessionDetails.uname) {
     ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
       if (response.data[0].transactions.length > 0) {
         const rowData = response.data[0].transactions;
@@ -75,6 +76,7 @@ export const Transactions = () => {
       .catch(function (error) {
         console.log('Unable to fetch transaction details', error);
       });
+  }
   }, []);
 
   return (
