@@ -124,7 +124,7 @@ const ValidateOTP = (props) => {
       if (otpNum == otp) {
         ServiceAPI.addRecepient(recepientDetails).then(function (response) {
           console.log(response)
-          setsuccessMessage('Recepient added successfully, U can initiate funds transfer')
+          setsuccessMessage('Recepient added successfully, U can initiate funds transfer !')
           setSuccess(true);
         }).catch(function (error) {
           console.log('Unable to add account', error);
@@ -137,12 +137,27 @@ const ValidateOTP = (props) => {
     }
     else if (operationType === 'closeAccount') {
       if (otpNum == otp) {
-        ServiceAPI.addCustomer(varDetails).then(function (response) {
+        ServiceAPI.addCustomer(varDetails.custDetails).then(function (response) {
           console.log(response)
           setsuccessMessage('Account closed successfully');
           setSuccess(true);
         }).catch(function (error) {
           console.log('Unable to add account', error);
+        });
+      }
+      else {
+        setErrorMessage('Invalid OTP, Please Try again');
+        setHasError(true);
+      }
+    }
+    else if (operationType === 'makeTransfer') {
+      if (otpNum == otp) {
+        ServiceAPI.addCustomer(varDetails.custDetails).then(function (response) {
+          console.log(response)
+          setsuccessMessage('Funds Transferred successfully');
+          setSuccess(true);
+        }).catch(function (error) {
+          console.log('Unable to transfer funds', error);
         });
       }
       else {
@@ -165,7 +180,7 @@ const ValidateOTP = (props) => {
     else if (operationType === 'addAccount' || operationType === 'closeAccount') {
       history.push('/home')
     }
-    else if (operationType = 'transferActivity') {
+    else if (operationType === 'makeTransfer') {
       history.push('/transferActivity')
     }
   }

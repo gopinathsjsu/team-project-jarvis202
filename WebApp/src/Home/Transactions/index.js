@@ -35,10 +35,10 @@ export const Transactions = () => {
   const [checkings, setCheckings] = React.useState(0);
 
   useEffect(() => {
-    // var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
+    var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
     // let sessionDetails = {};
     // sessionDetails.uname = "TestUser4";
-    ServiceAPI.getCustomerDetailsByUserName("TestUser4").then(function (response) {
+    ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
       if (response.data[0].transactions.length > 0) {
         const rowData = response.data[0].transactions;
         const allTransactions = [];
@@ -67,9 +67,9 @@ export const Transactions = () => {
       const checkingAcc = response.data[0].account.find(acc => {
         return acc.accountType === 'Checkings'
       });
-      
+
       if (checkingAcc) {
-        setCheckings(checkingAcc.balance) 
+        setCheckings(checkingAcc.balance)
       }
     })
       .catch(function (error) {
@@ -83,19 +83,19 @@ export const Transactions = () => {
         {/* Total Balance */}
         <Grid item xs={12} md={12} lg={12}>
           <Paper className={fixedHeightPaper}>
-            <TotalBalance savings={savings} checkings={checkings}/>
+            <TotalBalance savings={savings} checkings={checkings} />
           </Paper>
         </Grid>
         {/* Recent Transactions */}
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <RecentTransactions recentTransactionDetails={recentTransactionDetails}/>
+            <RecentTransactions recentTransactionDetails={recentTransactionDetails} />
           </Paper>
         </Grid>
         {/* All Transactions */}
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <AllTransactions transactionDetails={transactionDetails}/>
+            <AllTransactions transactionDetails={transactionDetails} />
           </Paper>
         </Grid>
       </Grid>

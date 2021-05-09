@@ -64,13 +64,14 @@ const CloseAccount = () => {
           const accn = []
 
           accDetails.forEach(function (acc) {
+            console.log(acc.accountStatus)
             if (acc.accountStatus !== 'CLOSED') {
               accn.push(acc.accNumber)
             }
           });
           setAccounts(accn);
-          if (accounts.length === 0) {
-            setErrorMsg('You do not have any active accounts to close !')
+          if (accn.length === 0) {
+            setErrorMsg('You do not have any ACTIVE accounts to close !')
             setHasError(true);
           }
         }
@@ -96,26 +97,39 @@ const CloseAccount = () => {
     const idx = accounts.indexOf(parseInt(accNum))
     if (idx === -1) {
       console.log(accNum)
-      console.log('Please provide valid account')
+      setErrorMsg('Invalid Account Number, Please provide your valid account Number');
+      setHasError(true);
     }
     else {
-      // custDetails['account'][idx]['accountStatus'] = 'CLOSED';
-      custDetails.account[idx].accountStatus = 'CLOSED'
-      ServiceAPI.sendOTP(ph).then(function (response) {
-        console.log(response);
-        const varDetails = custDetails;
-        varDetails['type'] = 'closeAccount';
-        console.log(varDetails)
-        const path = '/validateOTP/:' + varDetails;
-        history.push({
-          pathname: path,
-          state: {
-            varDetails: varDetails
+      const balance = custDetails.account[idx].balance;
+      if (balance > 0) {
+        setErrorMsg('Please clear all the balances to close the account !');
+        setHasError(true);
+      }
+      else {
+        // custDetails['account'][idx]['accountStatus'] = 'CLOSED';
+        custDetails.account[idx].accountStatus = 'CLOSED'
+        ServiceAPI.sendOTP(ph).then(function (response) {
+          console.log(response);
+          const varDetails = {
+            customerId: custDetails.customerId,
+            custDetails: custDetails,
+            otpCode: response.data,
+            phoneNumber: custDetails.phoneNumber,
+            type: 'closeAccount'
           }
-        })
-      }).catch(function (error) {
-        console.log('Unable to send otp', error);
-      });
+
+          const path = '/validateOTP/:' + varDetails;
+          history.push({
+            pathname: path,
+            state: {
+              varDetails: varDetails
+            }
+          })
+        }).catch(function (error) {
+          console.log('Unable to send otp', error);
+        });
+      }
     }
 
     console.log(custDetails)
@@ -139,6 +153,9 @@ const CloseAccount = () => {
   }
   const handlecloseSnack = () => {
     setHasError(false);
+    if (errorMsg === 'You do not have any ACTIVE accounts to close !') {
+      history.push('/home');
+    }
   }
 
 
