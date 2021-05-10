@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -13,7 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Paper from '@material-ui/core/Paper';
 import { useStyles } from './style';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 
 Amplify.configure(awsconfig)
@@ -192,7 +191,7 @@ const SignUp = () => {
                         </Button>
                         <Grid container justify='flex-end'>
                             <Grid item>
-                                <Link href='/' variant='body2'>
+                                <Link to='/' variant='body2'>
                                     {"Already have an account? Sign in!"}
                                 </Link>
                             </Grid>
