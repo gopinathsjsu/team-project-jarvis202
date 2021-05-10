@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'https://dev.d18g6sc0f8stno.amplifyapp.com/';
+const apiUrl = 'http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/';
 
 class ServiceAPI {
   addCustomer(customer) {
