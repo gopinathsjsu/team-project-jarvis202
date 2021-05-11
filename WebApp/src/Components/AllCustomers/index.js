@@ -31,7 +31,7 @@ const AllCustomers = () => {
     { field: 'firstName', headerName: 'First Name', width: 180, },
     { field: 'middleName', headerName: 'Middle Name', width: 180 },
     { field: 'lastName', headerName: 'Last Name', width: 180, },
-    { field: 'userName', headerName: 'SSN', width: 180, },
+    { field: 'userName', headerName: 'User Name', width: 180, },
     { field: 'dateOfBirth', headerName: 'Date Of Birth', width: 180, },
     { field: 'phoneNumber', headerName: 'Phone Number', width: 180, },
     { field: 'emailId', headerName: 'EmailID', width: 180, },

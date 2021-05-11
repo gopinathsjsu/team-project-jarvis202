@@ -35,6 +35,14 @@ class ServiceAPI {
   getAllCustomers() {
     return axios.get(apiUrl + 'getAllCustomers');
   }
+
+  sendEmail(mailDetails) {
+    return axios.post(apiUrl + 'api/v1/email', mailDetails);
+  }
+
+  subscribeCustomerByPhone(phoneNumber) {
+    return axios.get(apiUrl + 'subscribeByPhone/' + phoneNumber);
+  }
 }
 
 export default new ServiceAPI();

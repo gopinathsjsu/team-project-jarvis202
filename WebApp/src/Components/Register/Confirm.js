@@ -7,14 +7,63 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import ServiceAPI from '../ServiceAPI';
 
 
 export class Confirm extends Component {
 
     continue = e => {
         e.preventDefault();
-        this.props.nextStep();
+
+        console.log(this.props)
+
+        const customerDetails = {};
+        customerDetails.userName = '';
+        customerDetails.firstName = '';
+        customerDetails.lastName = '';
+        customerDetails.middleName = '';
+        customerDetails.dateOfBirth = ''; //pass the date in the format YYYY-MM-DD
+        customerDetails.fullAddress = '';
+        customerDetails.city = '';
+        customerDetails.state = '';
+        customerDetails.country = '';
+        customerDetails.zipcode = '';
+        customerDetails.phoneNumber = '';
+        customerDetails.emailId = '';
+        customerDetails.occupation = '';
+        customerDetails.sourceOfIncome = '';
+        customerDetails.citizenshipStatus = '';
+        customerDetails.countryOfResidence = '';
+        customerDetails.account = [];
+
+        const accountDetails = {};
+        accountDetails.accNumber = 1;
+        accountDetails.coApplicant = '';
+        accountDetails.accountType = '';
+        accountDetails.routingNumber = '';
+        accountDetails.accountStatus = 'ACTIVE';
+        accountDetails.balance = 0;
+
+        customerDetails.account.push(accountDetails);
+
+        ServiceAPI.addCustomer(customerDetails).then(function (response) {
+            console.log('Customer details added successfully')
+            ServiceAPI.subscribeCustomerByPhone(customerDetails.phoneNumber).then(function (response) {
+                console.log('Customer successfully subscribed');
+            }).then(function (response) {
+                //to do 
+                console.log('to - do')
+            }).catch(function (error) {
+                console.log(error)
+                console.log('Unable to subscribe customer phone number')
+            });
+        }).then(function (response) {
+            this.props.nextStep();
+        }).catch(function (error) {
+            console.log(error)
+            console.log('Unable to add customer details')
+        });
+
     };
 
     previous = e => {
@@ -30,7 +79,7 @@ export class Confirm extends Component {
                 <AppBar position='static'>
                     <Typography variant='h6' align='center'>
                         Review Application Details
-                         </Typography>
+                    </Typography>
                 </AppBar>
 
                 <Container
@@ -74,7 +123,7 @@ export class Confirm extends Component {
                             style={styles.button}
                             onClick={this.previous} >
                             Back
-                    </Button>
+                        </Button>
 
 
                         <Button
@@ -83,7 +132,7 @@ export class Confirm extends Component {
                             style={styles.button}
                             onClick={this.continue} >
                             Confirm & Continue
-                    </Button>
+                        </Button>
 
                     </div>
                 </Container>
