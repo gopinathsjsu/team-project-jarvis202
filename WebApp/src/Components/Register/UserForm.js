@@ -20,7 +20,7 @@ const initialState = {
     zipcode: '',
     ssn: '',
     sourceOfIncome: '',
-    dob: '',
+    dateOfBirth: '',
     citizenshipStatus: '',
     countryOfResidence: '',
     country: '',
@@ -78,14 +78,16 @@ export class UserForm extends Component {
         }
     };
 
+    handleCancel = event => {
 
+    }
 
     render() {
 
         const { step } = this.state;
         const { firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn,
             sourceOfIncome,
-            dob,
+            dateOfBirth,
             citizenshipStatus,
             countryOfResidence,
             country,
@@ -94,7 +96,7 @@ export class UserForm extends Component {
         } = this.state
         const values = {
             firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn, sourceOfIncome,
-            dob,
+            dateOfBirth,
             citizenshipStatus,
             countryOfResidence,
             country,

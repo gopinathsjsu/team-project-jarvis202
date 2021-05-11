@@ -30,7 +30,7 @@ const initialState = {
     zipcode: '',
     ssn: '',
     sourceOfIncome: '',
-    dob: '',
+    dateOfBirth: '',
     citizenshipStatus: '',
     resident: '',
     country: '',
@@ -285,6 +285,19 @@ export class FormUserDetails extends Component {
                                 defaultValue={values.zipcode}
 
                             />
+
+                            <TextField
+                                variant='outlined'
+                                margin='normal'
+                                type='date'
+                                format='yyyy/mm/dd'
+                                // label="Date Of Birth*"
+                                onChange={handleChange('dateOfBirth')}
+                                defaultValue={values.dateOfBirth}
+                                helperText='Date Of Birth'
+
+                            />
+
                         </div>
                         <div>
                             <TextField

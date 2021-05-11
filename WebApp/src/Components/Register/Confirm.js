@@ -108,6 +108,8 @@ export class Confirm extends Component {
 
 
                             <ListItemText primary="Zipcode" secondary={values.zipcode} />
+                            <ListItemText primary="Date Of Birth" secondary={values.dateOfBirth} />
+
 
                             <ListItemText primary="Country Of Residence" secondary={values.countryOfResidence} />
 
