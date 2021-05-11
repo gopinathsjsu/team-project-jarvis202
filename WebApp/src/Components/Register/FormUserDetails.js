@@ -14,7 +14,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Container from '@material-ui/core/Container';
 import { withStyles } from "@material-ui/core/styles";
 
-
 const initialState = {
     step: 1,
     firstName: '',
@@ -39,6 +38,7 @@ const initialState = {
     nameError: "",
     emailError: "",
     phoneError: "",
+    accountTypeError: "",
     occError: "",
     cityError: "",
     stateError: "",
@@ -84,6 +84,7 @@ export class FormUserDetails extends Component {
         let nameError = "";
         let emailError = "";
         let phoneError = "";
+        let accountTypeError = "";
         // let occError = "";
         // let cityError = "";
         // let addError = "";
@@ -136,9 +137,14 @@ export class FormUserDetails extends Component {
         //     this.setState({ emailError, nameError, phoneError, occError, cityError, stateError, zipcodeError, addError });
         //     return false;
         // }
+        if (!this.props.values.accountType) {
+            this.props.values.accountTypeError = "AccountType not selected";
+            accountTypeError = this.props.values.accountTypeError;
+        }
 
-        if (emailError || nameError || phoneError) {
-            this.setState({ emailError, nameError, phoneError });
+
+        if (emailError || nameError || phoneError || accountTypeError) {
+            this.setState({ emailError, nameError, phoneError, accountTypeError });
             return false;
         }
         return true;
@@ -171,7 +177,7 @@ export class FormUserDetails extends Component {
                         <TextField
                             variant='outlined'
                             margin='normal'
-                            label="MiddleName*"
+                            label="MiddleName"
                             onChange={handleChange('middleName')}
                             defaultValue={values.middleName}
                         // error={values.nameError !== ""}
@@ -221,7 +227,7 @@ export class FormUserDetails extends Component {
                             variant='outlined'
                             margin='normal'
                             type='number'
-                            label="SSN*"
+                            label="SSN"
                             // inputProps={{ max: 8 }}
                             onChange={handleChange('ssn')}
                             defaultValue={values.ssn.number}
@@ -237,7 +243,7 @@ export class FormUserDetails extends Component {
                         <TextField
                             variant='outlined'
                             margin='normal'
-                            label='Address*'
+                            label='Address'
                             onChange={handleChange('fullAddress')}
                             defaultValue={values.fullAddress}
                         // error={values.addError !== ""}
@@ -248,7 +254,7 @@ export class FormUserDetails extends Component {
                         <TextField
                             variant='outlined'
                             margin='normal'
-                            label='City*'
+                            label='City'
                             onChange={handleChange('city')}
                             defaultValue={values.city}
                         // error={values.cityError !== ""}
@@ -261,7 +267,7 @@ export class FormUserDetails extends Component {
                             variant='outlined'
                             margin='normal'
                             padding='normal'
-                            label='State*'
+                            label='State'
                             onChange={handleChange('state')}
                             defaultValue={values.state}
 
@@ -271,7 +277,7 @@ export class FormUserDetails extends Component {
                                 variant='outlined'
                                 margin='normal'
                                 padding='normal'
-                                label='Country*'
+                                label='Country'
                                 onChange={handleChange('country')}
                                 defaultValue={values.country}
 
@@ -280,7 +286,7 @@ export class FormUserDetails extends Component {
                                 variant='outlined'
                                 margin='normal'
                                 type='number'
-                                label="Zipcode*"
+                                label="Zipcode"
                                 onChange={handleChange('zipcode')}
                                 defaultValue={values.zipcode}
 
@@ -303,8 +309,7 @@ export class FormUserDetails extends Component {
                             <TextField
                                 variant='outlined'
                                 margin='normal'
-                                padding='normal'
-                                label='Country Of Residence*'
+                                label='Country Of Residence'
                                 onChange={handleChange('countryOfResidence')}
                                 defaultValue={values.countryOfResidence}
 
@@ -313,7 +318,7 @@ export class FormUserDetails extends Component {
                             <TextField
                                 variant='outlined'
                                 margin='normal'
-                                label="Citizen Status*"
+                                label="Citizenship Status"
                                 onChange={handleChange('citizenshipStatus')}
                                 defaultValue={values.citizenshipStatus}
 
@@ -324,7 +329,7 @@ export class FormUserDetails extends Component {
                     <TextField
                         variant='outlined'
                         margin='normal'
-                        label='Occupation*'
+                        label='Occupation'
                         onChange={handleChange('occupation')}
                         defaultValue={values.occupation}
                     // error={values.occError !== ""}
@@ -344,18 +349,21 @@ export class FormUserDetails extends Component {
 
 
                     <div>
-                        <FormControl variant='outlined' margin='normal' >
-                            <InputLabel >Account Type</InputLabel>
+                        <FormControl variant='outlined' margin='normal'>
+                            <InputLabel >Account Type **</InputLabel>
                             <Select
                                 onChange={handleChange('accountType')}
                                 defaultValue={values.accountType}
                                 style={{ width: 220 }}
+                                error={values.accountTypeError !== ""}
+                                helperText={values.accountTypeError !== "" ? values.accountTypeError : ""}
 
                             >
                                 <MenuItem value='Checking Account'>Checking Account</MenuItem>
                                 <MenuItem value='Savings Account'>Savings Account</MenuItem>
 
                             </Select>
+
                         </FormControl>
 
                     </div>

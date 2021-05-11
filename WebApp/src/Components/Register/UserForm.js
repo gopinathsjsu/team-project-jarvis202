@@ -28,6 +28,7 @@ const initialState = {
     nameError: "",
     emailError: "",
     phoneError: "",
+    accountTypeError: "",
     occError: "",
     cityError: "",
     stateError: "",
@@ -92,7 +93,8 @@ export class UserForm extends Component {
             countryOfResidence,
             country,
             state,
-            zipcode
+            zipcode,
+            accountTypeError
         } = this.state
         const values = {
             firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn, sourceOfIncome,
@@ -101,7 +103,8 @@ export class UserForm extends Component {
             countryOfResidence,
             country,
             state,
-            zipcode
+            zipcode,
+            accountTypeError
         }
 
         switch (step) {

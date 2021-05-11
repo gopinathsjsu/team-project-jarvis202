@@ -121,7 +121,7 @@ export class Confirm extends Component {
                             <ListItemText primary="Source Of Income" secondary={values.sourceOfIncome} />
 
 
-                            <ListItemText primary="Account Type" secondary={values.gender} />
+                            <ListItemText primary="Account Type" secondary={values.accountType} />
                             <ListItemText primary="Gender" secondary={values.gender} />
 
                         </List>
