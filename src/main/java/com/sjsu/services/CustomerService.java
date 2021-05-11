@@ -59,4 +59,8 @@ public class CustomerService {
 		List<Customer> custDetails = customerRepository.findByUserName(custDto.get(0).getUserName());
 		return custDetails;
 	}
+
+	public Customer findByUserNameIs(String userName) {
+		return customerRepository.findByUserName(userName).get(0);
+	}
 }

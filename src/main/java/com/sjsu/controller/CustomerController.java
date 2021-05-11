@@ -93,4 +93,11 @@ public class CustomerController {
 		return customerService.getCustContactDetails(userName);
 	}
 
+	// TODO
+	@GetMapping("/getDetailsByUserName/{uname}")
+	public Customer findByUserNameIs(@PathVariable String uname) {
+		Customer customer = customerService.findByUserNameIs(uname);
+		return customer;
+	}
+
 }

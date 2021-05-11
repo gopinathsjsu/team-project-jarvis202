@@ -166,20 +166,20 @@ const MakeTransfer = () => {
       transactionDetails.description = remarks;
       transactionDetails.amount = amount;
       transactionDetails.transactionType = 'DEBIT';
-      transactionDetails.accNumberFk = custDetails.account[idx].accNumber;
+      transactionDetails.fromAccount = fa;
       transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
       transactionDetails.toAccount = ta;
       // transactionDetails.fromAccount = fromAcc;
       custDetails.transactions.push(transactionDetails);
 
       const toTransactionDetails = {};
-      transactionDetails.transactionId = 1;
-      transactionDetails.description = remarks;
-      transactionDetails.amount = amount;
-      transactionDetails.transactionType = 'CREDIT';
-      transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-      // transactionDetails.fromAccount = fromAcc;
-      // transactionDetails.toAccount = toAcc;
+      toTransactionDetails.transactionId = 1;
+      toTransactionDetails.description = remarks;
+      toTransactionDetails.amount = amount;
+      toTransactionDetails.transactionType = 'CREDIT';
+      toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+      toTransactionDetails.fromAccount = fa;
+      toTransactionDetails.toAccount = ta;
       ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
         console.log(response);
         const varDetails = {};

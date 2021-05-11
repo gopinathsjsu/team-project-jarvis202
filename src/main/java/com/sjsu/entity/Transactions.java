@@ -46,14 +46,17 @@ public class Transactions implements Serializable {
 	@Column(name = "amount")
 	private Double amount;
 
-  @Column(name = "toAccount")
+	@Column(name = "toAccount")
 	private Integer toAccount;
 
-  @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "transactionType")
 	private TransactionType transactionType;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "transactionDate")
 	private Date transactionDate;
+
+	@Column(name = "acc_number_fk")
+	private Integer fromAccount;
 }
