@@ -33,25 +33,28 @@ const AllTransactions = (props) => {
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
-    ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
-      const customerAccDetails = response.data[0].account;
-      const accn = []
-      if (customerAccDetails.length > 0) {
-        customerAccDetails.forEach(function (acc) {
-          console.log(acc.accountStatus)
-          if (acc.accountStatus !== 'CLOSED') {
-            accn.push(acc.accNumber.toString())
-          }
-        });
-        setFromAccounts(accn);
-      }
-      if (accn.length === 0) {
-        console.log('You do not have active accounts!')
-      }
-    })
+    if (sessionDetails && sessionDetails.uname) {
+      ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
+        const customerAccDetails = response.data[0].account;
+        const accn = []
+        if (customerAccDetails.length > 0) {
+          customerAccDetails.forEach(function (acc) {
+            console.log(acc.accountStatus)
+            if (acc.accountStatus !== 'CLOSED') {
+              accn.push(acc.accNumber.toString())
+            }
+          });
+          setFromAccounts(accn);
+        }
+        if (accn.length === 0) {
+          console.log('You do not have active accounts!')
+        }
+      })
       .catch(function (error) {
         console.log('Unable to fetch customer details', error);
       });
+    }
+    
   }, []);
 
   return (
