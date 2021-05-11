@@ -63,7 +63,7 @@ export class Confirm extends Component {
             console.log(error)
             console.log('Unable to add customer details')
         });
-
+        this.props.nextStep();
     };
 
     previous = e => {
@@ -85,24 +85,41 @@ export class Confirm extends Component {
                 <Container
                     direction='column'
                     justify='center'
-                    alignItems='flex-start'
+                    alignitems='flex-start'
                     align='center'>
 
                     <Grid>
                         <List>
 
                             <ListItemText primary="FirstName" secondary={values.firstName} />
+                            <ListItemText primary="MiddleName" secondary={values.middleName} />
 
                             <ListItemText primary="LastName" secondary={values.lastName} />
 
-                            <ListItemText primary="Email" secondary={values.email} />
+                            <ListItemText primary="Phone Number" secondary={values.phoneNumber} />
 
-                            <ListItemText primary="Address" secondary={values.address} />
+                            <ListItemText primary="Email" secondary={values.emailId} />
+
+                            <ListItemText primary="Address" secondary={values.fullAddress} />
 
                             <ListItemText primary="City" secondary={values.city} />
+                            <ListItemText primary="State" secondary={values.state} />
+                            <ListItemText primary="Country" secondary={values.country} />
+
+
+                            <ListItemText primary="Zipcode" secondary={values.zipcode} />
+
+                            <ListItemText primary="Country Of Residence" secondary={values.countryOfResidence} />
+
+                            <ListItemText primary="CitizenShipStatus" secondary={values.citizenshipStatus} />
+
 
                             <ListItemText primary="Occupation" secondary={values.occupation} />
 
+                            <ListItemText primary="Source Of Income" secondary={values.sourceOfIncome} />
+
+
+                            <ListItemText primary="Account Type" secondary={values.gender} />
                             <ListItemText primary="Gender" secondary={values.gender} />
 
                         </List>

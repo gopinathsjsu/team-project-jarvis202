@@ -12,34 +12,54 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Container from '@material-ui/core/Container';
+import { withStyles } from "@material-ui/core/styles";
 
-
-
-
-const rx_live = /^[+-]?\d*(?:[.,]\d*)?$/
 
 const initialState = {
     step: 1,
     firstName: '',
     middleName: '',
     lastName: '',
-    email: '',
+    emailId: '',
     occupation: '',
-    address: '',
-    ssn: '',
+    fullAddress: '',
+    phoneNumber: '',
     gender: '',
     city: '',
+    state: '',
+    zipcode: '',
+    ssn: '',
+    sourceOfIncome: '',
+    dob: '',
+    citizenshipStatus: '',
+    resident: '',
+    country: '',
+
 
     nameError: "",
     emailError: "",
-    ssnError: "",
+    phoneError: "",
     occError: "",
     cityError: "",
+    stateError: "",
+    zipcodeError: "",
     addError: "",
 
 }
 
+const styles = theme => ({
+    button: {
+        margin: theme.spacing(1)
 
+    },
+
+    root: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        }
+    }
+});
 
 export class FormUserDetails extends Component {
 
@@ -63,10 +83,12 @@ export class FormUserDetails extends Component {
     validate = () => {
         let nameError = "";
         let emailError = "";
-        let ssnError = "";
-        let occError = "";
-        let cityError = "";
-        let addError = "";
+        let phoneError = "";
+        // let occError = "";
+        // let cityError = "";
+        // let addError = "";
+        // let stateError = "";
+        // let zipcodeError = "";
 
 
 
@@ -75,175 +97,283 @@ export class FormUserDetails extends Component {
             nameError = this.props.values.nameError;
         }
 
-        if (!this.props.values.email.includes("@")) {
+        if (!this.props.values.emailId.includes("@")) {
             this.props.values.emailError = "Email Invalid or blank ";
             emailError = this.props.values.emailError;
         }
 
-        if (!this.props.values.occupation) {
-            this.props.values.occError = "Occupation is blank ";
-            occError = this.props.values.occError;
+        // if (!this.props.values.occupation) {
+        //     this.props.values.occError = "Occupation is blank ";
+        //     occError = this.props.values.occError;
+        // }
+
+        // if (!this.props.values.address) {
+        //     this.props.values.addError = "Address is blank ";
+        //     addError = this.props.values.addError;
+        // }
+
+        // if (!this.props.values.city) {
+        //     this.props.values.cityError = "City is blank ";
+        //     cityError = this.props.values.cityError;
+        // }
+
+        // if (!this.props.values.state) {
+        //     this.props.values.stateError = "State is blank ";
+        //     stateError = this.props.values.stateError;
+        // }
+
+        // if (!this.props.values.zipcode) {
+        //     this.props.values.zipcodeError = "Zipcode is Blank ";
+        //     zipcodeError = this.props.values.zipcodeError;
+        // }
+
+        if (!this.props.values.phoneNumber || this.props.values.phoneNumber.length < 10 || this.props.values.phoneNumber.length > 10) {
+            this.props.values.phoneError = "Phone Number is not valid ";
+            phoneError = this.props.values.phoneError;
         }
 
-        if (!this.props.values.address) {
-            this.props.values.addError = "Address is blank ";
-            addError = this.props.values.addError;
-        }
+        // if (emailError || nameError || phoneError || occError || cityError || stateError || zipcodeError || addError) {
+        //     this.setState({ emailError, nameError, phoneError, occError, cityError, stateError, zipcodeError, addError });
+        //     return false;
+        // }
 
-        if (!this.props.values.city) {
-            this.props.values.cityError = "City is blank ";
-            cityError = this.props.values.cityError;
-        }
-
-        if (!this.props.values.ssn || this.props.values.ssn.length < 4) {
-            this.props.values.ssnError = "SSN blank or Length should be greater than 4 ";
-            ssnError = this.props.values.ssnError;
-        }
-
-        if (emailError || nameError || ssnError || occError || cityError || addError) {
-            this.setState({ emailError, nameError, ssnError, occError, cityError, addError });
+        if (emailError || nameError || phoneError) {
+            this.setState({ emailError, nameError, phoneError });
             return false;
         }
-
         return true;
     };
 
     render() {
-        const { values, handleChange } = this.props;
+        const { values, handleChange, classes } = this.props;
 
         return (
             <React.Fragment>
 
-                <form onSubmit={this.continue}>
-                    <AppBar position='static'>
-                        <Typography variant='h6' align='center'>
-                            User Registration Form
+                <AppBar position='static'>
+                    <Typography variant='h6' align='center'>
+                        User Registration Form
                          </Typography>
-                    </AppBar>
+                </AppBar>
+                <form className={classes.root}>
 
-                    <Container
-                        direction="column"
-                        justify="center"
-                        alignItems="flex-start"
-                        maxWidth="sm"
-                        align='center'
-                    >
-                        <div>
-                            <TextField
-                                variant='outlined'
-                                margin='normal'
-                                label="FirstName*"
-                                onChange={handleChange('firstName')}
-                                defaultValue={values.firstName}
-                                error={values.nameError !== ""}
-                                helperText={values.nameError !== "" ? values.nameError : ""}
-                            />
-                        </div>
+                    <div>
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            label="FirstName*"
+                            onChange={handleChange('firstName')}
+                            defaultValue={values.firstName}
+                            error={values.nameError !== ""}
+                            helperText={values.nameError !== "" ? values.nameError : ""}
+                        />
 
-                        <div>
-                            <TextField
-                                variant='outlined'
-                                margin='normal'
-                                label='LastName*'
-                                onChange={handleChange('lastName')}
-                                defaultValue={values.lastName}
-                                error={values.nameError !== ""}
-                                helperText={values.nameError !== "" ? values.nameError : ""}
-                            />
-                        </div>
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            label="MiddleName*"
+                            onChange={handleChange('middleName')}
+                            defaultValue={values.middleName}
+                        // error={values.nameError !== ""}
+                        // helperText={values.nameError !== "" ? values.nameError : ""}
+                        />
 
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            label='LastName*'
+                            onChange={handleChange('lastName')}
+                            defaultValue={values.lastName}
+                            error={values.nameError !== ""}
+                            helperText={values.nameError !== "" ? values.nameError : ""}
+                        />
+                    </div>
+
+                    <div>
+
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            type='number'
+                            label="Phone Number*"
+                            // inputProps={{ max: 8 }}
+                            onChange={handleChange('phoneNumber')}
+                            defaultValue={values.phoneNumber.number}
+                            error={values.phoneError !== ""}
+                            helperText={values.phoneError !== "" ? values.phoneError : ""}
+
+                        />
+
+
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            padding='normal'
+                            label='Email*'
+                            onChange={handleChange('emailId')}
+                            defaultValue={values.emailId}
+                            error={values.emailError !== ""}
+                            helperText={values.emailError !== "" ? values.emailError : ""}
+
+                        />
+
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            type='number'
+                            label="SSN*"
+                            // inputProps={{ max: 8 }}
+                            onChange={handleChange('ssn')}
+                            defaultValue={values.ssn.number}
+                        // error={values.phoneError !== ""}
+                        // helperText={values.phoneError !== "" ? values.phoneError : ""}
+
+                        />
+
+                    </div>
+
+
+                    <div>
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            label='Address*'
+                            onChange={handleChange('fullAddress')}
+                            defaultValue={values.fullAddress}
+                        // error={values.addError !== ""}
+                        // helperText={values.addError !== "" ? values.addError : ""}
+                        />
+
+
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            label='City*'
+                            onChange={handleChange('city')}
+                            defaultValue={values.city}
+                        // error={values.cityError !== ""}
+                        // helperText={values.cityError !== "" ? values.cityError : ""}
+                        />
+
+
+
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            padding='normal'
+                            label='State*'
+                            onChange={handleChange('state')}
+                            defaultValue={values.state}
+
+                        />
                         <div>
                             <TextField
                                 variant='outlined'
                                 margin='normal'
                                 padding='normal'
-                                label='Email*'
-                                onChange={handleChange('email')}
-                                defaultValue={values.email}
-                                error={values.emailError !== ""}
-                                helperText={values.emailError !== "" ? values.emailError : ""}
+                                label='Country*'
+                                onChange={handleChange('country')}
+                                defaultValue={values.country}
 
                             />
-
-                        </div>
-
-
-                        <div>
-                            <TextField
-                                variant='outlined'
-                                margin='normal'
-                                label='Address*'
-                                onChange={handleChange('address')}
-                                defaultValue={values.address}
-                                error={values.addError !== ""}
-                                helperText={values.addError !== "" ? values.addError : ""}
-                            />
-
-                        </div>
-                        <div>
-                            <TextField
-                                variant='outlined'
-                                margin='normal'
-                                label='City*'
-                                onChange={handleChange('city')}
-                                defaultValue={values.city}
-                                error={values.cityError !== ""}
-                                helperText={values.cityError !== "" ? values.cityError : ""}
-                            />
-
-                        </div>
-                        <TextField
-                            variant='outlined'
-                            margin='normal'
-                            label='Occupation*'
-                            onChange={handleChange('occupation')}
-                            defaultValue={values.occupation}
-                            error={values.occError !== ""}
-                            helperText={values.occError !== "" ? values.occError : ""}
-                        />
-
-                        <div>
                             <TextField
                                 variant='outlined'
                                 margin='normal'
                                 type='number'
-                                label="SSN*"
-                                inputProps={{ max: 8 }}
-                                onChange={handleChange('ssn')}
-                                defaultValue={values.ssn.number}
-                                error={values.ssnError !== ""}
-                                helperText={values.ssnError !== "" ? values.ssnError : ""}
+                                label="Zipcode*"
+                                onChange={handleChange('zipcode')}
+                                defaultValue={values.zipcode}
+
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                variant='outlined'
+                                margin='normal'
+                                padding='normal'
+                                label='Country Of Residence*'
+                                onChange={handleChange('countryOfResidence')}
+                                defaultValue={values.countryOfResidence}
+
+                            />
+
+                            <TextField
+                                variant='outlined'
+                                margin='normal'
+                                label="Citizen Status*"
+                                onChange={handleChange('citizenshipStatus')}
+                                defaultValue={values.citizenshipStatus}
 
                             />
                         </div>
 
-                        <div>
-                            <FormControl variant='outlined' margin='normal' align='left' >
-                                <InputLabel >Gender</InputLabel>
-                                <Select
-                                    onChange={handleChange('gender')}
-                                    defaultValue={values.gender}
-                                >
-                                    <MenuItem value='Male'>Male</MenuItem>
-                                    <MenuItem value='Female'>Female</MenuItem>
-                                    <MenuItem value='I do not wish to mention'>I do not wish to mention</MenuItem>
+                    </div>
+                    <TextField
+                        variant='outlined'
+                        margin='normal'
+                        label='Occupation*'
+                        onChange={handleChange('occupation')}
+                        defaultValue={values.occupation}
+                    // error={values.occError !== ""}
+                    // helperText={values.occError !== "" ? values.occError : ""}
+                    />
 
-                                </Select>
-                            </FormControl>
-                        </div>
+                    <TextField
+                        variant='outlined'
+                        margin='normal'
+                        label='Source Of Income*'
+                        onChange={handleChange('sourceOfIncome')}
+                        defaultValue={values.sourceOfIncome}
+                    // error={values.sourceOfIncome !== ""}
+                    // helperText={values.sourceOfIncome !== "" ? values.sourceOfIncome : ""}
+                    />
 
-                        <div>
 
-                            <Button
-                                type='submit'
-                                variant='contained'
-                                justify='center'
-                                style={styles.button}
-                                onClick={this.continue}>
-                                Continue
+
+                    <div>
+                        <FormControl variant='outlined' margin='normal' >
+                            <InputLabel >Account Type</InputLabel>
+                            <Select
+                                onChange={handleChange('accountType')}
+                                defaultValue={values.accountType}
+                                style={{ width: 220 }}
+
+                            >
+                                <MenuItem value='Checking Account'>Checking Account</MenuItem>
+                                <MenuItem value='Savings Account'>Savings Account</MenuItem>
+
+                            </Select>
+                        </FormControl>
+
+                    </div>
+                    <div>
+                        <FormControl variant='outlined' margin='normal' >
+                            <InputLabel >Gender</InputLabel>
+                            <Select
+                                onChange={handleChange('gender')}
+                                defaultValue={values.gender}
+                                style={{ width: 220 }}
+                            >
+                                <MenuItem value='Male'>Male</MenuItem>
+                                <MenuItem value='Female'>Female</MenuItem>
+                                <MenuItem value='I do not wish to mention'>I do not wish to mention</MenuItem>
+
+                            </Select>
+                        </FormControl>
+                    </div>
+
+                    <div>
+
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            justify='center'
+                            style={styles.button}
+                            onClick={this.continue}>
+                            Continue
                             </Button>
-                        </div>
-                    </Container>
+                    </div>
+
                 </form >
             </React.Fragment >
 
@@ -251,10 +381,6 @@ export class FormUserDetails extends Component {
     }
 }
 
-const styles = {
-    button: {
-        margin: 15
-    }
-}
 
-export default FormUserDetails;
+
+export default withStyles(styles, { withTheme: true })(FormUserDetails);

@@ -9,18 +9,29 @@ const initialState = {
     firstName: '',
     middleName: '',
     lastName: '',
-    email: '',
+    emailId: '',
     occupation: '',
-    address: '',
-    ssn: '',
+    fullAddress: '',
+    phoneNumber: '',
     gender: '',
     city: '',
+    accountType: '',
+    state: '',
+    zipcode: '',
+    ssn: '',
+    sourceOfIncome: '',
+    dob: '',
+    citizenshipStatus: '',
+    countryOfResidence: '',
+    country: '',
 
     nameError: "",
     emailError: "",
-    ssnError: "",
+    phoneError: "",
     occError: "",
     cityError: "",
+    stateError: "",
+    zipcodeError: "",
     addError: "",
 }
 
@@ -72,8 +83,24 @@ export class UserForm extends Component {
     render() {
 
         const { step } = this.state;
-        const { firstName, lastName, email, address, city, occupation, ssn, gender, nameError, emailError, ssnError, occError, cityError, addError } = this.state
-        const values = { firstName, lastName, email, address, city, occupation, ssn, gender, nameError, emailError, ssnError, occError, cityError, addError }
+        const { firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn,
+            sourceOfIncome,
+            dob,
+            citizenshipStatus,
+            countryOfResidence,
+            country,
+            state,
+            zipcode
+        } = this.state
+        const values = {
+            firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn, sourceOfIncome,
+            dob,
+            citizenshipStatus,
+            countryOfResidence,
+            country,
+            state,
+            zipcode
+        }
 
         switch (step) {
             case 1:
