@@ -9,7 +9,10 @@ import ServiceAPI from '../ServiceAPI'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router-dom';
-
+import FormControl from '@material-ui/core/FormControl';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />;
@@ -42,6 +45,11 @@ const MakeTransfer = () => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [success, setSuccess] = React.useState(false);
   const [successMessage, setsuccessMessage] = React.useState('')
+  const [isSameBank, setIsSameBank] = React.useState(true);
+  const [sameBankAcc, setSameBankAcc] = React.useState([]);
+  const [diffAcc, setDiffAcc] = React.useState([]);
+  const [displayFrom, setDisplayFrom] = React.useState([]);
+  const [displayTo, setDisplayTo] = React.useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -50,26 +58,44 @@ const MakeTransfer = () => {
       setCustDetails(response.data[0])
       const customerAccDetails = response.data[0].account;
       const accn = []
+      const dp = []
       if (customerAccDetails.length > 0) {
         customerAccDetails.forEach(function (acc) {
           console.log(acc.accountStatus)
           if (acc.accountStatus !== 'CLOSED') {
             accn.push(acc.accNumber.toString())
+            dp.push(acc.accNumber.toString() + ' ---  ' + acc.accountType);
           }
         });
         setFromAccounts(accn);
+        setDisplayFrom(dp);
       }
       if (accn.length === 0) {
         console.log('You do not have active accounts to transfer funds !')
       }
       // get the recepient details by customer user name
       ServiceAPI.getRecepientsByCustId(sessionDetails.uname).then(function (response) {
+        console.log(response);
         const recepientData = [];
+        const dpt = []
+        const diffBank = [];
+        const sameBK = [];
         if (response.data.length > 0) {
           response.data.forEach(function (row) {
+            console.log('samebank', row.sameBank)
+            if (row.sameBank === false) {
+              diffBank.push(row.accountNum.toString() + ' --- ' + row.nickName)
+            }
+            else {
+              sameBK.push(row.accountNum.toString() + ' --- ' + row.nickName);
+            }
             recepientData.push(row.accountNum.toString());
+            dpt.push(row.accountNum.toString() + ' --- ' + row.nickName);
           })
           setToAccounts(recepientData);
+          setDisplayTo(dpt);
+          setSameBankAcc(sameBK);
+          setDiffAcc(diffBank);
         }
       })
         .catch(function (error) {
@@ -81,6 +107,19 @@ const MakeTransfer = () => {
         setCustDetails({});
       });
   }, []);
+
+  const handleRadioChange = (e) => {
+
+    if (e.target.value === 'isSameBank') {
+      setDisplayTo(sameBankAcc);
+      setIsSameBank(true);
+      // Update with the route number of the current bank
+    }
+    else {
+      setDisplayTo(diffAcc);
+      setIsSameBank(false);
+    }
+  };
 
   // to-do: fetch the account numbers and the type of account 
 
@@ -105,7 +144,12 @@ const MakeTransfer = () => {
 
   const handleSubmit = async () => {
     console.log('submitted')
-    const idx = fromAccounts.indexOf(fromAcc);
+    console.log(fromAccounts)
+    const fa = fromAcc.substring(0, 5);
+    const ta = toAcc.substring(0, 5);
+    const idx = fromAccounts.indexOf(fa.toString());
+    console.log(fa)
+
     console.log(idx)
     const accountBalance = custDetails.account[idx].balance;
     if (accountBalance < amount) {
@@ -123,17 +167,34 @@ const MakeTransfer = () => {
       transactionDetails.amount = amount;
       transactionDetails.transactionType = 'DEBIT';
       transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-
+      transactionDetails.toAccount = ta;
+      // transactionDetails.fromAccount = fromAcc;
       custDetails.transactions.push(transactionDetails);
 
+      const toTransactionDetails = {};
+      transactionDetails.transactionId = 1;
+      transactionDetails.description = remarks;
+      transactionDetails.amount = amount;
+      transactionDetails.transactionType = 'CREDIT';
+      transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+      // transactionDetails.fromAccount = fromAcc;
+      // transactionDetails.toAccount = toAcc;
       ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
         console.log(response);
-        const varDetails = {
-          customerId: custDetails.customerId,
-          custDetails: custDetails,
-          otpCode: response.data,
-          phoneNumber: custDetails.phoneNumber,
-          type: 'makeTransfer'
+        const varDetails = {};
+        varDetails.customerId = custDetails.customerId;
+        varDetails.custDetails = custDetails;
+        varDetails.otpCode = response.data;
+        varDetails.phoneNumber = custDetails.phoneNumber;
+        varDetails.type = 'makeTransfer';
+
+        if (isSameBank) {
+          varDetails.toTransDetails = toTransactionDetails;
+          varDetails.toCustAccount = ta;
+          varDetails.sameBank = 1;
+        }
+        else {
+          varDetails.sameBank = 0;
         }
 
         const path = '/validateOTP/:' + varDetails;
@@ -179,10 +240,28 @@ const MakeTransfer = () => {
               setFromAcc(newInputValue);
             }}
             id='fromAccount'
-            options={fromAccounts}
+            options={displayFrom}
             style={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label='From Account' variant='outlined' />}
           />
+        </Grid>
+        <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <FormControl component='fieldset'>
+            <RadioGroup row aria-label='position' name='isSameBank' defaultValue='top'>
+              <FormControlLabel
+                value='isSameBank'
+                control={<Radio id='sameBank' color='primary' onChange={handleRadioChange} />}
+                label='Same Bank'
+                labelPlacement='end'
+              />
+              <FormControlLabel
+                value='isOtherBank'
+                control={<Radio id='otherBank' color='primary' onChange={handleRadioChange} />}
+                label='Other Bank'
+                labelPlacement='end'
+              />
+            </RadioGroup>
+          </FormControl>
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Autocomplete
@@ -190,7 +269,7 @@ const MakeTransfer = () => {
               setToAcc(newInputValue);
             }}
             id='toAccount'
-            options={toAccounts}
+            options={displayTo}
             style={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label='To Account' variant="outlined" />}
           />

@@ -154,6 +154,28 @@ const ValidateOTP = (props) => {
       if (otpNum == otp) {
         ServiceAPI.addCustomer(varDetails.custDetails).then(function (response) {
           console.log(response)
+          if (varDetails.sameBank === 1) {
+            ServiceAPI.getCustomerIdByAccountNum(parseInt(varDetails.toCustAccount)).then(function (response) {
+              const toCustDetails = response.data[0];
+              const accn = []
+
+              if (response.data[0].account.length > 0) {
+                response.data[0].account.forEach(function (acc) {
+                  if (acc.accountStatus !== 'CLOSED' && acc.accNumber == varDetails.toAccount) {
+                    accn.push(acc.accNumber.toString());
+                  }
+                })
+              }
+
+              const idx = accn.indexOf(varDetails.toCustAccount.toString());
+              console.log(idx);
+              toCustDetails.account[idx].balance = toCustDetails.account[idx].balance + varDetails.toDetails.amount;
+              toCustDetails.transactions.push(varDetails.toTransDetails);
+              ServiceAPI.addCustomer(toCustDetails).then(function (response) {
+                console.log('Credit transaction is created successfully');
+              })
+            })
+          }
           setsuccessMessage('Funds Transferred successfully');
           setSuccess(true);
         }).catch(function (error) {

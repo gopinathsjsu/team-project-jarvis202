@@ -53,4 +53,10 @@ public class CustomerService {
 	public List<CustomerResponseDTO> getCustContactDetails(String userName) {
 		return customerRepository.getCustomerContactDetails(userName);
 	}
+
+	public List<Customer> getCustomerIdByAccountNum(Integer accountNum) {
+		List<CustomerResponseDTO> custDto = customerRepository.getCustIdByAccount(accountNum);
+		List<Customer> custDetails = customerRepository.findByUserName(custDto.get(0).getUserName());
+		return custDetails;
+	}
 }

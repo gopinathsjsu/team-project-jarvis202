@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiUrl = 'http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/';
-
+// const apiUrl = 'http://localhost:8080/';
 class ServiceAPI {
   addCustomer(customer) {
     return axios.post(apiUrl + 'add/customer', customer);
@@ -28,8 +28,8 @@ class ServiceAPI {
     return axios.post(apiUrl + 'addAccount/', accDetails);
   }
 
-  getRecepientsByCustId(customerId) {
-    return axios.get(apiUrl + 'getRecepientsByCustId/' + customerId);
+  getRecepientsByCustId(custUserName) {
+    return axios.get(apiUrl + 'getRecepientsByCustId/' + custUserName);
   }
 
   getAllCustomers() {
@@ -42,6 +42,10 @@ class ServiceAPI {
 
   subscribeCustomerByPhone(phoneNumber) {
     return axios.get(apiUrl + 'subscribeByPhone/' + phoneNumber);
+  }
+
+  getCustomerIdByAccountNum(accountNum) {
+    return axios.get(apiUrl + 'getCustomerIdByAccountNum/' + accountNum);
   }
 }
 

@@ -61,4 +61,12 @@ public class CustomerResponseDTO {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public CustomerResponseDTO(Integer customerId, String userName, int accNumber, String accountType) {
+		super();
+		this.customerId = customerId;
+		this.userName = userName;
+		this.accNumber = accNumber;
+		this.accountType = accountType;
+	}
+
 }

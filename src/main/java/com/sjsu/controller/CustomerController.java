@@ -68,6 +68,11 @@ public class CustomerController {
 		return customerService.getJoinData(userName);
 	}
 
+	@GetMapping("/getCustomerIdByAccountNum/{accountNum}")
+	public List<Customer> getCustomerIdByAccountNum(@PathVariable Integer accountNum) {
+		return customerService.getCustomerIdByAccountNum(accountNum);
+	}
+
 	/*
 	 * Input - Customer user name Output - userName , accNumber, accountType,
 	 * balance
@@ -76,12 +81,11 @@ public class CustomerController {
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
 		return customerService.showCustomerDetailsOnLogin(userName);
 	}
-	
-	//Adding an account to existing customer
-	public List<Customer> addAccounts(@RequestBody Customer customer)
-	{
+
+	// Adding an account to existing customer
+	public List<Customer> addAccounts(@RequestBody Customer customer) {
 		return null;
-		
+
 	}
 
 	@GetMapping("/getCustContactDetails/{userName}")
