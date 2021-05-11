@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1),
     },
+  },
+  paddingSpacing: {
+    paddingLeft: "24px !important",
+    paddingRight: "24px !important",
   }
 }));
 
@@ -178,7 +182,7 @@ const CloseAccount = () => {
   // }
 
   return (
-    <Container>
+    <Container className={classes.paddingSpacing}>
       <Snackbar open={hasError} autoHideDuration={6000} onClose={handlecloseSnack}>
         <Alert onClose={handlecloseSnack} severity='error'>
           {errorMsg}

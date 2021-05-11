@@ -30,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120
+  },
+  paddingSpacing: {
+    paddingLeft: "24px !important",
+    paddingRight: "24px !important",
+    paddingTop: "24px"
   }
 }));
 
@@ -175,7 +180,7 @@ const AddAccount = (props) => {
   // }
 
   return (
-    <Container >
+    <Container className={classes.paddingSpacing}>
       <Snackbar open={hasError} autoHideDuration={6000} onClose={handlecloseSnack}>
         <Alert onClose={handlecloseSnack} severity='error'>
           {errorMessage}

@@ -75,3 +75,7 @@
   padding: 20px 0;
 }
 
+.radioButtonGroup {
+  flex-direction: unset !important;
+}
+

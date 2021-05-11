@@ -12,8 +12,7 @@ import ServiceAPI from '../../Components/ServiceAPI'
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    padding: theme.spacing(4)
   },
   paper: {
     padding: theme.spacing(2),
@@ -81,7 +80,7 @@ export const Transactions = () => {
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className="transactionsPage">
         {/* Total Balance */}
         <Grid item xs={12} md={12} lg={12}>
           <Paper className={fixedHeightPaper}>

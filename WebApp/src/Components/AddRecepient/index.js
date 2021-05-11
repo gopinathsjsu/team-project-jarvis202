@@ -15,9 +15,15 @@ import { useHistory } from 'react-router-dom';
 // import DialogContent from '@material-ui/core/DialogContent';
 // import DialogContentText from '@material-ui/core/DialogContentText';
 // import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -34,7 +40,10 @@ const useStyles = makeStyles((theme) => ({
   marginspacing: {
     '& > *': {
       margin: theme.spacing(1),
-    },
+    }
+  },
+  textField: {
+    width: '300px'
   }
 }));
 
@@ -57,6 +66,9 @@ const AddRecepient = () => {
   const [hasError, setHasError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('')
   const history = useHistory();
+  const [recepientType, setRecepientType] = React.useState('person');
+  const [isRecurring, setIsRecurring] = React.useState(false);
+  const [recurringDate, setRecurringDate] = React.useState(new Date());
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
@@ -69,6 +81,14 @@ const AddRecepient = () => {
         console.log('Unable to fetch customer contact details', error);
       });
   }, []);
+
+  const onRecepientTypeChange = (event) => {
+    setRecepientType(event.target.value);
+  };
+
+  const handleRecurringChange = (event) => {
+    setIsRecurring(event.target.checked);
+  }
 
   const handleRadioChange = (e) => {
     if (e.target.value === 'isSameBank') {
@@ -164,12 +184,28 @@ const AddRecepient = () => {
           <Typography variant='h5' align='left' color='primary'>
             Add Recepient
           </Typography>
+        </Grid>
+        <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Recepient Type</FormLabel>
+            <RadioGroup aria-label="recepientType" name="recepientType"
+              value={recepientType}
+              onChange={onRecepientTypeChange}
+              className="radioButtonGroup"
+            >
+              <FormControlLabel value="person" control={<Radio />} label="Person" />
+              <FormControlLabel value="company" control={<Radio />} label="Company" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
             id='fname'
             label='First Name'
             onChange={(event) => setFirstName(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -180,6 +216,7 @@ const AddRecepient = () => {
             required
             label='Last Name'
             onChange={(event) => setlastName(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -190,6 +227,7 @@ const AddRecepient = () => {
             required
             label='ZipCode'
             onChange={(event) => setZipCode(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -201,6 +239,7 @@ const AddRecepient = () => {
             label='Account Number'
             type='password'
             onChange={(event) => setRecAcc(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -211,6 +250,7 @@ const AddRecepient = () => {
             id='confirmAccNum'
             label='Confirm Account Number'
             onChange={(event) => setConfirmRecAcc(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -220,6 +260,7 @@ const AddRecepient = () => {
             id='nName'
             label='Nick Name'
             onChange={(event) => setNickName(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -248,8 +289,31 @@ const AddRecepient = () => {
             id='routeNum'
             label='Routing Number'
             onChange={(event) => setRouteNum(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
+        { recepientType === 'company' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <FormGroup row>
+            <FormControlLabel
+              control={<Checkbox checked={isRecurring} onChange={handleRecurringChange} name="checkedA" color="primary"/>}
+              label="Set Recurring Payment" 
+            />
+          </FormGroup>
+        </Grid> : null}
+        {isRecurring ? <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disablePast='false'
+                disableToolbar
+                variant='inline'
+                format='MM/dd/yyyy'
+                margin='normal'
+                label='Date'
+                value={recurringDate}
+                onChange={(e, date) => setRecurringDate(date)}
+              />
+            </MuiPickersUtilsProvider>
+        </Grid> : null}
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Button onClick={handleCancel} color='primary' variant='contained'>
             Cancel

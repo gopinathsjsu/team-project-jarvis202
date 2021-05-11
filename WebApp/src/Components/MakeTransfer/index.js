@@ -166,6 +166,7 @@ const MakeTransfer = () => {
       transactionDetails.description = remarks;
       transactionDetails.amount = amount;
       transactionDetails.transactionType = 'DEBIT';
+      transactionDetails.accNumberFk = custDetails.account[idx].accNumber;
       transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
       transactionDetails.toAccount = ta;
       // transactionDetails.fromAccount = fromAcc;
