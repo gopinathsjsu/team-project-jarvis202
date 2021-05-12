@@ -48,4 +48,6 @@ public class Recepient {
   @Column(name = "IsSameBank", columnDefinition = "TINYINT", length = 1)
   private boolean isSameBank;
 
+  @Column(name ="company_name")
+  private String companyName;
 }

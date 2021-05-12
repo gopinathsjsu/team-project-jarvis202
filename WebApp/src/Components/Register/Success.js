@@ -15,7 +15,7 @@ export default function Success() {
             </AppBar>
             <Container>
                 <h1>Thank you for your Submission</h1>
-                <p>You will recive an Email with further Confirmation</p>
+                <p>You will receive an Email with further Confirmation</p>
             </Container>
         </React.Fragment>
     );

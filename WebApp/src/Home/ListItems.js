@@ -139,7 +139,7 @@ const ListItems = () => {
               <ListItemText primary='Pay Bills' />
             </ListItem>
           </Link>
-          <Link to='manageRecepients' key='TF1' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+          <Link to='addRecepient' key='TF1' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
               <ListItem button>
                 <ListItemIcon>
                   <AddBox />

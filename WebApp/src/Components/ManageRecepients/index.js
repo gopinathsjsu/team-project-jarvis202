@@ -75,11 +75,11 @@ const ManageRecepients = () => {
     <Container className={classes.marginspacing}>
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <Button type='submit' align='right' variant='contained' onClick={handleAddRecepient}>Add Account</Button>
+          <Button type='submit' align='right' variant='contained' onClick={handleAddRecepient}>Add Recepient</Button>
         </Grid>
       </Grid>
       <div>
-        <h4> All Customers</h4>
+        <h4> All Recepients</h4>
         <div style={{ height: 400, width: '100%' }}>
           <DataGrid id={Math.random()} rows={rows} columns={columns} checkboxSelection={false} components={{ Toolbar: GridToolbar }} />
         </div>

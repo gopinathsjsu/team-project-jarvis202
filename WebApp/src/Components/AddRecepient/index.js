@@ -117,6 +117,7 @@ const AddRecepient = () => {
       setHasError(true);
     }
     else {
+      console.log(companyName)
       ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
         console.log(response);
         const varDetails = {

@@ -11,7 +11,7 @@ import java.util.*;
 @Repository
 public interface RecepientRepository extends JpaRepository<Recepient, Integer> {
 
-  @Query("SELECT new com.sjsu.dto.RecepientDTO(r.custAccountID, r.recepientID, r.firstName, r.lastName, r.zipCode, r.accountNum, r.nickName, r.routingNumber, r.isSameBank) from Recepient r where r.custAccountID =?1")
+  @Query("SELECT new com.sjsu.dto.RecepientDTO(r.custAccountID, r.recepientID, r.firstName, r.lastName, r.zipCode, r.accountNum, r.nickName, r.routingNumber, r.isSameBank, r.companyName) from Recepient r where r.custAccountID =?1")
   public ArrayList<RecepientDTO> getRecepientsByCustAccountId(int custAccountId);
 
 }

@@ -33,8 +33,8 @@ const TransferActivity = () => {
     // { field: 'id', headerName: 'Transaction ID', width: 180 },
     // { field: 'status', headerName: 'Status', width: 180 },
     { field: 'transactionDate', headerName: 'Date', width: 180, format: (value) => value.toLocaleString('en-US'), },
-    { field: 'fromCust', headerName: 'From', width: 180, format: (value) => value.toLocaleString('en-US'), },
-    { field: 'toCust', headerName: 'To', width: 180, },
+    { field: 'fromAccount', headerName: 'From', width: 180, format: (value) => value.toLocaleString('en-US'), },
+    { field: 'toAccount', headerName: 'To', width: 180, },
     { field: 'remarks', headerName: 'Remarks', width: 180, },
     { field: 'transactionAmount', headerName: 'Amount ($)', width: 180, },
   ];
@@ -49,10 +49,8 @@ const TransferActivity = () => {
       if (response.data[0].transactions.length > 0) {
         response.data[0].transactions.forEach(function (row) {
           row.id = i;
-          row.remarks = row.description;
+          row.remarks = row.description ==="" ? 'Transfer' : row.description;
           row.transactionAmount = row.amount;
-          row.toCust = ''; //row.toAccount;
-          row.fromCust = ''; //row.fromAccount;
           i++;
           rowData.push(row);
         })

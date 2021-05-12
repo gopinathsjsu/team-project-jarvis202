@@ -217,9 +217,9 @@ const CloseAccount = () => {
               />
             </MuiPickersUtilsProvider>
           </Grid>
-          <Typography align='left' variant='h6'>
+          {/* <Typography align='left' variant='h6'>
             Sign
-          </Typography>
+          </Typography> */}
           {/* <Grid item xs={12} align='left'>
             <Box border={1} borderColor='text.primary'>
               <SignatureCanvas
@@ -231,7 +231,7 @@ const CloseAccount = () => {
             </Box>
           </Grid> */}
           <Grid item xs={12} align='left'>
-            <Button type='submit' variant='contained' color='primary' onClick={handleSubmit}>Submit</Button>
+            <Button type='submit' variant='contained' color='primary' onClick={handleSubmit}>Submit</Button> &nbsp;
             <Button type='submit' variant='contained' color='primary' onClick={handleCancel}>Cancel</Button>
           </Grid>
         </Grid>

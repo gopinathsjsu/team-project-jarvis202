@@ -119,7 +119,8 @@ const ValidateOTP = (props) => {
         accountNum: varDetails.accountNum,
         nickName: varDetails.nickName,
         routingNumber: varDetails.routingNumber,
-        isSameBank: varDetails.isSameBank
+        isSameBank: varDetails.isSameBank,
+        companyName: varDetails.companyName
       }
       if (otpNum == otp) {
         ServiceAPI.addRecepient(recepientDetails).then(function (response) {

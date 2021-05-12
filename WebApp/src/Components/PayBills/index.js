@@ -79,8 +79,10 @@ const PayBills = () => {
         const dpt = []
         if (response.data.length > 0) {
           response.data.forEach(function (row) {
-            recepientData.push(row.accountNum.toString());
-            dpt.push(row.accountNum.toString() + ' --- ' + row.nickName);
+            if (row.companyName !== null) {
+              recepientData.push(row.accountNum.toString());
+              dpt.push(row.accountNum.toString() + ' --- ' + row.companyName);
+            }
           })
           setToAccounts(recepientData);
           setDisplayTo(dpt);
