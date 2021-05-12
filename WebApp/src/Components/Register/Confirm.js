@@ -19,21 +19,21 @@ export class Confirm extends Component {
 
         const customerDetails = {};
         customerDetails.userName = '';
-        customerDetails.firstName = '';
-        customerDetails.lastName = '';
-        customerDetails.middleName = '';
-        customerDetails.dateOfBirth = ''; //pass the date in the format YYYY-MM-DD
-        customerDetails.fullAddress = '';
-        customerDetails.city = '';
-        customerDetails.state = '';
-        customerDetails.country = '';
-        customerDetails.zipcode = '';
-        customerDetails.phoneNumber = '';
-        customerDetails.emailId = '';
-        customerDetails.occupation = '';
-        customerDetails.sourceOfIncome = '';
-        customerDetails.citizenshipStatus = '';
-        customerDetails.countryOfResidence = '';
+        customerDetails.firstName = this.props.firstName;
+        customerDetails.lastName = this.props.lastName;
+        customerDetails.middleName = this.props.middleName;
+        customerDetails.dateOfBirth = this.props.dateOfBirth; //pass the date in the format YYYY-MM-DD
+        customerDetails.fullAddress = this.props.fullAddress;
+        customerDetails.city = this.props.city;
+        customerDetails.state = this.props.state;
+        customerDetails.country = this.props.country;
+        customerDetails.zipcode = this.props.zipcode;
+        customerDetails.phoneNumber = this.props.phoneNumber;
+        customerDetails.emailId = this.props.emailId;
+        customerDetails.occupation = this.props.occupation;
+        customerDetails.sourceOfIncome = this.props.sourceOfIncome;
+        customerDetails.citizenshipStatus = this.props.citizenshipStatus;
+        customerDetails.countryOfResidence = this.props.countryOfResidence;
         customerDetails.account = [];
 
         const accountDetails = {};
