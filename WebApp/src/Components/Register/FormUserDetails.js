@@ -132,7 +132,7 @@ export class FormUserDetails extends Component {
         //     zipcodeError = this.props.values.zipcodeError;
         // }
 
-        if (!this.props.values.phoneNumber || this.props.values.phoneNumber.length < 10 || this.props.values.phoneNumber.length > 10) {
+        if (!this.props.values.phoneNumber || this.props.values.phoneNumber.length < 12 || this.props.values.phoneNumber.length > 12) {
             this.props.values.phoneError = "Phone Number is not valid ";
             phoneError = this.props.values.phoneError;
         }
@@ -204,7 +204,7 @@ export class FormUserDetails extends Component {
                         <TextField
                             variant='outlined'
                             margin='normal'
-                            type='number'
+                            
                             label="Phone Number*"
                             // inputProps={{ max: 8 }}
                             onChange={handleChange('phoneNumber')}

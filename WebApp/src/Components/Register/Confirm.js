@@ -18,34 +18,37 @@ export class Confirm extends Component {
         console.log(this.props)
 
         const customerDetails = {};
+        const details = this.props.values;
         customerDetails.userName = '';
-        customerDetails.firstName = '';
-        customerDetails.lastName = '';
-        customerDetails.middleName = '';
-        customerDetails.dateOfBirth = ''; //pass the date in the format YYYY-MM-DD
+        customerDetails.firstName = details.firstName;
+        customerDetails.lastName = details.lastName;
+        customerDetails.middleName = details.middleName;
+        customerDetails.dateOfBirth = details.dateOfBirth; //pass the date in the format YYYY-MM-DD
         customerDetails.fullAddress = '';
-        customerDetails.city = '';
-        customerDetails.state = '';
-        customerDetails.country = '';
-        customerDetails.zipcode = '';
-        customerDetails.phoneNumber = '';
-        customerDetails.emailId = '';
-        customerDetails.occupation = '';
-        customerDetails.sourceOfIncome = '';
-        customerDetails.citizenshipStatus = '';
-        customerDetails.countryOfResidence = '';
+        customerDetails.city = details.city;
+        customerDetails.state = details.state;
+        customerDetails.country = details.country;
+        customerDetails.zipcode = details.zipcode;
+        customerDetails.phoneNumber = details.phoneNumber;
+        customerDetails.emailId = details.emailId;
+        customerDetails.occupation = details.occupation;
+        customerDetails.sourceOfIncome = details.sourceOfIncome;
+        customerDetails.citizenshipStatus = details.citizenshipStatus;
+        customerDetails.countryOfResidence = details.countryOfResidence;
         customerDetails.account = [];
-
         const accountDetails = {};
+        
+       
         accountDetails.accNumber = 1;
         accountDetails.coApplicant = '';
-        accountDetails.accountType = '';
+        accountDetails.accountType = details.accountType;
         accountDetails.routingNumber = '';
         accountDetails.accountStatus = 'ACTIVE';
         accountDetails.balance = 0;
-
         customerDetails.account.push(accountDetails);
 
+        // customerDetails.account.push(accountDetails);
+        console.log(customerDetails);
         ServiceAPI.addCustomer(customerDetails).then(function (response) {
             console.log('Customer details added successfully')
             ServiceAPI.subscribeCustomerByPhone(customerDetails.phoneNumber).then(function (response) {
