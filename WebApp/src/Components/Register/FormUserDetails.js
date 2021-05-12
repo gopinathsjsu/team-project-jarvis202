@@ -132,7 +132,7 @@ export class FormUserDetails extends Component {
         //     zipcodeError = this.props.values.zipcodeError;
         // }
 
-        if (!this.props.values.phoneNumber || this.props.values.phoneNumber.length < 10 || this.props.values.phoneNumber.length > 10) {
+        if (!this.props.values.phoneNumber || this.props.values.phoneNumber.length < 12 || this.props.values.phoneNumber.length > 12) {
             this.props.values.phoneError = "Phone Number is not valid ";
             phoneError = this.props.values.phoneError;
         }
@@ -204,11 +204,11 @@ export class FormUserDetails extends Component {
                         <TextField
                             variant='outlined'
                             margin='normal'
-                            type='number'
+                            // type='number'
                             label="Phone Number*"
                             // inputProps={{ max: 8 }}
                             onChange={handleChange('phoneNumber')}
-                            defaultValue={values.phoneNumber.number}
+                            defaultValue={values.phoneNumber}
                             error={values.phoneError !== ""}
                             helperText={values.phoneError !== "" ? values.phoneError : ""}
 
@@ -229,11 +229,11 @@ export class FormUserDetails extends Component {
                         <TextField
                             variant='outlined'
                             margin='normal'
-                            type='number'
+                            // type='number'
                             label="SSN"
                             // inputProps={{ max: 8 }}
                             onChange={handleChange('ssn')}
-                            defaultValue={values.ssn.number}
+                            defaultValue={values.ssn}
                         // error={values.phoneError !== ""}
                         // helperText={values.phoneError !== "" ? values.phoneError : ""}
 
@@ -288,7 +288,7 @@ export class FormUserDetails extends Component {
                             <TextField
                                 variant='outlined'
                                 margin='normal'
-                                type='number'
+                                // type='number'
                                 label="Zipcode"
                                 onChange={handleChange('zipcode')}
                                 defaultValue={values.zipcode}
