@@ -47,6 +47,10 @@ class ServiceAPI {
   getCustomerIdByAccountNum(accountNum) {
     return axios.get(apiUrl + 'getCustomerIdByAccountNum/' + accountNum);
   }
+
+  getTansByAccountId(accountNum) {
+    return axios.get(apiUrl + 'getTransByAccount/' + accountNum);
+  }
 }
 
 export default new ServiceAPI();
