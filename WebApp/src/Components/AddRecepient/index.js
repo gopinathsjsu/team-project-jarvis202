@@ -106,7 +106,9 @@ const AddRecepient = () => {
   // }
 
   const handleAddRec = () => {
-    if (lastName === '' || zipCode === 0 || recAcc === 0 || confirmRecAcc === 0 || (!isSameBank && routeNum === 0)) {
+    if ((recepientType === 'person' && lastName === '') || 
+        (recepientType === 'person' && zipCode === 0) || 
+        recAcc === 0 || confirmRecAcc === 0 || (recepientType === 'person' && !isSameBank && routeNum === 0)) {
       setErrorMessage('Mandatory fields are missing !! Please fill in the required fields !');
       setHasError(true);
     }
