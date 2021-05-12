@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sjsu.dto.CustomerDTO;
 import com.sjsu.dto.CustomerResponseDTO;
+import com.sjsu.dto.TransactionsDTO;
 import com.sjsu.entity.Customer;
 import com.sjsu.services.CustomerService;
 
@@ -98,6 +99,12 @@ public class CustomerController {
 	public Customer findByUserNameIs(@PathVariable String uname) {
 		Customer customer = customerService.findByUserNameIs(uname);
 		return customer;
+	}
+
+	@GetMapping("/getTransByAccount/{accountNum}")
+	public List<TransactionsDTO> getTransByAccount(@PathVariable Integer accountNum) {
+		List<TransactionsDTO> trans = customerService.getTransByAccount(accountNum);
+		return trans;
 	}
 
 }

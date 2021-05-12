@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sjsu.dto.CustomerResponseDTO;
 import com.sjsu.entity.Customer;
+import com.sjsu.dto.TransactionsDTO;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
@@ -31,4 +32,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 	public Customer findByUserNameIs(String userName);
 
+	@Query("SELECT new com.sjsu.dto.TransactionsDTO(t.transactionId, t.fromAccount, t.toAccount, t.description, t.amount, t.transactionType, t.transactionDate) FROM Transactions t where t.fromAccount=?1")
+	public List<TransactionsDTO> getTransByAccountId(Integer accountNum);
 }
