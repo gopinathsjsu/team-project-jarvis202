@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button';
 import { Auth } from 'aws-amplify';
 import MuiAlert from '@material-ui/lab/Alert';
 import MakeTransfer from '../Components/MakeTransfer';
+import PayBills from '../Components/PayBills';
 import TransferActivity from '../Components/TransferActivity';
 import ManageRecepients from '../Components/ManageRecepients';
 import AddRecepient from '../Components/AddRecepient';
@@ -186,6 +187,7 @@ export default function Dashboard() {
           <Route exact path='/addAccount' component={() => <AddAccount />} />
           <Route exact path='/closeAccount' component={() => <CloseAccount />} />
           <Route exact path='/makeTransfer' component={() => <MakeTransfer />} />
+          <Route exact path='/payBills' component={() => <PayBills />} />
           <Route exact path='/transferActivity' component={() => <TransferActivity />} />
           <Route exact path='/manageRecepients' component={() => <ManageRecepients />} />
           <Route exact path='/addRecepient' component={() => <AddRecepient />} />

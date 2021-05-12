@@ -74,7 +74,7 @@ const ManageRecepients = () => {
     <Container className={classes.marginspacing}>
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <Button type='submit' align='right' variant='contained' onClick={handleAddRecepient}>Add Recepient</Button>
+          <Button type='submit' align='right' variant='contained' onClick={handleAddRecepient}>Add Account</Button>
         </Grid>
       </Grid>
       <div>

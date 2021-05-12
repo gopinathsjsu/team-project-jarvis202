@@ -20,10 +20,6 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -56,6 +52,7 @@ const AddRecepient = () => {
   const [routeNum, setRouteNum] = React.useState(0);
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setlastName] = React.useState('');
+  const [companyName, setCompanyName] = React.useState('');
   const [zipCode, setZipCode] = React.useState(0);
   const [recAcc, setRecAcc] = React.useState(0);
   const [confirmRecAcc, setConfirmRecAcc] = React.useState(0);
@@ -67,8 +64,6 @@ const AddRecepient = () => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const history = useHistory();
   const [recepientType, setRecepientType] = React.useState('person');
-  const [isRecurring, setIsRecurring] = React.useState(false);
-  const [recurringDate, setRecurringDate] = React.useState(new Date());
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
@@ -85,10 +80,6 @@ const AddRecepient = () => {
   const onRecepientTypeChange = (event) => {
     setRecepientType(event.target.value);
   };
-
-  const handleRecurringChange = (event) => {
-    setIsRecurring(event.target.checked);
-  }
 
   const handleRadioChange = (e) => {
     if (e.target.value === 'isSameBank') {
@@ -130,6 +121,7 @@ const AddRecepient = () => {
           custAccountID: custDetails.customerId,
           firstName: firstName,
           lastName: lastName,
+          companyName: companyName,
           zipCode: zipCode,
           accountNum: recAcc,
           nickName: nickName,
@@ -182,7 +174,7 @@ const AddRecepient = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Typography variant='h5' align='left' color='primary'>
-            Add Recepient
+            Add Account
           </Typography>
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -198,7 +190,7 @@ const AddRecepient = () => {
             </RadioGroup>
           </FormControl>
         </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
@@ -207,8 +199,8 @@ const AddRecepient = () => {
             onChange={(event) => setFirstName(event.target.value)}
             className={classes.textField}
           />
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        </Grid> : null }
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
@@ -218,8 +210,19 @@ const AddRecepient = () => {
             onChange={(event) => setlastName(event.target.value)}
             className={classes.textField}
           />
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        </Grid> : null }
+        { recepientType === 'company' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='cname'
+            required
+            label='Company Name'
+            onChange={(event) => setCompanyName(event.target.value)}
+            className={classes.textField}
+          />
+        </Grid> : null }
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
@@ -229,7 +232,7 @@ const AddRecepient = () => {
             onChange={(event) => setZipCode(event.target.value)}
             className={classes.textField}
           />
-        </Grid>
+        </Grid> : null }
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
@@ -263,7 +266,7 @@ const AddRecepient = () => {
             className={classes.textField}
           />
         </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <FormControl component='fieldset'>
             <RadioGroup row aria-label='position' name='isSameBank' defaultValue='top'>
               <FormControlLabel
@@ -280,8 +283,8 @@ const AddRecepient = () => {
               />
             </RadioGroup>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        </Grid> : null }
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             disabled={disableRN}
@@ -291,28 +294,6 @@ const AddRecepient = () => {
             onChange={(event) => setRouteNum(event.target.value)}
             className={classes.textField}
           />
-        </Grid>
-        { recepientType === 'company' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <FormGroup row>
-            <FormControlLabel
-              control={<Checkbox checked={isRecurring} onChange={handleRecurringChange} name="checkedA" color="primary"/>}
-              label="Set Recurring Payment" 
-            />
-          </FormGroup>
-        </Grid> : null}
-        {isRecurring ? <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disablePast='false'
-                disableToolbar
-                variant='inline'
-                format='MM/dd/yyyy'
-                margin='normal'
-                label='Date'
-                value={recurringDate}
-                onChange={(e, date) => setRecurringDate(date)}
-              />
-            </MuiPickersUtilsProvider>
         </Grid> : null}
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Button onClick={handleCancel} color='primary' variant='contained'>

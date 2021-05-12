@@ -131,7 +131,7 @@ const ListItems = () => {
               </ListItem>
             </Link>
           </Collapse>
-          <Link to='makeTransfer' kye='TF2' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+          <Link to='payBills' kye='TF2' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
             <ListItem button>
               <ListItemIcon>
                 <PaymentIcon />
@@ -144,7 +144,7 @@ const ListItems = () => {
                 <ListItemIcon>
                   <AddBox />
                 </ListItemIcon>
-                <ListItemText primary='Add Receipents' />
+                <ListItemText primary='Add Account' />
               </ListItem>
           </Link>
         </div>

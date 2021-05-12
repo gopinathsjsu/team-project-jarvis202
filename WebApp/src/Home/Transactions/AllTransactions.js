@@ -30,6 +30,7 @@ const columns = [
 const AllTransactions = (props) => {
   const [accNo, setAccNo] = React.useState('');
   const [fromAccounts, setFromAccounts] = React.useState([]);
+  const [rows, setRows] = React.useState(props.transactionDetails);
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
@@ -57,15 +58,53 @@ const AllTransactions = (props) => {
     
   }, []);
 
+  useEffect(() => {
+    setRows(props.transactionDetails);
+  }, [props.transactionDetails]);
+
+  const onAccountSelected = (accNum) => {
+    ServiceAPI.getCustomerIdByAccountNum(parseInt(accNum)).then(function (response) {
+      const selectedAccountDetails = response.data[0] && response.data[0].transactions ? response.data[0].transactions : [];
+      // const accn = []
+      console.log("account transactions", selectedAccountDetails);
+
+      const allTransactions = [];
+      selectedAccountDetails.forEach(transaction => {
+          let rowDetails = {};
+          rowDetails.id = transaction.transactionId;
+          rowDetails.remark = transaction.description;
+          rowDetails.amount = transaction.amount;
+          rowDetails.type = transaction.transactionType;
+          rowDetails.transactionDate = transaction.transactionDate;
+          allTransactions.push(rowDetails);
+      });
+      setRows(allTransactions);
+
+    //   if (response.data[0].account.length > 0) {
+    //     response.data[0].account.forEach(function (acc) {
+    //       if (acc.accountStatus !== 'CLOSED' && acc.accNumber == varDetails.toAccount) {
+    //         accn.push(acc.accNumber.toString());
+    //       }
+    //     })
+    //   }
+
+    //   const idx = accn.indexOf(varDetails.toCustAccount.toString());
+    //   console.log(idx);
+    //   toCustDetails.account[idx].balance = toCustDetails.account[idx].balance + varDetails.toDetails.amount;
+    //   toCustDetails.transactions.push(varDetails.toTransDetails);
+    //   ServiceAPI.addCustomer(toCustDetails).then(function (response) {
+    //     console.log('Credit transaction is created successfully');
+    //   })
+    // })
+    });
+  }
   return (
     <div className="AllTransactions">
       <div className="transactionGridHeader">
       <h3>View All Transactions</h3>
         <Autocomplete
           value={accNo}
-          onChange={(event, newValue) => {
-            setAccNo(newValue);
-          }}
+          onChange={(event, newValue) => onAccountSelected(newValue)}
           inputValue={accNo}
           onInputChange={(event, newInputValue) => {
             setAccNo(newInputValue);
@@ -78,7 +117,7 @@ const AllTransactions = (props) => {
       </div>
 
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={props.transactionDetails} columns={columns} checkboxSelection={false} components={{Toolbar: GridToolbar}}/>
+        <DataGrid rows={rows} columns={columns} checkboxSelection={false} components={{Toolbar: GridToolbar}}/>
       </div>
     </div>
   );
