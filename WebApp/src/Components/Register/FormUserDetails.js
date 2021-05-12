@@ -13,6 +13,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Container from '@material-ui/core/Container';
 import { withStyles } from "@material-ui/core/styles";
+import { Link } from 'react-router-dom';
 
 const initialState = {
     step: 1,
@@ -49,9 +50,11 @@ const initialState = {
 
 const styles = theme => ({
     button: {
-        margin: theme.spacing(1)
+        margin: theme.spacing(1),
+        width: '25ch',
 
     },
+
 
     root: {
         '& .MuiTextField-root': {
@@ -77,6 +80,7 @@ export class FormUserDetails extends Component {
 
         }
     };
+
 
 
 
@@ -209,7 +213,6 @@ export class FormUserDetails extends Component {
                             helperText={values.phoneError !== "" ? values.phoneError : ""}
 
                         />
-
 
                         <TextField
                             variant='outlined'
@@ -385,6 +388,12 @@ export class FormUserDetails extends Component {
 
                     <div>
 
+                        <Button variant="contained" >
+                            <Link to="">
+                                Cancel
+                            </Link>
+                        </Button>
+
                         <Button
                             type='submit'
                             variant='contained'
@@ -392,7 +401,8 @@ export class FormUserDetails extends Component {
                             style={styles.button}
                             onClick={this.continue}>
                             Continue
-                            </Button>
+                        </Button>
+
                     </div>
 
                 </form >

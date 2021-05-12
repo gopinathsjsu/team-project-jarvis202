@@ -79,9 +79,7 @@ export class UserForm extends Component {
         }
     };
 
-    handleCancel = event => {
 
-    }
 
     render() {
 
@@ -117,6 +115,7 @@ export class UserForm extends Component {
                             handleChange={this.handleChange}
                             values={values}
                             handleSubmit={this.handleSubmit}
+
 
                         />
                     </form >
