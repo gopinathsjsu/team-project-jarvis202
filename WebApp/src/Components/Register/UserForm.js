@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import FormUserDetails from './FormUserDetails'
 import Confirm from './Confirm'
 import Success from './Success'
-import AppBar from '@material-ui/core/AppBar';
+
 
 const initialState = {
     step: 1,
@@ -129,7 +129,8 @@ export class UserForm extends Component {
                 />
 
             case 3:
-                return < Success />
+                return <Success values ={values}
+                />
         }
     }
 }

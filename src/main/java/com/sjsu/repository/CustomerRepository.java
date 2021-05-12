@@ -34,4 +34,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 	@Query("SELECT new com.sjsu.dto.TransactionsDTO(t.transactionId, t.fromAccount, t.toAccount, t.description, t.amount, t.transactionType, t.transactionDate) FROM Transactions t where t.fromAccount=?1")
 	public List<TransactionsDTO> getTransByAccountId(Integer accountNum);
+
+	@Query("SELECT new com.sjsu.dto.CustomerResponseDTO(max(customerId)) FROM Customer ")
+	public CustomerResponseDTO getLastCustomerId();
 }

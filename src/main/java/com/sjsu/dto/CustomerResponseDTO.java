@@ -69,4 +69,9 @@ public class CustomerResponseDTO {
 		this.accountType = accountType;
 	}
 
+	public CustomerResponseDTO(Integer customerId) {
+		super();
+		this.customerId = customerId;
+	}
+
 }

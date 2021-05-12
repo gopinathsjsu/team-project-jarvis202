@@ -29,6 +29,9 @@ public class CustomerController {
 	 */
 	@PostMapping(path = "add/customer")
 	public Customer addMember(@RequestBody Customer customer) {
+		if (customer.getCustomerId() == null) {
+			customer.setCustomerId(customerService.getLastCustId() + 1);
+		}
 		customer = customerService.addCustomerDetails(customer);
 		return customer;
 	}

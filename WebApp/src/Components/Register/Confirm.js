@@ -47,15 +47,11 @@ export class Confirm extends Component {
         accountDetails.balance = 0;
         customerDetails.account.push(accountDetails);
 
-        // customerDetails.account.push(accountDetails);
         console.log(customerDetails);
         ServiceAPI.addCustomer(customerDetails).then(function (response) {
             console.log('Customer details added successfully')
             ServiceAPI.subscribeCustomerByPhone(customerDetails.phoneNumber).then(function (response) {
                 console.log('Customer successfully subscribed');
-            }).then(function (response) {
-                //to do 
-                console.log('to - do')
             }).catch(function (error) {
                 console.log(error)
                 console.log('Unable to subscribe customer phone number')

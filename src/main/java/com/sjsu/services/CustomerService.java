@@ -70,4 +70,8 @@ public class CustomerService {
 		List<TransactionsDTO> trans = customerRepository.getTransByAccountId(accountNum);
 		return trans;
 	}
+
+	public Integer getLastCustId(){
+		return customerRepository.getLastCustomerId().getCustomerId();
+	}
 }
