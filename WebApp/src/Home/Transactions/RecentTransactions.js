@@ -7,6 +7,7 @@ import ServiceAPI from '../../Components/ServiceAPI';
 const RecentTransactions = (props) => {
   const [accNo, setAccNo] = React.useState('');
   const [fromAccounts, setFromAccounts] = React.useState([]);
+  const [rows, setRows] = React.useState(props.recentTransactionDetails);
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
@@ -34,6 +35,9 @@ const RecentTransactions = (props) => {
     
   }, []);
 
+  useEffect(() => {
+    setRows(props.recentTransactionDetails);
+  }, [props.recentTransactionDetails]);
 
   const columns = [
     { field: 'id', headerName: 'Transaction ID', width: 150 },
@@ -58,15 +62,33 @@ const RecentTransactions = (props) => {
     },
   ];
 
+  const onAccountSelected = (accNum) => {
+    ServiceAPI.getTansByAccountId(parseInt(accNum)).then(function (response) {
+      const selectedAccountDetails = response.data && response.data ? response.data : [];
+
+      const allTransactions = [];
+      selectedAccountDetails.forEach(transaction => {
+          let rowDetails = {};
+          rowDetails.id = transaction.transactionId;
+          rowDetails.remark = transaction.description;
+          rowDetails.amount = transaction.amount;
+          rowDetails.type = transaction.transactionType;
+          rowDetails.transactionDate = transaction.transactionDate;
+          allTransactions.push(rowDetails);
+      });
+      const recentTransactions = allTransactions.sort().slice(0, 5);
+      setRows(recentTransactions);
+
+    });
+  }
+
   return (
     <div className="RecentTransactions">
       <div className="transactionGridHeader">
         <h3>Recent Transactions</h3>
         <Autocomplete
           value={accNo}
-          onChange={(event, newValue) => {
-            setAccNo(newValue);
-          }}
+          onChange={(event, newValue) => onAccountSelected(newValue)}
           inputValue={accNo}
           onInputChange={(event, newInputValue) => {
             setAccNo(newInputValue);
@@ -79,7 +101,7 @@ const RecentTransactions = (props) => {
       </div>
       
       <div style={{ height: 350, width: '100%' }}>
-        <DataGrid rows={props.recentTransactionDetails} columns={columns} checkboxSelection={false} hideFooterPagination={true}/>
+        <DataGrid rows={rows} columns={columns} checkboxSelection={false} hideFooterPagination={true}/>
       </div>
     </div>
   );

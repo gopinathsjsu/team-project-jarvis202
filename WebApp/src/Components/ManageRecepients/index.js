@@ -33,6 +33,7 @@ const ManageRecepients = () => {
     { field: 'id', headerName: 'Id', width: 180 },
     { field: 'firstName', headerName: 'First Name', width: 180, },
     { field: 'lastName', headerName: 'Last Name', width: 180, },
+    { field: 'companyName', headerName: 'Company Name', width: 180, },
     { field: 'nickName', headerName: 'Nick Name', width: 180 },
     { field: 'accountNum', headerName: 'Account Number', width: 180 },
     { field: 'zipCode', headerName: 'ZipCode', width: 180, },

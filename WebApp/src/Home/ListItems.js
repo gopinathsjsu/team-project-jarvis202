@@ -144,7 +144,7 @@ const ListItems = () => {
                 <ListItemIcon>
                   <AddBox />
                 </ListItemIcon>
-                <ListItemText primary='Add Account' />
+                <ListItemText primary='Add Recepient' />
               </ListItem>
           </Link>
         </div>

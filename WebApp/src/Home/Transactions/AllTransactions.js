@@ -63,10 +63,8 @@ const AllTransactions = (props) => {
   }, [props.transactionDetails]);
 
   const onAccountSelected = (accNum) => {
-    ServiceAPI.getCustomerIdByAccountNum(parseInt(accNum)).then(function (response) {
-      const selectedAccountDetails = response.data[0] && response.data[0].transactions ? response.data[0].transactions : [];
-      // const accn = []
-      console.log("account transactions", selectedAccountDetails);
+    ServiceAPI.getTansByAccountId(parseInt(accNum)).then(function (response) {
+      const selectedAccountDetails = response.data && response.data ? response.data : [];
 
       const allTransactions = [];
       selectedAccountDetails.forEach(transaction => {
@@ -80,22 +78,6 @@ const AllTransactions = (props) => {
       });
       setRows(allTransactions);
 
-    //   if (response.data[0].account.length > 0) {
-    //     response.data[0].account.forEach(function (acc) {
-    //       if (acc.accountStatus !== 'CLOSED' && acc.accNumber == varDetails.toAccount) {
-    //         accn.push(acc.accNumber.toString());
-    //       }
-    //     })
-    //   }
-
-    //   const idx = accn.indexOf(varDetails.toCustAccount.toString());
-    //   console.log(idx);
-    //   toCustDetails.account[idx].balance = toCustDetails.account[idx].balance + varDetails.toDetails.amount;
-    //   toCustDetails.transactions.push(varDetails.toTransDetails);
-    //   ServiceAPI.addCustomer(toCustDetails).then(function (response) {
-    //     console.log('Credit transaction is created successfully');
-    //   })
-    // })
     });
   }
   return (

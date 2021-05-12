@@ -176,7 +176,7 @@ const AddRecepient = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Typography variant='h5' align='left' color='primary'>
-            Add Account
+            Add Recepient
           </Typography>
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
