@@ -1,5 +1,11 @@
 # team-project-jarvis202
 team-project-jarvis created by GitHub Classroom
+# Application URL
+
+# Team Members
+# Technology Stack
+# Architecture Diagram
+
 # XP Core Values
 ## Communication 
 *	Communication played integral role in our team project. We maintained healthy communication throughout the project cycle.
@@ -26,3 +32,23 @@ team-project-jarvis created by GitHub Classroom
 *	We gave upmost priority to give respect to individual within the team. Each member was supported for all the ideas with brain storming sessions. It was important to listen to the problems and provide help in any way to each team member.
 *	We incorporated all the feedback or review comments given by each and every team member with no doubt about the capabilities of individual.
 *	We considered the technical expertise of each member and selected the technology stack accordingly. We figured out that the team member not only gives the best when he is working in the supportive and encouraging environment, but he tries to learn and achieve new milestones in the process.
+
+# Task Sheet
+
+# Burndown Chart
+
+# Screenshots of Banking System
+
+# Delivered APIs and Sample Postman requests and responses
+
+# DataBase Table document
+
+# Individual Contribution
+
+# Sprint Journal
+
+# 
+
+
+
+#
