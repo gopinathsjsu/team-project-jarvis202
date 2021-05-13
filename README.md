@@ -93,7 +93,9 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ![](Images/SrujanaSprint.JPG)
 ![](Images/UmaSprint.JPG)
 
-# 
+# Scrum Dashboard
+## We have used Jira
+![](Images/Stories.JPG)
 
 
 
