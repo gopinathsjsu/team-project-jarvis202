@@ -87,9 +87,11 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ![](Images/AddedReceipients.JPG)
 ![](Images/Accounts.JPG)
 
-# Individual Contribution
-
-# Sprint Journal
+# Individual Contribution & Individual Sprint Journal
+![](Images/MamathaSprint.jpeg)
+![](Images/PrajaktaSprint.JPG)
+![](Images/SrujanaSprint.JPG)
+![](Images/UmaSprint.JPG)
 
 # 
 
