@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const apiUrl = 'http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/';
-const apiUrl = 'http://localhost:8080/';
+const apiUrl = 'http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/';
+// const apiUrl = 'http://localhost:8080/';
 class ServiceAPI {
   addCustomer(customer) {
     return axios.post(apiUrl + 'add/customer', customer);

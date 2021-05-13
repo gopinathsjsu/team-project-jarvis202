@@ -30,6 +30,7 @@ const AllCustomers = () => {
     { field: 'id', headerName: 'Customer ID', width: 50, },
     { field: 'firstName', headerName: 'First Name', width: 180, },
     { field: 'middleName', headerName: 'Middle Name', width: 180 },
+    { field: 'accountNumber', headerName: 'Account Number', width: 180},
     { field: 'lastName', headerName: 'Last Name', width: 180, },
     { field: 'userName', headerName: 'User Name', width: 180, },
     { field: 'dateOfBirth', headerName: 'Date Of Birth', width: 180, },
@@ -42,7 +43,10 @@ const AllCustomers = () => {
       const rowData = [];
       if (response.data.length > 0) {
         response.data.forEach(function (row) {
+          let accounts = row.account.map(a => a.accNumber);
+          let accountDetails = accounts.join();
           row.id = row.customerId;
+          row.accountNumber = accountDetails;
           rowData.push(row);
         })
         setRows(rowData);
