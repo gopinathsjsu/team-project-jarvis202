@@ -106,3 +106,6 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ![](Images/BankTransfer1.JPG)
 ![](Images/BankTransfer2.JPG)
 ![](Images/BankTransfer3.JPG)
+
+# XP Core Values with in a Team
+Everyone worked in the team with all these XP Values (Communication, Simplicity, Feedback, Courage ,Respect ) depending up on the time and when ever they are required
