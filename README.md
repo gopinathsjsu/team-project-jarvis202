@@ -100,6 +100,6 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ## We have used Jira
 ![](Images/Stories.JPG)
 
-
-
-#
+# UI WireFrames
+![](Images/UIWireFrame1.jpeg)
+![](Images/UIWireFrame1.jpeg)
