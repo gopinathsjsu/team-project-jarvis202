@@ -138,6 +138,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<finalName>cmpe202</finalName>
 	</build>
 
 </project>
