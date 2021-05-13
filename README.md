@@ -81,6 +81,11 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 
 
 # DataBase Table document
+![](Images/CustomersTable.JPG)
+![](Images/RecurringJobs.JPG)
+![](Images/Transactions.JPG)
+![](Images/AddedReceipients.JPG)
+![](Images/Accounts.JPG)
 
 # Individual Contribution
 
