@@ -103,3 +103,6 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 # UI WireFrames
 ![](Images/UIWireFrame1.jpeg)
 ![](Images/UIWireFrame1.jpeg)
+![](Images/BankTransfer1.JPG)
+![](Images/BankTransfer2.JPG)
+![](Images/BankTransfer3.JPG)
