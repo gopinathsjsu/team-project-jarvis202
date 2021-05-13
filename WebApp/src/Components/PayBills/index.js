@@ -113,43 +113,17 @@ const PayBills = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('submitted')
-    console.log(fromAccounts)
-    const fa = fromAcc.substring(0, 5);
-    const ta = toAcc.substring(0, 5);
-    const idx = fromAccounts.indexOf(fa.toString());
-    console.log(fa)
-
-    console.log(idx)
-    const accountBalance = custDetails.account[idx].balance;
-    if (accountBalance < amount) {
-      setErrorMessage('Insufficient funds to initiate Transfer!');
-      setHasError(true);
-    }
-    else {
-      custDetails.account[idx].balance = accountBalance - amount;
-
-      const todayDate = new Date();
-
-      var transactionDetails = {};
-      transactionDetails.transactionId = 1;
-      transactionDetails.description = remarks;
-      transactionDetails.amount = amount;
-      transactionDetails.transactionType = 'DEBIT';
-      transactionDetails.fromAccount = fa;
-      transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-      transactionDetails.toAccount = ta;
-      // transactionDetails.fromAccount = fromAcc;
-      custDetails.transactions.push(transactionDetails);
-
-      const toTransactionDetails = {};
-      toTransactionDetails.transactionId = 1;
-      toTransactionDetails.description = remarks;
-      toTransactionDetails.amount = amount;
-      toTransactionDetails.transactionType = 'CREDIT';
-      toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-      toTransactionDetails.fromAccount = fa;
-      toTransactionDetails.toAccount = ta;
+    if (isRecurring) {
+      var JobDetails = {};
+      const d = new Date(recurringDate);
+      const recurDate = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + (d.getDate() + 1);
+      JobDetails.description = remarks;
+      JobDetails.amount = amount;
+      JobDetails.toAccount = toAcc.substring(0, 5);
+      JobDetails.fromAccount = fromAcc.substring(0, 5);
+      JobDetails.transactionType = 'DEBIT';
+      JobDetails.transDate = recurDate;
+      JobDetails.customerId = custDetails.customerId;
       ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
         console.log(response);
         const varDetails = {};
@@ -157,18 +131,8 @@ const PayBills = () => {
         varDetails.custDetails = custDetails;
         varDetails.otpCode = response.data;
         varDetails.phoneNumber = custDetails.phoneNumber;
-        varDetails.type = 'makeTransfer';
-
-        varDetails.toTransDetails = toTransactionDetails;
-        varDetails.toCustAccount = ta;
-        // if (isSameBank) {
-        //   varDetails.toTransDetails = toTransactionDetails;
-        //   varDetails.toCustAccount = ta;
-        //   varDetails.sameBank = 1;
-        // }
-        // else {
-        //   varDetails.sameBank = 0;
-        // }
+        varDetails.type = 'recurringPayment';
+        varDetails.JobDetails = JobDetails;
 
         const path = '/validateOTP/:' + varDetails;
         history.push({
@@ -180,7 +144,78 @@ const PayBills = () => {
       }).catch(function (error) {
         console.log('Unable to send otp', error);
       });
+     
+    } else {
+      console.log('submitted')
+      console.log(fromAccounts)
+      const fa = fromAcc.substring(0, 5);
+      const ta = toAcc.substring(0, 5);
+      const idx = fromAccounts.indexOf(fa.toString());
+      console.log(fa)
+
+      console.log(idx)
+      const accountBalance = custDetails.account[idx].balance;
+      if (accountBalance < amount) {
+        setErrorMessage('Insufficient funds to initiate Transfer!');
+        setHasError(true);
+      }
+      else {
+        custDetails.account[idx].balance = accountBalance - amount;
+
+        const todayDate = new Date();
+
+        var transactionDetails = {};
+        transactionDetails.transactionId = 1;
+        transactionDetails.description = remarks;
+        transactionDetails.amount = amount;
+        transactionDetails.transactionType = 'DEBIT';
+        transactionDetails.fromAccount = fa;
+        transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+        transactionDetails.toAccount = ta;
+        // transactionDetails.fromAccount = fromAcc;
+        custDetails.transactions.push(transactionDetails);
+
+        const toTransactionDetails = {};
+        toTransactionDetails.transactionId = 1;
+        toTransactionDetails.description = remarks;
+        toTransactionDetails.amount = amount;
+        toTransactionDetails.transactionType = 'CREDIT';
+        toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+        toTransactionDetails.fromAccount = fa;
+        toTransactionDetails.toAccount = ta;
+        ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
+          console.log(response);
+          const varDetails = {};
+          varDetails.customerId = custDetails.customerId;
+          varDetails.custDetails = custDetails;
+          varDetails.otpCode = response.data;
+          varDetails.phoneNumber = custDetails.phoneNumber;
+          varDetails.type = 'makeTransfer';
+
+          varDetails.toTransDetails = toTransactionDetails;
+          varDetails.toCustAccount = ta;
+          // if (isSameBank) {
+          //   varDetails.toTransDetails = toTransactionDetails;
+          //   varDetails.toCustAccount = ta;
+          //   varDetails.sameBank = 1;
+          // }
+          // else {
+          //   varDetails.sameBank = 0;
+          // }
+
+          const path = '/validateOTP/:' + varDetails;
+          history.push({
+            pathname: path,
+            state: {
+              varDetails: varDetails
+            }
+          })
+        }).catch(function (error) {
+          console.log('Unable to send otp', error);
+        });
+      }
     }
+    
 
   }
 
@@ -249,7 +284,7 @@ const PayBills = () => {
                 disablePast='false'
                 disableToolbar
                 variant='inline'
-                format='MM/dd/yyyy'
+                format='yyyy-MM-dd'
                 margin='normal'
                 label='Date'
                 value={recurringDate}

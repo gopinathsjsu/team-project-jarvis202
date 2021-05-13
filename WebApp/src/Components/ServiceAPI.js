@@ -56,6 +56,14 @@ class ServiceAPI {
   sendMessage(details) {
     return axios.post(apiUrl + 'sendMessage', details);
   }
+
+  setRecurringPayment(jobDetails) {
+    return axios.post(apiUrl + 'updateNextTrans', jobDetails);
+  }
+
+  getJobsOfCustomer(customerId) {
+    return axios.get(apiUrl + 'getJobsOfCustomer/' + customerId);
+  }
 }
 
 export default new ServiceAPI();

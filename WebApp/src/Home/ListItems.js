@@ -147,6 +147,14 @@ const ListItems = () => {
                 <ListItemText primary='Add Recepient' />
               </ListItem>
           </Link>
+          <Link to='recurPayments' key='TF1' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+            <ListItem button>
+              <ListItemIcon>
+                <AddBox />
+              </ListItemIcon>
+              <ListItemText primary='Recurring Payments' />
+            </ListItem>
+          </Link>
         </div>
       )
     }

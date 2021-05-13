@@ -40,7 +40,73 @@ const MakeTransaction = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('submitted')
+    // console.log('submitted')
+    // console.log(fromAccounts)
+    // const fa = '11111';
+    // const ta = toAcc;
+    
+    // const idx = fromAccounts.indexOf(fa.toString());
+    // console.log(fa)
+
+    // console.log(idx)
+    // const accountBalance = custDetails.account[idx].balance;
+    // if (accountBalance < amount) {
+    //   setErrorMessage('Insufficient funds to initiate Transfer!');
+    //   setHasError(true);
+    // }
+    // else {
+    //   custDetails.account[idx].balance = accountBalance - amount;
+
+    //   const todayDate = new Date();
+
+    //   var transactionDetails = {};
+    //   transactionDetails.transactionId = 1;
+    //   transactionDetails.description = remarks;
+    //   transactionDetails.amount = amount;
+    //   transactionDetails.transactionType = 'DEBIT';
+    //   transactionDetails.fromAccount = fa;
+    //   transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+    //   transactionDetails.toAccount = ta;
+    //   // transactionDetails.fromAccount = fromAcc;
+    //   custDetails.transactions.push(transactionDetails);
+
+    //   const toTransactionDetails = {};
+    //   toTransactionDetails.transactionId = 1;
+    //   toTransactionDetails.description = remarks;
+    //   toTransactionDetails.amount = amount;
+    //   toTransactionDetails.transactionType = 'CREDIT';
+    //   toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+    //   toTransactionDetails.fromAccount = fa;
+    //   toTransactionDetails.toAccount = ta;
+    //   ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
+    //     console.log(response);
+    //     const varDetails = {};
+    //     varDetails.customerId = custDetails.customerId;
+    //     varDetails.custDetails = custDetails;
+    //     varDetails.otpCode = response.data;
+    //     varDetails.phoneNumber = custDetails.phoneNumber;
+    //     varDetails.type = 'makeTransfer';
+
+    //     if (isSameBank) {
+    //       varDetails.toTransDetails = toTransactionDetails;
+    //       varDetails.toCustAccount = ta;
+    //       varDetails.sameBank = 1;
+    //     }
+    //     else {
+    //       varDetails.sameBank = 0;
+    //     }
+
+    //     const path = '/validateOTP/:' + varDetails;
+    //     history.push({
+    //       pathname: path,
+    //       state: {
+    //         varDetails: varDetails
+    //       }
+    //     })
+    //   }).catch(function (error) {
+    //     console.log('Unable to send otp', error);
+    //   });
+    // }
   }
 
   const handleCancel = async () => {

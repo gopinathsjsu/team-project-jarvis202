@@ -32,6 +32,7 @@ import AllCustomers from '../Components/AllCustomers';
 import MakeTransaction from '../Components/MakeTransaction';
 import CustomerTransactions from '../Components/CustomerTransactions';
 import CustomerAccounts from '../Components/CustomerAccounts';
+import RecurringPayment from '../Components/RecurringPayment';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -196,6 +197,7 @@ export default function Dashboard() {
           <Route exact path='/makeTransaction' component={() => <MakeTransaction />} />
           <Route exact path='/customerAccounts' component={() => CustomerAccounts} />
           <Route exact path='/customerTransactions' component={() => CustomerTransactions} />
+          <Route exact path='/recurPayments' component={() => <RecurringPayment />} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>

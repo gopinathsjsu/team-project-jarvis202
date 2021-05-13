@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -93,11 +94,11 @@ public class Customer implements Serializable {
 	@Column(name = "resident")
 	private String countryOfResidence;
 
-	@OneToMany(targetEntity = Account.class, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = Account.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "customerID_FK", referencedColumnName = "customerId")
 	private Set<Account> account;
 
-	@OneToMany(targetEntity = Transactions.class, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = Transactions.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "customerID_FK", referencedColumnName = "customerId")
 	private Set<Transactions> transactions;
 }
