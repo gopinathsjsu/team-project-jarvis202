@@ -1,9 +1,31 @@
 # team-project-jarvis202
 team-project-jarvis created by GitHub Classroom
 # Application URL
+http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/ 
 
-# Team Members
+# Team Members (Jarvis)
+●	Mamatha Guntu 
+●	Prajaktha Joshi
+●	Umashankar Kumar
+●	Srujana Koripalli
+
 # Technology Stack
+### FrontEnd
+* React 
+* Material UI
+### BackEnd
+* Springboot
+### DataBase
+* MySql
+### Deployement
+* Amazon Elastic BeanStalk
+### Cloud Services
+* RDS - For DataBase
+* Amplify CLI- To Create the React project
+* Amazon Cognito for Authentication and Authorization
+* Amazon SNS - For OTP for Mobiles
+* Amazon SES- For Sending Emails
+
 # Architecture Diagram
 ![](Images/202BankingArchitecture.jpg)
 
@@ -40,12 +62,21 @@ team-project-jarvis created by GitHub Classroom
 
 # Screenshots of Banking System
 
+![](Images/SignIn.JPG)
+![](Images/UserRegistration.JPG)
+![](Images/MyTransactionsPage.JPG)
+![](Images/AddAccount.JPG)
+![](Images/Close Account.JPG)
+![](Images/ManageRecient.JPG)
+![](Images/TransferFunds.JPG)
+![](Images/TransferActivity.JPG)
+![](Images/PayBills.JPG)
+![](Images/AddRecepient.JPG)
+
 # Delivered APIs and Sample Postman requests and responses
 
 ![](Images/GetAccountDetails.JPG)
-
 ![](Images/GetAllCustomers.JPG)
-
 ![](Images/GetByUserName.JPG)
 
 
