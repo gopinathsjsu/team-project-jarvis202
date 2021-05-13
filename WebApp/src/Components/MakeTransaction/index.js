@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MakeTransaction = () => {
   const classes = useStyles();
-  const [fromAcc, setFromAcc] = React.useState('');
+  // const [fromAcc, setFromAcc] = React.useState('');
   const [toAcc, setToAcc] = React.useState('');
   const [amount, setAmount] = React.useState(0);
   const [remarks, setRemarks] = React.useState(0);
@@ -29,10 +29,10 @@ const MakeTransaction = () => {
   // to-do: fetch the account numbers and the type of account 
   const fromAccOptions = ['Mamatha - savings', 'Mamatha - Checkings']
 
-  const handleFromAccChange = async (e) => {
-    setFromAcc(e.target.value);
-    console.log("set the from account value")
-  }
+  // const handleFromAccChange = async (e) => {
+  //   setFromAcc(e.target.value);
+  //   console.log("set the from account value")
+  // }
 
   const handleToAccChange = async (e) => {
     setToAcc(e.target.value);
@@ -52,13 +52,7 @@ const MakeTransaction = () => {
     <Container className={classes.marginspacing}>
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <Autocomplete
-            id='toAccount'
-            options={fromAccOptions}
-            style={{ width: 300 }}
-            onChange={handleToAccChange}
-            renderInput={(params) => <TextField {...params} required label='To' variant='outlined' />}
-          />
+          <TextField required id='toAccount' label='To Account' variant='outlined' onChange={(event) => setToAcc(event.target.value)} />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField required id='amount' label='Amount ($)' variant='outlined' onChange={(event) => setAmount(event.target.value)} />

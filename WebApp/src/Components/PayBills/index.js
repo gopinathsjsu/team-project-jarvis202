@@ -79,7 +79,7 @@ const PayBills = () => {
         const dpt = []
         if (response.data.length > 0) {
           response.data.forEach(function (row) {
-            if (row.companyName !== null) {
+            if (row.companyName !== null && row.firstName === "" && row.lastName === "") {
               recepientData.push(row.accountNum.toString());
               dpt.push(row.accountNum.toString() + ' --- ' + row.companyName);
             }
@@ -226,7 +226,7 @@ const PayBills = () => {
             id='toAccount'
             options={displayTo}
             style={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label='To Account' variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label='To Company' variant="outlined" />}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
