@@ -88,11 +88,11 @@ export const Transactions = () => {
           </Paper>
         </Grid>
         {/* Recent Transactions */}
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Paper className={classes.paper}>
             <RecentTransactions recentTransactionDetails={recentTransactionDetails} />
           </Paper>
-        </Grid>
+        </Grid> */}
         {/* All Transactions */}
         <Grid item xs={12}>
           <Paper className={classes.paper}>
