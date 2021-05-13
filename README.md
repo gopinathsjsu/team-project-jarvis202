@@ -5,6 +5,7 @@ team-project-jarvis created by GitHub Classroom
 # Team Members
 # Technology Stack
 # Architecture Diagram
+![](Images/202BankingArchitecture.jpg)
 
 # XP Core Values
 ## Communication 
@@ -40,6 +41,13 @@ team-project-jarvis created by GitHub Classroom
 # Screenshots of Banking System
 
 # Delivered APIs and Sample Postman requests and responses
+
+![](Images/GetAccountDetails.JPG)
+
+![](Images/GetAllCustomers.JPG)
+
+![](Images/GetByUserName.JPG)
+
 
 # DataBase Table document
 
