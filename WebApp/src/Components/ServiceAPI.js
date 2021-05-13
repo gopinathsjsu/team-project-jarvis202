@@ -51,6 +51,11 @@ class ServiceAPI {
   getTansByAccountId(accountNum) {
     return axios.get(apiUrl + 'getTransByAccount/' + accountNum);
   }
+
+  // details is an object with phone number and message
+  sendMessage(details) {
+    return axios.post(apiUrl + 'sendMessage', details);
+  }
 }
 
 export default new ServiceAPI();

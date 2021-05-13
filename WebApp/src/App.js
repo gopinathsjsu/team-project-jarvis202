@@ -44,7 +44,7 @@ function App() {
             <Switch>
               <Route path='/' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} />} />
               <Route path='/signUp' exact component={() => <SignUp />} />
-              <Route path='/confirmSignUp/:email' exact component={() => <ConfirmSignUp />} />
+              <Route path='/confirmSignUp/:details' exact component={() => <ConfirmSignUp />} />
               <Route path='/register' exact component={() => <UserForm />} />
               {/* <Route path='/home' exact component={() => <Home isLoggedIn={isLoggedIn} onIsLoggedIn={onIsLoggedIn} />} /> */}
               <Route path='/home' exact component={() => <Home />} />

@@ -19,7 +19,7 @@ export class Confirm extends Component {
 
         const customerDetails = {};
         const details = this.props.values;
-        customerDetails.userName = '';
+        customerDetails.userName = details.emailId.substring(0, details.emailId.indexOf('@'));
         customerDetails.firstName = details.firstName;
         customerDetails.lastName = details.lastName;
         customerDetails.middleName = details.middleName;

@@ -63,7 +63,9 @@ const SignUp = () => {
                     },
                 });
                 console.log(user);
-                const path = '/confirmSignUp/:' + username;
+                const details = {};
+                details.username = username;
+                const path = '/confirmSignUp/:' + details;
 
 
                 history.push({

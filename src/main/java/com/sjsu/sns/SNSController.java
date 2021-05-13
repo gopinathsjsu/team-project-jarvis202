@@ -7,11 +7,16 @@ import com.amazonaws.services.sns.model.SubscribeRequest;
 import com.amazonaws.services.sns.model.MessageAttributeValue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin("*")
@@ -48,7 +53,7 @@ public class SNSController {
     return "Subscription successful for phone number " + phone;
   }
 
-  @GetMapping("/sendMessage")
+  @GetMapping("/sendMail")
   public String sendMessage() {
     try {
       PublishRequest pr = new PublishRequest(topic_arn, emailMessage(), "CMPE202 New Bank Account");
@@ -78,6 +83,27 @@ public class SNSController {
       System.out.println(e.getLocalizedMessage());
     }
     return otpCode;
+  }
+
+
+  @PostMapping(path ="/sendMessage", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public String sendMessage(@Valid @RequestBody SnsDTO details) {
+    String res = "SMS sent successfully";
+    try {
+      Map<String, MessageAttributeValue> smsAttributes = new HashMap<String, MessageAttributeValue>();
+      smsAttributes.put("AWS.SNS.SMS.SenderID",
+          new MessageAttributeValue().withStringValue("mySenderID").withDataType("String"));
+      smsAttributes.put("AWS.SNS.SMS.SMSType",
+          new MessageAttributeValue().withStringValue("Promotional").withDataType("String"));
+
+      snsClient.publish(
+          new PublishRequest().withMessage(details.getMessage()).withPhoneNumber(details.getPhoneNumber()).withMessageAttributes(smsAttributes));
+
+    } catch (Exception e) {
+      System.out.println(e.getLocalizedMessage());
+      res = "SMS sending Failure";
+    }
+    return res;
   }
 
   private String emailMessage() {

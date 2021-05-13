@@ -13,7 +13,7 @@ import { useHistory, useLocation, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-
+import ServiceAPI from '../../Components/ServiceAPI';
 
 const Alert = (props) => {
     return <MuiAlert elevation={6} variant='filled' {...props} />;
@@ -72,14 +72,38 @@ const ConfirmSignUp = (props) => {
     const [errorMessage, setErrorMessage] = React.useState('');
     const history = useHistory();
     const location = useLocation();
-
+   
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            const username = location.state.uname;
-            await Auth.confirmSignUp(username, code);
-            console.log('User confirmed !')
-            history.push('/');
+            const username = location.state.details.username;
+            const pwd = location.state.details.password;
+            const phoneNumber = location.state.details.phoneNumber;
+
+            await Auth.confirmSignUp(username, code).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            })
+            const msg = 'Hi, Your Username is ' + username + ' and Password is' + pwd;
+            var smsDetails = {};
+            smsDetails.phoneNumber = phoneNumber;
+            smsDetails.message = msg;
+            ServiceAPI.sendMessage(smsDetails).then(function (response) {
+                console.log(response);
+                const mailDetails = {};
+                mailDetails.fromAddress = "cmpe202bank@gmail.com";
+                mailDetails.toAddress = location.state.details.emailId;
+                mailDetails.htmlBody = "Thank you for signing up !";
+                mailDetails.textBody = msg;
+                mailDetails.subject = "Account credentials";
+                ServiceAPI.sendEmail(mailDetails);
+                console.log('User confirmed !')
+                history.push('/');
+            }).catch(function (error) {
+                console.log(error)
+            });
+            
         } catch (error) {
             setErrorMessage(error.message);
             console.log(errorMessage);

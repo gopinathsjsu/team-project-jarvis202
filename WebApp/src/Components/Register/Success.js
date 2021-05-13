@@ -11,10 +11,11 @@ import Amplify, { Auth } from 'aws-amplify';
 export default function Success(props) {
     const history = useHistory();
     const [email, setEmail] = React.useState(props.values.emailId);
-
+    
     const handleSubmit = async () => {
-        const username = email.substring(0, email.indexOf('@'));
+        const username = props.values.emailId.substring(0, props.values.emailId.indexOf('@'));;
         const password = username + '@123';
+        const phoneNumber = props.values.phoneNumber;
         try {
             const dataEmail = {
                 Name: 'email',
@@ -35,12 +36,17 @@ export default function Success(props) {
                 },
             });
             console.log(user);
-            const path = '/confirmSignUp/:' + username;
+            var uDetails = {};
+            uDetails.username = username;
+            uDetails.password = password;
+            uDetails.phoneNumber = phoneNumber;
+            uDetails.emailid = email;
+            const path = '/confirmSignUp/:' + uDetails;
 
 
             history.push({
                 pathname: path,
-                state: { uname: username }
+                state: { details : uDetails }
             })
         } catch (error) {
             // setErrorMessage(error.message);
