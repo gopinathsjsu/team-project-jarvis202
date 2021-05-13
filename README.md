@@ -29,6 +29,9 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 # Architecture Diagram
 ![](Images/202BankingArchitecture.jpg)
 
+# Deployed on Amazon Elastic Beanstalk
+![](Images/ElasticBeanstalk.JPG)
+
 # XP Core Values
 ## Communication 
 *	Communication played integral role in our team project. We maintained healthy communication throughout the project cycle.
