@@ -93,7 +93,7 @@ const ConfirmSignUp = (props) => {
                 console.log(response);
                 const mailDetails = {};
                 mailDetails.fromAddress = "cmpe202bank@gmail.com";
-                mailDetails.toAddress = location.state.details.emailId;
+                mailDetails.toAddress = location.state.details.emailid;
                 mailDetails.htmlBody = "Thank you for signing up !";
                 mailDetails.textBody = msg;
                 mailDetails.subject = "Account credentials";
