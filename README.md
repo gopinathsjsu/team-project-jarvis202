@@ -75,6 +75,7 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ![](Images/TransferActivity.JPG)
 ![](Images/PayBills.JPG)
 ![](Images/AddRecepient.JPG)
+![](Images/RecurringJobs1.JPG)
 
 # Delivered APIs and Sample Postman requests and responses
 
