@@ -69,7 +69,7 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ![](Images/UserRegistration.JPG)
 ![](Images/MyTransactionsPage.JPG)
 ![](Images/AddAccount.JPG)
-![](Images/Close Account.JPG)
+![](Images/Close%20Account.JPG)
 ![](Images/ManageRecient.JPG)
 ![](Images/TransferFunds.JPG)
 ![](Images/TransferActivity.JPG)
@@ -91,7 +91,7 @@ http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/
 ![](Images/Accounts.JPG)
 
 # Individual Contribution & Individual Sprint Journal & Submission (One per Team):
-![](Images/MamathaSprint.jpeg)
+![](Images/MamathaSprint.JPG)
 ![](Images/PrajaktaSprint.JPG)
 ![](Images/SrujanaSprint.JPG)
 ![](Images/UmaSprint.JPG)
