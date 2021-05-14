@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField'
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+import ServiceAPI from '../ServiceAPI';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,30 +26,54 @@ const TransferActivity = () => {
   const classes = useStyles();
   // const [page, setPage] = React.useState(0);
   // const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [rows, setRows] = React.useState([])
+  const history = useHistory();
 
   const columns = [
-    { field: 'id', headerName: 'Transaction ID', width: 180 },
-    { field: 'status', headerName: 'Status', width: 180 },
+    // { field: 'id', headerName: 'Transaction ID', width: 180 },
+    // { field: 'status', headerName: 'Status', width: 180 },
     { field: 'transactionDate', headerName: 'Date', width: 180, format: (value) => value.toLocaleString('en-US'), },
-    { field: 'fromCust', headerName: 'From', width: 180, format: (value) => value.toLocaleString('en-US'), },
-    { field: 'toCust', headerName: 'To', width: 180, },
+    { field: 'fromAccount', headerName: 'From', width: 180, format: (value) => value.toLocaleString('en-US'), },
+    { field: 'toAccount', headerName: 'To', width: 180, },
     { field: 'remarks', headerName: 'Remarks', width: 180, },
     { field: 'transactionAmount', headerName: 'Amount ($)', width: 180, },
   ];
 
+  useEffect(() => {
+    var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
 
-  function createData(transactionID, status, transactionDate, fromCust, toCust, remarks, transactionAmount) {
-    return { transactionID, status, transactionDate, fromCust, toCust, remarks, transactionAmount };
-  }
+    ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
+      console.log(response)
+      const rowData = [];
+      var i = 1;
+      if (response.data[0].transactions.length > 0) {
+        response.data[0].transactions.forEach(function (row) {
+          row.id = i;
+          row.remarks = row.description ==="" ? 'Transfer' : row.description;
+          row.transactionAmount = row.amount;
+          i++;
+          rowData.push(row);
+        })
+        setRows(rowData);
+      }
+    })
+      .catch(function (error) {
+        console.log('Unable to fetch transaction details details', error);
+      });
+  }, []);
 
-  // To-Do : update with the real data from the database
-  const rows = [
-    { id: '12323564', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
-    { id: '12323565', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
-    { id: '12323566', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
-    { id: '12323567', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
-  ]
+
+  // function createData(transactionID, status, transactionDate, fromCust, toCust, remarks, transactionAmount) {
+  //   return { transactionID, status, transactionDate, fromCust, toCust, remarks, transactionAmount };
+  // }
+
+  // // To-Do : update with the real data from the database
+  // const rows = [
+  //   { id: '12323564', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+  //   { id: '12323565', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+  //   { id: '12323566', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+  //   { id: '12323567', status: 'completed', transactionDate: '12/10/2018', fromCust: 'mamatha', toCust: 'uma', remarks: 'starbucks', transactionAmount: 20 },
+  // ]
 
   // const displayOptions = [
   //   'Last 1 month',

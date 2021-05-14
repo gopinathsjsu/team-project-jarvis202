@@ -2,25 +2,37 @@ import React, { Component } from 'react'
 import FormUserDetails from './FormUserDetails'
 import Confirm from './Confirm'
 import Success from './Success'
-import AppBar from '@material-ui/core/AppBar';
+
 
 const initialState = {
     step: 1,
     firstName: '',
     middleName: '',
     lastName: '',
-    email: '',
+    emailId: '',
     occupation: '',
-    address: '',
-    ssn: '',
+    fullAddress: '',
+    phoneNumber: '',
     gender: '',
     city: '',
+    accountType: '',
+    state: '',
+    zipcode: '',
+    ssn: '',
+    sourceOfIncome: '',
+    dateOfBirth: '',
+    citizenshipStatus: '',
+    countryOfResidence: '',
+    country: '',
 
     nameError: "",
     emailError: "",
-    ssnError: "",
+    phoneError: "",
+    accountTypeError: "",
     occError: "",
     cityError: "",
+    stateError: "",
+    zipcodeError: "",
     addError: "",
 }
 
@@ -72,8 +84,26 @@ export class UserForm extends Component {
     render() {
 
         const { step } = this.state;
-        const { firstName, lastName, email, address, city, occupation, ssn, gender, nameError, emailError, ssnError, occError, cityError, addError } = this.state
-        const values = { firstName, lastName, email, address, city, occupation, ssn, gender, nameError, emailError, ssnError, occError, cityError, addError }
+        const { firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn,
+            sourceOfIncome,
+            dateOfBirth,
+            citizenshipStatus,
+            countryOfResidence,
+            country,
+            state,
+            zipcode,
+            accountTypeError
+        } = this.state
+        const values = {
+            firstName, lastName, emailId, fullAddress, city, occupation, phoneNumber, gender, accountType, nameError, emailError, phoneError, occError, cityError, stateError, zipcodeError, addError, ssn, sourceOfIncome,
+            dateOfBirth,
+            citizenshipStatus,
+            countryOfResidence,
+            country,
+            state,
+            zipcode,
+            accountTypeError
+        }
 
         switch (step) {
             case 1:
@@ -85,6 +115,7 @@ export class UserForm extends Component {
                             handleChange={this.handleChange}
                             values={values}
                             handleSubmit={this.handleSubmit}
+
 
                         />
                     </form >
@@ -98,7 +129,8 @@ export class UserForm extends Component {
                 />
 
             case 3:
-                return < Success />
+                return <Success values ={values}
+                />
         }
     }
 }

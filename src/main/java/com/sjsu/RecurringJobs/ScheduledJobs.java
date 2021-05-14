@@ -1,7 +1,9 @@
-package com.sjsu.entity;
+package com.sjsu.RecurringJobs;
 
 import java.io.Serializable;
-import java.util.Date;
+// import java.util.Date;
+import java.sql.*;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,17 +30,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "transactions")
+@Table(name = "ScheduledJobs")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "transactionId")
-public class Transactions implements Serializable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "jobId")
+public class ScheduledJobs implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
-	@Column(name = "transactionId")
-	private Integer transactionId;
+	@Column(name = "job_id")
+	private Integer jobId;
 
 	@Column(name = "description")
 	private String description;
@@ -46,17 +48,30 @@ public class Transactions implements Serializable {
 	@Column(name = "amount")
 	private Double amount;
 
-	@Column(name = "toAccount")
+	@Column(name = "to_account")
 	private Integer toAccount;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "transactionType")
+	@Column(name = "transaction_type")
 	private TransactionType transactionType;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "transactionDate")
-	private Date transactionDate;
+	// @Column(name = "next_transaction_date")
+	// private String nextTransactionDate;
 
-	@Column(name = "acc_number_fk")
-	private Integer fromAccount;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "next_transaction_date")
+	private Date nextTransactionDate;
+
+	@Column(name = "from_account")
+    private Integer fromAccount;
+  
+  // @Column(name="trans_date")
+	// private String transDate;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name="trans_date")
+	private Date transDate;
+
+  @Column(name = "customer_id")
+  private Integer customerId;
 }

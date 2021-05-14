@@ -10,14 +10,16 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ServiceAPI from './../ServiceAPI';
 import { useHistory } from 'react-router-dom';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import FormLabel from '@material-ui/core/FormLabel';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -34,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
   marginspacing: {
     '& > *': {
       margin: theme.spacing(1),
-    },
+    }
+  },
+  textField: {
+    width: '300px'
   }
 }));
 
@@ -47,6 +52,7 @@ const AddRecepient = () => {
   const [routeNum, setRouteNum] = React.useState(0);
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setlastName] = React.useState('');
+  const [companyName, setCompanyName] = React.useState('');
   const [zipCode, setZipCode] = React.useState(0);
   const [recAcc, setRecAcc] = React.useState(0);
   const [confirmRecAcc, setConfirmRecAcc] = React.useState(0);
@@ -57,6 +63,7 @@ const AddRecepient = () => {
   const [hasError, setHasError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('')
   const history = useHistory();
+  const [recepientType, setRecepientType] = React.useState('person');
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem("custDetails"));
@@ -69,6 +76,10 @@ const AddRecepient = () => {
         console.log('Unable to fetch customer contact details', error);
       });
   }, []);
+
+  const onRecepientTypeChange = (event) => {
+    setRecepientType(event.target.value);
+  };
 
   const handleRadioChange = (e) => {
     if (e.target.value === 'isSameBank') {
@@ -95,7 +106,9 @@ const AddRecepient = () => {
   // }
 
   const handleAddRec = () => {
-    if (lastName === '' || zipCode === 0 || recAcc === 0 || confirmRecAcc === 0 || (!isSameBank && routeNum === 0)) {
+    if ((recepientType === 'person' && lastName === '') || 
+        (recepientType === 'person' && zipCode === 0) || 
+        recAcc === 0 || confirmRecAcc === 0 || (recepientType === 'person' && !isSameBank && routeNum === 0)) {
       setErrorMessage('Mandatory fields are missing !! Please fill in the required fields !');
       setHasError(true);
     }
@@ -104,12 +117,14 @@ const AddRecepient = () => {
       setHasError(true);
     }
     else {
+      console.log(companyName)
       ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
         console.log(response);
         const varDetails = {
           custAccountID: custDetails.customerId,
           firstName: firstName,
           lastName: lastName,
+          companyName: companyName,
           zipCode: zipCode,
           accountNum: recAcc,
           nickName: nickName,
@@ -164,15 +179,31 @@ const AddRecepient = () => {
           <Typography variant='h5' align='left' color='primary'>
             Add Recepient
           </Typography>
+        </Grid>
+        <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Recepient Type</FormLabel>
+            <RadioGroup aria-label="recepientType" name="recepientType"
+              value={recepientType}
+              onChange={onRecepientTypeChange}
+              className="radioButtonGroup"
+            >
+              <FormControlLabel value="person" control={<Radio />} label="Person" />
+              <FormControlLabel value="company" control={<Radio />} label="Company" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
             id='fname'
             label='First Name'
             onChange={(event) => setFirstName(event.target.value)}
+            className={classes.textField}
           />
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        </Grid> : null }
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
@@ -180,9 +211,21 @@ const AddRecepient = () => {
             required
             label='Last Name'
             onChange={(event) => setlastName(event.target.value)}
+            className={classes.textField}
           />
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        </Grid> : null }
+        { recepientType === 'company' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='cname'
+            required
+            label='Company Name'
+            onChange={(event) => setCompanyName(event.target.value)}
+            className={classes.textField}
+          />
+        </Grid> : null }
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             margin='dense'
@@ -190,8 +233,9 @@ const AddRecepient = () => {
             required
             label='ZipCode'
             onChange={(event) => setZipCode(event.target.value)}
+            className={classes.textField}
           />
-        </Grid>
+        </Grid> : null }
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
@@ -201,6 +245,7 @@ const AddRecepient = () => {
             label='Account Number'
             type='password'
             onChange={(event) => setRecAcc(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -211,6 +256,7 @@ const AddRecepient = () => {
             id='confirmAccNum'
             label='Confirm Account Number'
             onChange={(event) => setConfirmRecAcc(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -220,9 +266,10 @@ const AddRecepient = () => {
             id='nName'
             label='Nick Name'
             onChange={(event) => setNickName(event.target.value)}
+            className={classes.textField}
           />
         </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <FormControl component='fieldset'>
             <RadioGroup row aria-label='position' name='isSameBank' defaultValue='top'>
               <FormControlLabel
@@ -239,8 +286,8 @@ const AddRecepient = () => {
               />
             </RadioGroup>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
+        </Grid> : null }
+        { recepientType === 'person' ? <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField
             autoFocus
             disabled={disableRN}
@@ -248,8 +295,9 @@ const AddRecepient = () => {
             id='routeNum'
             label='Routing Number'
             onChange={(event) => setRouteNum(event.target.value)}
+            className={classes.textField}
           />
-        </Grid>
+        </Grid> : null}
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Button onClick={handleCancel} color='primary' variant='contained'>
             Cancel

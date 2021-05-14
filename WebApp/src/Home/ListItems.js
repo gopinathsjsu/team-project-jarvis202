@@ -5,7 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import MoneyIcon from '@material-ui/icons/Money';
+import AddBox from '@material-ui/icons/AddBox';
 import PaymentIcon from '@material-ui/icons/Payment';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
@@ -131,12 +131,30 @@ const ListItems = () => {
               </ListItem>
             </Link>
           </Collapse>
-          <ListItem button>
-            <ListItemIcon>
-              <PaymentIcon />
-            </ListItemIcon>
-            <ListItemText primary='Pay Bills' />
-          </ListItem>
+          <Link to='payBills' kye='TF2' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+            <ListItem button>
+              <ListItemIcon>
+                <PaymentIcon />
+              </ListItemIcon>
+              <ListItemText primary='Pay Bills' />
+            </ListItem>
+          </Link>
+          <Link to='addRecepient' key='TF1' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+              <ListItem button>
+                <ListItemIcon>
+                  <AddBox />
+                </ListItemIcon>
+                <ListItemText primary='Add Recepient' />
+              </ListItem>
+          </Link>
+          <Link to='recurPayments' key='TF1' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+            <ListItem button>
+              <ListItemIcon>
+                <AddBox />
+              </ListItemIcon>
+              <ListItemText primary='Recurring Payments' />
+            </ListItem>
+          </Link>
         </div>
       )
     }

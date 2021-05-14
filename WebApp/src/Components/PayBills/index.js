@@ -9,10 +9,11 @@ import ServiceAPI from '../ServiceAPI'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router-dom';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />;
@@ -31,13 +32,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MakeTransfer = () => {
+const PayBills = () => {
   const classes = useStyles();
   const [fromAcc, setFromAcc] = React.useState('');
   const [toAcc, setToAcc] = React.useState('');
   const [amount, setAmount] = React.useState(0);
   const [remarks, setRemarks] = React.useState('');
-  const [otp, setOtp] = React.useState(0);
   const [custDetails, setCustDetails] = React.useState({})
   const [fromAccounts, setFromAccounts] = React.useState([])
   const [toAccounts, setToAccounts] = React.useState([])
@@ -45,12 +45,11 @@ const MakeTransfer = () => {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [success, setSuccess] = React.useState(false);
   const [successMessage, setsuccessMessage] = React.useState('')
-  const [isSameBank, setIsSameBank] = React.useState(true);
-  const [sameBankAcc, setSameBankAcc] = React.useState([]);
-  const [diffAcc, setDiffAcc] = React.useState([]);
   const [displayFrom, setDisplayFrom] = React.useState([]);
   const [displayTo, setDisplayTo] = React.useState([]);
   const history = useHistory();
+  const [isRecurring, setIsRecurring] = React.useState(false);
+  const [recurringDate, setRecurringDate] = React.useState(new Date());
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
@@ -78,24 +77,15 @@ const MakeTransfer = () => {
         console.log(response);
         const recepientData = [];
         const dpt = []
-        const diffBank = [];
-        const sameBK = [];
         if (response.data.length > 0) {
           response.data.forEach(function (row) {
-            console.log('samebank', row.sameBank)
-            if (row.sameBank === false) {
-              diffBank.push(row.accountNum.toString() + ' --- ' + row.nickName)
+            if (row.companyName !== null && row.firstName === "" && row.lastName === "") {
+              recepientData.push(row.accountNum.toString());
+              dpt.push(row.accountNum.toString() + ' --- ' + row.companyName);
             }
-            else {
-              sameBK.push(row.accountNum.toString() + ' --- ' + row.nickName);
-            }
-            recepientData.push(row.accountNum.toString());
-            dpt.push(row.accountNum.toString() + ' --- ' + row.nickName);
           })
           setToAccounts(recepientData);
           setDisplayTo(dpt);
-          setSameBankAcc(sameBK);
-          setDiffAcc(diffBank);
         }
       })
         .catch(function (error) {
@@ -108,30 +98,10 @@ const MakeTransfer = () => {
       });
   }, []);
 
-  const handleRadioChange = (e) => {
+  const handleRecurringChange = (event) => {
+    setIsRecurring(event.target.checked);
+  }
 
-    if (e.target.value === 'isSameBank') {
-      setDisplayTo(sameBankAcc);
-      setIsSameBank(true);
-      // Update with the route number of the current bank
-    }
-    else {
-      setDisplayTo(diffAcc);
-      setIsSameBank(false);
-    }
-  };
-
-  // to-do: fetch the account numbers and the type of account 
-
-  // const handleFromAccChange = async (e) => {
-  //   setFromAcc(e.target.value);
-  //   console.log('set the from account value')
-  // }
-
-  // const handleToAccChange = async (e) => {
-  //   setToAcc(e.target.value);
-  //   console.log('set TO account value')
-  // }
   const handlecloseSnack = () => {
     setHasError(false);
   }
@@ -143,43 +113,17 @@ const MakeTransfer = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('submitted')
-    console.log(fromAccounts)
-    const fa = fromAcc.substring(0, 5);
-    const ta = toAcc.substring(0, 5);
-    const idx = fromAccounts.indexOf(fa.toString());
-    console.log(fa)
-
-    console.log(idx)
-    const accountBalance = custDetails.account[idx].balance;
-    if (accountBalance < amount) {
-      setErrorMessage('Insufficient funds to initiate Transfer!');
-      setHasError(true);
-    }
-    else {
-      custDetails.account[idx].balance = accountBalance - amount;
-
-      const todayDate = new Date();
-
-      var transactionDetails = {};
-      transactionDetails.transactionId = 1;
-      transactionDetails.description = remarks;
-      transactionDetails.amount = amount;
-      transactionDetails.transactionType = 'DEBIT';
-      transactionDetails.fromAccount = fa;
-      transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-      transactionDetails.toAccount = ta;
-      // transactionDetails.fromAccount = fromAcc;
-      custDetails.transactions.push(transactionDetails);
-
-      const toTransactionDetails = {};
-      toTransactionDetails.transactionId = 1;
-      toTransactionDetails.description = remarks;
-      toTransactionDetails.amount = amount;
-      toTransactionDetails.transactionType = 'CREDIT';
-      toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-      toTransactionDetails.fromAccount = fa;
-      toTransactionDetails.toAccount = ta;
+    if (isRecurring) {
+      var JobDetails = {};
+      const d = new Date(recurringDate);
+      const recurDate = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + (d.getDate() + 1);
+      JobDetails.description = remarks;
+      JobDetails.amount = amount;
+      JobDetails.toAccount = toAcc.substring(0, 5);
+      JobDetails.fromAccount = fromAcc.substring(0, 5);
+      JobDetails.transactionType = 'DEBIT';
+      JobDetails.transDate = recurDate;
+      JobDetails.customerId = custDetails.customerId;
       ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
         console.log(response);
         const varDetails = {};
@@ -187,16 +131,8 @@ const MakeTransfer = () => {
         varDetails.custDetails = custDetails;
         varDetails.otpCode = response.data;
         varDetails.phoneNumber = custDetails.phoneNumber;
-        varDetails.type = 'makeTransfer';
-
-        if (isSameBank) {
-          varDetails.toTransDetails = toTransactionDetails;
-          varDetails.toCustAccount = ta;
-          varDetails.sameBank = 1;
-        }
-        else {
-          varDetails.sameBank = 0;
-        }
+        varDetails.type = 'recurringPayment';
+        varDetails.JobDetails = JobDetails;
 
         const path = '/validateOTP/:' + varDetails;
         history.push({
@@ -208,7 +144,78 @@ const MakeTransfer = () => {
       }).catch(function (error) {
         console.log('Unable to send otp', error);
       });
+     
+    } else {
+      console.log('submitted')
+      console.log(fromAccounts)
+      const fa = fromAcc.substring(0, 5);
+      const ta = toAcc.substring(0, 5);
+      const idx = fromAccounts.indexOf(fa.toString());
+      console.log(fa)
+
+      console.log(idx)
+      const accountBalance = custDetails.account[idx].balance;
+      if (accountBalance < amount) {
+        setErrorMessage('Insufficient funds to initiate Transfer!');
+        setHasError(true);
+      }
+      else {
+        custDetails.account[idx].balance = accountBalance - amount;
+
+        const todayDate = new Date();
+
+        var transactionDetails = {};
+        transactionDetails.transactionId = 1;
+        transactionDetails.description = remarks;
+        transactionDetails.amount = amount;
+        transactionDetails.transactionType = 'DEBIT';
+        transactionDetails.fromAccount = fa;
+        transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+        transactionDetails.toAccount = ta;
+        // transactionDetails.fromAccount = fromAcc;
+        custDetails.transactions.push(transactionDetails);
+
+        const toTransactionDetails = {};
+        toTransactionDetails.transactionId = 1;
+        toTransactionDetails.description = remarks;
+        toTransactionDetails.amount = amount;
+        toTransactionDetails.transactionType = 'CREDIT';
+        toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+        toTransactionDetails.fromAccount = fa;
+        toTransactionDetails.toAccount = ta;
+        ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
+          console.log(response);
+          const varDetails = {};
+          varDetails.customerId = custDetails.customerId;
+          varDetails.custDetails = custDetails;
+          varDetails.otpCode = response.data;
+          varDetails.phoneNumber = custDetails.phoneNumber;
+          varDetails.type = 'makeTransfer';
+
+          varDetails.toTransDetails = toTransactionDetails;
+          varDetails.toCustAccount = ta;
+          // if (isSameBank) {
+          //   varDetails.toTransDetails = toTransactionDetails;
+          //   varDetails.toCustAccount = ta;
+          //   varDetails.sameBank = 1;
+          // }
+          // else {
+          //   varDetails.sameBank = 0;
+          // }
+
+          const path = '/validateOTP/:' + varDetails;
+          history.push({
+            pathname: path,
+            state: {
+              varDetails: varDetails
+            }
+          })
+        }).catch(function (error) {
+          console.log('Unable to send otp', error);
+        });
+      }
     }
+    
 
   }
 
@@ -247,24 +254,6 @@ const MakeTransfer = () => {
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <FormControl component='fieldset'>
-            <RadioGroup row aria-label='position' name='isSameBank' defaultValue='top'>
-              <FormControlLabel
-                value='isSameBank'
-                control={<Radio id='sameBank' color='primary' onChange={handleRadioChange} />}
-                label='Same Bank'
-                labelPlacement='end'
-              />
-              <FormControlLabel
-                value='isOtherBank'
-                control={<Radio id='otherBank' color='primary' onChange={handleRadioChange} />}
-                label='Other Bank'
-                labelPlacement='end'
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Autocomplete
             onInputChange={(event, newInputValue) => {
               setToAcc(newInputValue);
@@ -272,7 +261,7 @@ const MakeTransfer = () => {
             id='toAccount'
             options={displayTo}
             style={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label='To Account' variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label='To Company' variant="outlined" />}
           />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
@@ -282,6 +271,28 @@ const MakeTransfer = () => {
           <TextField label='Remarks (Optional)' variant='outlined' onChange={(event) => setRemarks(event.target.value)} />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <FormGroup row>
+            <FormControlLabel
+              control={<Checkbox checked={isRecurring} onChange={handleRecurringChange} name="checkedA" color="primary"/>}
+              label="Set Recurring Payment" 
+            />
+          </FormGroup>
+        </Grid>
+        {isRecurring ? <Grid item xs={12} align='left' className={classes.marginspacing}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disablePast='false'
+                disableToolbar
+                variant='inline'
+                format='yyyy-MM-dd'
+                margin='normal'
+                label='Date'
+                value={recurringDate}
+                onChange={(e, date) => setRecurringDate(date)}
+              />
+            </MuiPickersUtilsProvider>
+        </Grid> : null}
+        <Grid item xs={12} align='left' className={classes.marginspacing}>
           <Button type='submit' variant='contained' onClick={handleSubmit}>Continue</Button>
           <Button type='submit' variant='contained' onClick={handleCancel}>Cancel</Button>
         </Grid>
@@ -290,4 +301,4 @@ const MakeTransfer = () => {
   )
 }
 
-export default MakeTransfer
+export default PayBills

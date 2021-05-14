@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:8080/';
-
+const apiUrl = 'http://cmpe202bankingapp-env.eba-26h39t2w.us-east-1.elasticbeanstalk.com/';
+// const apiUrl = 'http://localhost:8080/';
 class ServiceAPI {
   addCustomer(customer) {
     return axios.post(apiUrl + 'add/customer', customer);
@@ -28,12 +28,41 @@ class ServiceAPI {
     return axios.post(apiUrl + 'addAccount/', accDetails);
   }
 
-  getRecepientsByCustId(customerId) {
-    return axios.get(apiUrl + 'getRecepientsByCustId/' + customerId);
+  getRecepientsByCustId(custUserName) {
+    return axios.get(apiUrl + 'getRecepientsByCustId/' + custUserName);
   }
 
   getAllCustomers() {
     return axios.get(apiUrl + 'getAllCustomers');
+  }
+
+  sendEmail(mailDetails) {
+    return axios.post(apiUrl + 'api/v1/email', mailDetails);
+  }
+
+  subscribeCustomerByPhone(phoneNumber) {
+    return axios.get(apiUrl + 'subscribeByPhone/' + phoneNumber);
+  }
+
+  getCustomerIdByAccountNum(accountNum) {
+    return axios.get(apiUrl + 'getCustomerIdByAccountNum/' + accountNum);
+  }
+
+  getTansByAccountId(accountNum) {
+    return axios.get(apiUrl + 'getTransByAccount/' + accountNum);
+  }
+
+  // details is an object with phone number and message
+  sendMessage(details) {
+    return axios.post(apiUrl + 'sendMessage', details);
+  }
+
+  setRecurringPayment(jobDetails) {
+    return axios.post(apiUrl + 'updateNextTrans', jobDetails);
+  }
+
+  getJobsOfCustomer(customerId) {
+    return axios.get(apiUrl + 'getJobsOfCustomer/' + customerId);
   }
 }
 

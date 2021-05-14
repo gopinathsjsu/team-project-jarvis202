@@ -3,18 +3,17 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { Auth } from 'aws-amplify';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-
+import ServiceAPI from '../../Components/ServiceAPI';
 
 const Alert = (props) => {
     return <MuiAlert elevation={6} variant='filled' {...props} />;
@@ -27,7 +26,7 @@ const Usertext = () => {
             <Link color='inherit'>
                 Please enter the confirmation code sent to your email to complete
                 account sign up!
-      </Link>
+            </Link>
         </Typography>
     );
 };
@@ -73,14 +72,38 @@ const ConfirmSignUp = (props) => {
     const [errorMessage, setErrorMessage] = React.useState('');
     const history = useHistory();
     const location = useLocation();
-
+   
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            const username = location.state.uname;
-            await Auth.confirmSignUp(username, code);
-            console.log('User confirmed !')
-            history.push('/');
+            const username = location.state.details.username;
+            const pwd = location.state.details.password;
+            const phoneNumber = location.state.details.phoneNumber;
+
+            await Auth.confirmSignUp(username, code).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            })
+            const msg = 'Hi, Your Username is ' + username + ' and Password is' + pwd;
+            var smsDetails = {};
+            smsDetails.phoneNumber = phoneNumber;
+            smsDetails.message = msg;
+            ServiceAPI.sendMessage(smsDetails).then(function (response) {
+                console.log(response);
+                const mailDetails = {};
+                mailDetails.fromAddress = "cmpe202bank@gmail.com";
+                mailDetails.toAddress = location.state.details.emailid;
+                mailDetails.htmlBody = "Thank you for signing up !";
+                mailDetails.textBody = msg;
+                mailDetails.subject = "Account credentials";
+                ServiceAPI.sendEmail(mailDetails);
+                console.log('User confirmed !')
+                history.push('/');
+            }).catch(function (error) {
+                console.log(error)
+            });
+            
         } catch (error) {
             setErrorMessage(error.message);
             console.log(errorMessage);
@@ -112,7 +135,7 @@ const ConfirmSignUp = (props) => {
                     </Avatar>
                     <Typography component='h1' variant='h5'>
                         Complete sign up
-          </Typography>
+                    </Typography>
                     <form className={classes.form} noValidate open='false'>
                         <TextField
                             variant='outlined'
@@ -137,7 +160,7 @@ const ConfirmSignUp = (props) => {
                             onClick={handleClick}
                         >
                             Confirm
-            </Button>
+                        </Button>
                     </form>
                 </div>
             </Grid>

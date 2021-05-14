@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sjsu.dto.CustomerResponseDTO;
+import com.sjsu.dto.TransactionsDTO;
 import com.sjsu.entity.Customer;
 import com.sjsu.repository.CustomerRepository;
+import com.sjsu.entity.Transactions;
 
 @Service
 public class CustomerService {
@@ -52,5 +54,24 @@ public class CustomerService {
 
 	public List<CustomerResponseDTO> getCustContactDetails(String userName) {
 		return customerRepository.getCustomerContactDetails(userName);
+	}
+
+	public List<Customer> getCustomerIdByAccountNum(Integer accountNum) {
+		List<CustomerResponseDTO> custDto = customerRepository.getCustIdByAccount(accountNum);
+		List<Customer> custDetails = customerRepository.findByUserName(custDto.get(0).getUserName());
+		return custDetails;
+	}
+
+	public Customer findByUserNameIs(String userName) {
+		return customerRepository.findByUserName(userName).get(0);
+	}
+
+	public List<TransactionsDTO> getTransByAccount(Integer accountNum) {
+		List<TransactionsDTO> trans = customerRepository.getTransByAccountId(accountNum);
+		return trans;
+	}
+
+	public Integer getLastCustId(){
+		return customerRepository.getLastCustomerId().getCustomerId();
 	}
 }

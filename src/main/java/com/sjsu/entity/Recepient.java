@@ -45,7 +45,9 @@ public class Recepient {
   @Column(name = "RoutingNumber", nullable = false)
   private Integer routingNumber;
 
-  @Column(name = "IsSameBank", columnDefinition = "TINYINT", length = 1)
+  @Column(name = "isSameBank")
   private boolean isSameBank;
 
+  @Column(name ="company_name")
+  private String companyName;
 }

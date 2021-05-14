@@ -33,6 +33,7 @@ const ManageRecepients = () => {
     { field: 'id', headerName: 'Id', width: 180 },
     { field: 'firstName', headerName: 'First Name', width: 180, },
     { field: 'lastName', headerName: 'Last Name', width: 180, },
+    { field: 'companyName', headerName: 'Company Name', width: 180, },
     { field: 'nickName', headerName: 'Nick Name', width: 180 },
     { field: 'accountNum', headerName: 'Account Number', width: 180 },
     { field: 'zipCode', headerName: 'ZipCode', width: 180, },
@@ -78,7 +79,7 @@ const ManageRecepients = () => {
         </Grid>
       </Grid>
       <div>
-        <h4> All Customers</h4>
+        <h4> All Recepients</h4>
         <div style={{ height: 400, width: '100%' }}>
           <DataGrid id={Math.random()} rows={rows} columns={columns} checkboxSelection={false} components={{ Toolbar: GridToolbar }} />
         </div>

@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button';
 import { Auth } from 'aws-amplify';
 import MuiAlert from '@material-ui/lab/Alert';
 import MakeTransfer from '../Components/MakeTransfer';
+import PayBills from '../Components/PayBills';
 import TransferActivity from '../Components/TransferActivity';
 import ManageRecepients from '../Components/ManageRecepients';
 import AddRecepient from '../Components/AddRecepient';
@@ -31,6 +32,7 @@ import AllCustomers from '../Components/AllCustomers';
 import MakeTransaction from '../Components/MakeTransaction';
 import CustomerTransactions from '../Components/CustomerTransactions';
 import CustomerAccounts from '../Components/CustomerAccounts';
+import RecurringPayment from '../Components/RecurringPayment';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -186,6 +188,7 @@ export default function Dashboard() {
           <Route exact path='/addAccount' component={() => <AddAccount />} />
           <Route exact path='/closeAccount' component={() => <CloseAccount />} />
           <Route exact path='/makeTransfer' component={() => <MakeTransfer />} />
+          <Route exact path='/payBills' component={() => <PayBills />} />
           <Route exact path='/transferActivity' component={() => <TransferActivity />} />
           <Route exact path='/manageRecepients' component={() => <ManageRecepients />} />
           <Route exact path='/addRecepient' component={() => <AddRecepient />} />
@@ -194,6 +197,7 @@ export default function Dashboard() {
           <Route exact path='/makeTransaction' component={() => <MakeTransaction />} />
           <Route exact path='/customerAccounts' component={() => CustomerAccounts} />
           <Route exact path='/customerTransactions' component={() => CustomerTransactions} />
+          <Route exact path='/recurPayments' component={() => <RecurringPayment />} />
           <div className={classes.appBarSpacer} />
         </main>
       </div>

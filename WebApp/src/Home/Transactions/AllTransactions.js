@@ -1,5 +1,8 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+import ServiceAPI from '../../Components/ServiceAPI';
 
 const columns = [
   { field: 'id', headerName: 'Transaction ID', width: 150 },
@@ -25,11 +28,78 @@ const columns = [
 ];
 
 const AllTransactions = (props) => {
+  const [accNo, setAccNo] = React.useState('');
+  const [fromAccounts, setFromAccounts] = React.useState([]);
+  const [rows, setRows] = React.useState(props.transactionDetails);
+
+  useEffect(() => {
+    var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
+    if (sessionDetails && sessionDetails.uname) {
+      ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
+        const customerAccDetails = response.data[0].account;
+        const accn = []
+        if (customerAccDetails.length > 0) {
+          customerAccDetails.forEach(function (acc) {
+            console.log(acc.accountStatus)
+            if (acc.accountStatus !== 'CLOSED') {
+              accn.push(acc.accNumber.toString())
+            }
+          });
+          setFromAccounts(accn);
+        }
+        if (accn.length === 0) {
+          console.log('You do not have active accounts!')
+        }
+      })
+      .catch(function (error) {
+        console.log('Unable to fetch customer details', error);
+      });
+    }
+    
+  }, []);
+
+  useEffect(() => {
+    setRows(props.transactionDetails);
+  }, [props.transactionDetails]);
+
+  const onAccountSelected = (accNum) => {
+    ServiceAPI.getTansByAccountId(parseInt(accNum)).then(function (response) {
+      const selectedAccountDetails = response.data && response.data ? response.data : [];
+
+      const allTransactions = [];
+      selectedAccountDetails.forEach(transaction => {
+          let rowDetails = {};
+          rowDetails.id = transaction.transactionId;
+          rowDetails.remark = transaction.description;
+          rowDetails.amount = transaction.amount;
+          rowDetails.type = transaction.transactionType;
+          rowDetails.transactionDate = transaction.transactionDate;
+          allTransactions.push(rowDetails);
+      });
+      setRows(allTransactions);
+
+    });
+  }
   return (
     <div className="AllTransactions">
+      <div className="transactionGridHeader">
       <h3>View All Transactions</h3>
+        <Autocomplete
+          value={accNo}
+          onChange={(event, newValue) => onAccountSelected(newValue)}
+          inputValue={accNo}
+          onInputChange={(event, newInputValue) => {
+            setAccNo(newInputValue);
+          }}
+          id='fromAccount'
+          options={fromAccounts}
+          style={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label='Select Account' variant='outlined' />}
+        />
+      </div>
+
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={props.transactionDetails} columns={columns} checkboxSelection={false} components={{Toolbar: GridToolbar}}/>
+        <DataGrid rows={rows} columns={columns} checkboxSelection={false} components={{Toolbar: GridToolbar}}/>
       </div>
     </div>
   );

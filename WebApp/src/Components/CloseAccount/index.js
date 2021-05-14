@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1),
     },
+  },
+  paddingSpacing: {
+    paddingLeft: "24px !important",
+    paddingRight: "24px !important",
   }
 }));
 
@@ -64,13 +68,14 @@ const CloseAccount = () => {
           const accn = []
 
           accDetails.forEach(function (acc) {
+            console.log(acc.accountStatus)
             if (acc.accountStatus !== 'CLOSED') {
               accn.push(acc.accNumber)
             }
           });
           setAccounts(accn);
-          if (accounts.length === 0) {
-            setErrorMsg('You do not have any active accounts to close !')
+          if (accn.length === 0) {
+            setErrorMsg('You do not have any ACTIVE accounts to close !')
             setHasError(true);
           }
         }
@@ -96,26 +101,39 @@ const CloseAccount = () => {
     const idx = accounts.indexOf(parseInt(accNum))
     if (idx === -1) {
       console.log(accNum)
-      console.log('Please provide valid account')
+      setErrorMsg('Invalid Account Number, Please provide your valid account Number');
+      setHasError(true);
     }
     else {
-      // custDetails['account'][idx]['accountStatus'] = 'CLOSED';
-      custDetails.account[idx].accountStatus = 'CLOSED'
-      ServiceAPI.sendOTP(ph).then(function (response) {
-        console.log(response);
-        const varDetails = custDetails;
-        varDetails['type'] = 'closeAccount';
-        console.log(varDetails)
-        const path = '/validateOTP/:' + varDetails;
-        history.push({
-          pathname: path,
-          state: {
-            varDetails: varDetails
+      const balance = custDetails.account[idx].balance;
+      if (balance > 0) {
+        setErrorMsg('Please clear all the balances to close the account !');
+        setHasError(true);
+      }
+      else {
+        // custDetails['account'][idx]['accountStatus'] = 'CLOSED';
+        custDetails.account[idx].accountStatus = 'CLOSED'
+        ServiceAPI.sendOTP(ph).then(function (response) {
+          console.log(response);
+          const varDetails = {
+            customerId: custDetails.customerId,
+            custDetails: custDetails,
+            otpCode: response.data,
+            phoneNumber: custDetails.phoneNumber,
+            type: 'closeAccount'
           }
-        })
-      }).catch(function (error) {
-        console.log('Unable to send otp', error);
-      });
+
+          const path = '/validateOTP/:' + varDetails;
+          history.push({
+            pathname: path,
+            state: {
+              varDetails: varDetails
+            }
+          })
+        }).catch(function (error) {
+          console.log('Unable to send otp', error);
+        });
+      }
     }
 
     console.log(custDetails)
@@ -139,6 +157,9 @@ const CloseAccount = () => {
   }
   const handlecloseSnack = () => {
     setHasError(false);
+    if (errorMsg === 'You do not have any ACTIVE accounts to close !') {
+      history.push('/home');
+    }
   }
 
 
@@ -161,7 +182,7 @@ const CloseAccount = () => {
   // }
 
   return (
-    <Container>
+    <Container className={classes.paddingSpacing}>
       <Snackbar open={hasError} autoHideDuration={6000} onClose={handlecloseSnack}>
         <Alert onClose={handlecloseSnack} severity='error'>
           {errorMsg}
@@ -196,9 +217,9 @@ const CloseAccount = () => {
               />
             </MuiPickersUtilsProvider>
           </Grid>
-          <Typography align='left' variant='h6'>
+          {/* <Typography align='left' variant='h6'>
             Sign
-          </Typography>
+          </Typography> */}
           {/* <Grid item xs={12} align='left'>
             <Box border={1} borderColor='text.primary'>
               <SignatureCanvas
@@ -210,7 +231,7 @@ const CloseAccount = () => {
             </Box>
           </Grid> */}
           <Grid item xs={12} align='left'>
-            <Button type='submit' variant='contained' color='primary' onClick={handleSubmit}>Submit</Button>
+            <Button type='submit' variant='contained' color='primary' onClick={handleSubmit}>Submit</Button> &nbsp;
             <Button type='submit' variant='contained' color='primary' onClick={handleCancel}>Cancel</Button>
           </Grid>
         </Grid>

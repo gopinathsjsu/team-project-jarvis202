@@ -9,7 +9,7 @@ export const TotalBalance = (props) => {
   const date = new Date();
   return (
     <React.Fragment>
-      <Title>Total Balance (Savings + Deposits)</Title>
+      <Title>Total Balance (Savings + Checkings)</Title>
       <Typography component="p" variant="h4">
         ${props.savings + props.checkings}
       </Typography>
@@ -19,16 +19,16 @@ export const TotalBalance = (props) => {
       <Grid container spacing={3}>
         <Grid item xs>
           <Paper>
-          <div className="balanceTab">
-            <span>Savings</span>
-            <div>${props.savings}</div>
-          </div>
+            <div className="balanceTab">
+              <span>Savings</span>
+              <div>${props.savings}</div>
+            </div>
           </Paper>
         </Grid>
         <Grid item xs>
           <Paper>
             <div className="balanceTab">
-              <span>Deposits</span>
+              <span>Checkings</span>
               <div>${props.checkings}</div>
             </div>
           </Paper>

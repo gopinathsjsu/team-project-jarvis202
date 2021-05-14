@@ -17,9 +17,10 @@ public class RecepientDTO {
   private Integer routingNumber;
   private boolean isSameBank;
   private Integer recepientId;
+  private String companyName;
 
   public RecepientDTO(Integer custAccountID, Integer recepientId, String firstName, String lastName, Integer zipCode,
-      Integer accountNum, String nickName, Integer routingNumber, boolean isSameBank) {
+      Integer accountNum, String nickName, Integer routingNumber, boolean isSameBank, String companyName) {
     this.custAccountID = custAccountID;
     this.recepientId = recepientId;
     this.firstName = firstName;
@@ -29,6 +30,7 @@ public class RecepientDTO {
     this.nickName = nickName;
     this.routingNumber = routingNumber;
     this.isSameBank = isSameBank;
+    this.companyName = companyName;
   }
 
 }

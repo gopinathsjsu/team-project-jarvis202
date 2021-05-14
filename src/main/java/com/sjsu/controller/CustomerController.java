@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sjsu.dto.CustomerDTO;
 import com.sjsu.dto.CustomerResponseDTO;
+import com.sjsu.dto.TransactionsDTO;
 import com.sjsu.entity.Customer;
 import com.sjsu.services.CustomerService;
 
@@ -28,6 +29,9 @@ public class CustomerController {
 	 */
 	@PostMapping(path = "add/customer")
 	public Customer addMember(@RequestBody Customer customer) {
+		if (customer.getCustomerId() == null) {
+			customer.setCustomerId(customerService.getLastCustId() + 1);
+		}
 		customer = customerService.addCustomerDetails(customer);
 		return customer;
 	}
@@ -68,6 +72,11 @@ public class CustomerController {
 		return customerService.getJoinData(userName);
 	}
 
+	@GetMapping("/getCustomerIdByAccountNum/{accountNum}")
+	public List<Customer> getCustomerIdByAccountNum(@PathVariable Integer accountNum) {
+		return customerService.getCustomerIdByAccountNum(accountNum);
+	}
+
 	/*
 	 * Input - Customer user name Output - userName , accNumber, accountType,
 	 * balance
@@ -76,17 +85,29 @@ public class CustomerController {
 	public List<CustomerResponseDTO> showCustomerDetailsOnLogin(@PathVariable String userName) {
 		return customerService.showCustomerDetailsOnLogin(userName);
 	}
-	
-	//Adding an account to existing customer
-	public List<Customer> addAccounts(@RequestBody Customer customer)
-	{
+
+	// Adding an account to existing customer
+	public List<Customer> addAccounts(@RequestBody Customer customer) {
 		return null;
-		
+
 	}
 
 	@GetMapping("/getCustContactDetails/{userName}")
 	public List<CustomerResponseDTO> getCustContactDetailsByUname(@PathVariable String userName) {
 		return customerService.getCustContactDetails(userName);
+	}
+
+	// TODO
+	@GetMapping("/getDetailsByUserName/{uname}")
+	public Customer findByUserNameIs(@PathVariable String uname) {
+		Customer customer = customerService.findByUserNameIs(uname);
+		return customer;
+	}
+
+	@GetMapping("/getTransByAccount/{accountNum}")
+	public List<TransactionsDTO> getTransByAccount(@PathVariable Integer accountNum) {
+		List<TransactionsDTO> trans = customerService.getTransByAccount(accountNum);
+		return trans;
 	}
 
 }

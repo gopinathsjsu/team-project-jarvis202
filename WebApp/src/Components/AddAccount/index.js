@@ -30,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120
+  },
+  paddingSpacing: {
+    paddingLeft: "24px !important",
+    paddingRight: "24px !important",
+    paddingTop: "24px"
   }
 }));
 
@@ -74,11 +79,10 @@ const AddAccount = (props) => {
       setHasError(true);
     }
     else {
-
       ServiceAPI.sendOTP(ph).then(function (response) {
         console.log(response);
         const varDetails = {
-          // customerId: custDetails.customerId,
+          customerId: custDetails.customerId,
           accountType: accountType,
           coApplicant: coApplicant,
           accountStatus: 'ACTIVE',
@@ -113,10 +117,12 @@ const AddAccount = (props) => {
 
   useEffect(() => {
     var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
-
+    console.log('username')
+    console.log(sessionDetails.uname)
     ServiceAPI.getCustomerDetailsByUserName(sessionDetails.uname).then(function (response) {
       setCustDetails(response.data[0]);
       const accDetails = response.data[0].account;
+      console.log(accDetails.length)
       if (accDetails.length > 0) {
         const accn = []
 
@@ -125,30 +131,33 @@ const AddAccount = (props) => {
             accn.push(acc.accNumber)
           }
         });
+
         setAccounts(accn);
-        if (accounts.length === 2) {
+
+        if (accn.length === 2) {
           setErrorMessage('You are not eligible to add account in this bank , as you already have 2 accounts of type : Savings and Checkings ')
           setHasError(true);
         }
       }
 
-      else {
-        console.log(response.data[0]);
-        setCustDetails(response.data[0]);
-        setFirstName(response.data[0].firstName);
-        setLastName(response.data[0].lastName);
-        setPh(response.data[0].phoneNumber);
-        setEmail(response.data[0].emailId);
-        setMiddleName(response.data[0].middleName);
-        setDOB(response.data[0].dateOfBirth);
-        setOccupation(response.data[0].occupation);
-        setIncomeSource(response.data[0].sourceOfIncome);
-        setAddress1(response.data[0].fullAddress);
-        setCity(response.data[0].city);
-        setAddressState(response.data[0].state);
-        setCountry(response.data[0].country);
-        setZipCode(response.data[0].zipcode);
-      }
+      // else {
+      console.log('response')
+      console.log(response.data[0]);
+      setCustDetails(response.data[0]);
+      setFirstName(response.data[0].firstName);
+      setLastName(response.data[0].lastName);
+      setPh(response.data[0].phoneNumber);
+      setEmail(response.data[0].emailId);
+      setMiddleName(response.data[0].middleName);
+      setDOB(response.data[0].dateOfBirth);
+      setOccupation(response.data[0].occupation);
+      setIncomeSource(response.data[0].sourceOfIncome);
+      setAddress1(response.data[0].fullAddress);
+      setCity(response.data[0].city);
+      setAddressState(response.data[0].state);
+      setCountry(response.data[0].country);
+      setZipCode(response.data[0].zipcode);
+      // }
     })
       .catch(function (error) {
         console.log('Unable to fetch customer details', error);
@@ -171,7 +180,7 @@ const AddAccount = (props) => {
   // }
 
   return (
-    <Container >
+    <Container className={classes.paddingSpacing}>
       <Snackbar open={hasError} autoHideDuration={6000} onClose={handlecloseSnack}>
         <Alert onClose={handlecloseSnack} severity='error'>
           {errorMessage}

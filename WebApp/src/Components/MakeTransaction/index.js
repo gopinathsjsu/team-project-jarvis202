@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MakeTransaction = () => {
   const classes = useStyles();
-  const [fromAcc, setFromAcc] = React.useState('');
+  // const [fromAcc, setFromAcc] = React.useState('');
   const [toAcc, setToAcc] = React.useState('');
   const [amount, setAmount] = React.useState(0);
   const [remarks, setRemarks] = React.useState(0);
@@ -29,10 +29,10 @@ const MakeTransaction = () => {
   // to-do: fetch the account numbers and the type of account 
   const fromAccOptions = ['Mamatha - savings', 'Mamatha - Checkings']
 
-  const handleFromAccChange = async (e) => {
-    setFromAcc(e.target.value);
-    console.log("set the from account value")
-  }
+  // const handleFromAccChange = async (e) => {
+  //   setFromAcc(e.target.value);
+  //   console.log("set the from account value")
+  // }
 
   const handleToAccChange = async (e) => {
     setToAcc(e.target.value);
@@ -40,7 +40,73 @@ const MakeTransaction = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('submitted')
+    // console.log('submitted')
+    // console.log(fromAccounts)
+    // const fa = '11111';
+    // const ta = toAcc;
+    
+    // const idx = fromAccounts.indexOf(fa.toString());
+    // console.log(fa)
+
+    // console.log(idx)
+    // const accountBalance = custDetails.account[idx].balance;
+    // if (accountBalance < amount) {
+    //   setErrorMessage('Insufficient funds to initiate Transfer!');
+    //   setHasError(true);
+    // }
+    // else {
+    //   custDetails.account[idx].balance = accountBalance - amount;
+
+    //   const todayDate = new Date();
+
+    //   var transactionDetails = {};
+    //   transactionDetails.transactionId = 1;
+    //   transactionDetails.description = remarks;
+    //   transactionDetails.amount = amount;
+    //   transactionDetails.transactionType = 'DEBIT';
+    //   transactionDetails.fromAccount = fa;
+    //   transactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+    //   transactionDetails.toAccount = ta;
+    //   // transactionDetails.fromAccount = fromAcc;
+    //   custDetails.transactions.push(transactionDetails);
+
+    //   const toTransactionDetails = {};
+    //   toTransactionDetails.transactionId = 1;
+    //   toTransactionDetails.description = remarks;
+    //   toTransactionDetails.amount = amount;
+    //   toTransactionDetails.transactionType = 'CREDIT';
+    //   toTransactionDetails.transactionDate = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
+    //   toTransactionDetails.fromAccount = fa;
+    //   toTransactionDetails.toAccount = ta;
+    //   ServiceAPI.sendOTP(custDetails.phoneNumber).then(function (response) {
+    //     console.log(response);
+    //     const varDetails = {};
+    //     varDetails.customerId = custDetails.customerId;
+    //     varDetails.custDetails = custDetails;
+    //     varDetails.otpCode = response.data;
+    //     varDetails.phoneNumber = custDetails.phoneNumber;
+    //     varDetails.type = 'makeTransfer';
+
+    //     if (isSameBank) {
+    //       varDetails.toTransDetails = toTransactionDetails;
+    //       varDetails.toCustAccount = ta;
+    //       varDetails.sameBank = 1;
+    //     }
+    //     else {
+    //       varDetails.sameBank = 0;
+    //     }
+
+    //     const path = '/validateOTP/:' + varDetails;
+    //     history.push({
+    //       pathname: path,
+    //       state: {
+    //         varDetails: varDetails
+    //       }
+    //     })
+    //   }).catch(function (error) {
+    //     console.log('Unable to send otp', error);
+    //   });
+    // }
   }
 
   const handleCancel = async () => {
@@ -52,13 +118,7 @@ const MakeTransaction = () => {
     <Container className={classes.marginspacing}>
       <Grid container spacing={3}>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
-          <Autocomplete
-            id='toAccount'
-            options={fromAccOptions}
-            style={{ width: 300 }}
-            onChange={handleToAccChange}
-            renderInput={(params) => <TextField {...params} required label='To' variant='outlined' />}
-          />
+          <TextField required id='toAccount' label='To Account' variant='outlined' onChange={(event) => setToAcc(event.target.value)} />
         </Grid>
         <Grid item xs={12} align='left' className={classes.marginspacing}>
           <TextField required id='amount' label='Amount ($)' variant='outlined' onChange={(event) => setAmount(event.target.value)} />

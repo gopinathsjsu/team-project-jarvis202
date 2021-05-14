@@ -22,6 +22,9 @@ public class RecepientController {
 
   @PostMapping(path = "addRecepient")
   public String addRecepient(@RequestBody Recepient recepient) {
+    if (recepient.getRoutingNumber() == 0 && recepient.getCompanyName() == null){
+      recepient.setSameBank(true);
+    }
     String res = recepientService.addRecepient(recepient);
     return res;
   }

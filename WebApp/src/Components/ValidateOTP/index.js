@@ -84,6 +84,58 @@ const ValidateOTP = (props) => {
     console.log(location.state.varDetails)
     console.log("Operation type")
     console.log(operationType)
+    // if (operationType === 'adminTransaction') {
+    //   if (otpNum == otp) {
+    //     ServiceAPI.addCustomer(varDetails.custDetails).then(function (response) {
+    //       console.log(response)
+    //       if (varDetails.sameBank === 1) {
+    //         ServiceAPI.getCustomerIdByAccountNum(parseInt(varDetails.toCustAccount)).then(function (response) {
+    //           const toCustDetails = response.data[0];
+    //           const accn = []
+
+    //           if (response.data[0].account.length > 0) {
+    //             response.data[0].account.forEach(function (acc) {
+    //               if (acc.accountStatus !== 'CLOSED' && acc.accNumber == varDetails.toAccount) {
+    //                 accn.push(acc.accNumber.toString());
+    //               }
+    //             })
+    //           }
+
+    //           const idx = accn.indexOf(varDetails.toCustAccount.toString());
+    //           console.log(idx);
+    //           toCustDetails.account[idx].balance = toCustDetails.account[idx].balance + varDetails.toDetails.amount;
+    //           toCustDetails.transactions.push(varDetails.toTransDetails);
+    //           ServiceAPI.addCustomer(toCustDetails).then(function (response) {
+    //             console.log('Credit transaction is created successfully');
+    //           })
+    //         })
+    //       }
+    //       setsuccessMessage('Funds Transferred successfully');
+    //       setSuccess(true);
+    //     }).catch(function (error) {
+    //       console.log('Unable to transfer funds', error);
+    //     });
+    //   }
+    //   else {
+    //     setErrorMessage('Invalid OTP, Please Try again');
+    //     setHasError(true);
+    //   }
+    // }
+    if (operationType === 'recurringPayment') {
+      if (otpNum == otp && custDetails != null) {
+        ServiceAPI.setRecurringPayment(varDetails.JobDetails).then(function (response) {
+          console.log(response);
+          setsuccessMessage("Recurring Payment Set Successfully");
+          setSuccess(true);
+        }).catch(function (error) {
+          console.log(error);
+        })
+      }
+      else {
+        setErrorMessage('Invalid OTP, Please Try again');
+        setHasError(true);
+      }
+    }
     if (operationType === 'addAccount') {
       const accountDetails = {
         accNumber: 1245, //This field is added to take accNumber field into consideration , and it is auto-generated in db
@@ -119,12 +171,13 @@ const ValidateOTP = (props) => {
         accountNum: varDetails.accountNum,
         nickName: varDetails.nickName,
         routingNumber: varDetails.routingNumber,
-        isSameBank: varDetails.isSameBank
+        isSameBank: varDetails.isSameBank,
+        companyName: varDetails.companyName
       }
       if (otpNum == otp) {
         ServiceAPI.addRecepient(recepientDetails).then(function (response) {
           console.log(response)
-          setsuccessMessage('Recepient added successfully, U can initiate funds transfer')
+          setsuccessMessage('Recepient added successfully, U can initiate funds transfer !')
           setSuccess(true);
         }).catch(function (error) {
           console.log('Unable to add account', error);
@@ -137,12 +190,49 @@ const ValidateOTP = (props) => {
     }
     else if (operationType === 'closeAccount') {
       if (otpNum == otp) {
-        ServiceAPI.addCustomer(varDetails).then(function (response) {
+        ServiceAPI.addCustomer(varDetails.custDetails).then(function (response) {
           console.log(response)
           setsuccessMessage('Account closed successfully');
           setSuccess(true);
         }).catch(function (error) {
           console.log('Unable to add account', error);
+        });
+      }
+      else {
+        setErrorMessage('Invalid OTP, Please Try again');
+        setHasError(true);
+      }
+    }
+    else if (operationType === 'makeTransfer') {
+      if (otpNum == otp) {
+        ServiceAPI.addCustomer(varDetails.custDetails).then(function (response) {
+          console.log(response)
+          if (varDetails.sameBank === 1) {
+            ServiceAPI.getCustomerIdByAccountNum(parseInt(varDetails.toCustAccount)).then(function (response) {
+              const toCustDetails = response.data[0];
+              const accn = []
+
+              if (response.data[0].account.length > 0) {
+                response.data[0].account.forEach(function (acc) {
+                  if (acc.accountStatus !== 'CLOSED' && acc.accNumber == varDetails.toAccount) {
+                    accn.push(acc.accNumber.toString());
+                  }
+                })
+              }
+
+              const idx = accn.indexOf(varDetails.toCustAccount.toString());
+              console.log(idx);
+              toCustDetails.account[idx].balance = toCustDetails.account[idx].balance + varDetails.toDetails.amount;
+              toCustDetails.transactions.push(varDetails.toTransDetails);
+              ServiceAPI.addCustomer(toCustDetails).then(function (response) {
+                console.log('Credit transaction is created successfully');
+              })
+            })
+          }
+          setsuccessMessage('Funds Transferred successfully');
+          setSuccess(true);
+        }).catch(function (error) {
+          console.log('Unable to transfer funds', error);
         });
       }
       else {
@@ -162,12 +252,12 @@ const ValidateOTP = (props) => {
     if (operationType === 'addRecepient') {
       history.push('/manageRecepients')
     }
-    else if (operationType === 'addAccount' || operationType === 'closeAccount') {
+    else if (operationType === 'addAccount' || operationType === 'closeAccount' || operationType === 'recurringPayment') {
       history.push('/home')
     }
-    else if (operationType = 'transferActivity') {
+    else if (operationType === 'makeTransfer') {
       history.push('/transferActivity')
-    }
+    } 
   }
 
   return (
